@@ -1,0 +1,15 @@
+{
+    "episodes": [
+        {
+            "title": "Sound of the Future",
+            "folder": "episode-1"
+        }
+    ],
+    "singles": [
+        {
+            "title": "RESTful Postman Testing",
+            "folder": "/releases/single-1"
+        }
+    ] 
+  }
+  
