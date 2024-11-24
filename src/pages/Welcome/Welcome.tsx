@@ -1,7 +1,5 @@
 import Meta from '@/components/Meta';
-import { FullSizeCenteredFlexBox } from '@/components/styled';
 import useOrientation from '@/hooks/useOrientation';
-
 import muiLogo from './logos/mui.svg';
 import pwaLogo from './logos/pwa.svg';
 import reactLogo from './logos/react_ed.svg';
@@ -10,25 +8,167 @@ import rrLogo from './logos/rr.svg';
 import tsLogo from './logos/ts.svg';
 import viteLogo from './logos/vite.svg';
 import { Image } from './styled';
+import { useTheme } from '@emotion/react';
+import { Box } from '@mui/system';
+import { GitHub, Mail, MusicNote, Phone } from '@mui/icons-material';
+import { Tooltip } from '@mui/material';
+import { IconButton } from '@mui/material';
+
+const logos = [
+  { alt: 'React Router', src: rrLogo },
+  { alt: 'Vite', src: viteLogo },
+  { alt: 'TypeScript', src: tsLogo },
+  { alt: 'React', src: reactLogo },
+  { alt: 'MUI', src: muiLogo },
+  { alt: 'Recoil', src: recoilLogo },
+  { alt: 'PWA', src: pwaLogo },
+];
 
 function Welcome() {
-  const isPortrait = useOrientation();
+  const email = 'mcmontanaro01@gmail.com';
+  const phoneNumber = '+16175999973';
 
-  const width = isPortrait ? '40%' : '30%';
-  const height = isPortrait ? '30%' : '40%';
+  const isPortrait = useOrientation();
+  const theme = useTheme();
 
   return (
     <>
       <Meta title="Welcome" />
-      <FullSizeCenteredFlexBox flexDirection={isPortrait ? 'column' : 'row'}>
-        <Image alt="react-router" src={rrLogo} />
-        <Image alt="vite" src={viteLogo} />
-        <Image alt="typescript" src={tsLogo} />
-        <Image alt="react" src={reactLogo} sx={{ width, height }} />
-        <Image alt="mui" src={muiLogo} />
-        <Image alt="recoil" src={recoilLogo} />
-        <Image alt="pwa" src={pwaLogo} />
-      </FullSizeCenteredFlexBox>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          height: '100%',
+          justifyContent: 'space-between',
+        }}
+      >
+        {/* Headliner Section */}
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: '20px',
+          }}
+        >
+          <h1 style={{ fontSize: '3rem', margin: 0 }}>Michael Montanaro</h1>
+          <Box>
+            <Tooltip title="Code with me">
+              <IconButton
+                color="primary"
+                component="a"
+                href="https://www.github.com/montymi"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="contact email"
+              >
+                <GitHub />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Listen with me">
+              <IconButton
+                color="primary"
+                component="a"
+                href="https://open.spotify.com/user/mumugoalie"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="contact email"
+              >
+                <MusicNote />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Write to me">
+              <IconButton
+                color="primary"
+                component="a"
+                href={`mailto:${email}`}
+                aria-label="contact email"
+              >
+                <Mail />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Talk with me">
+              <IconButton
+                color="primary"
+                component="a"
+                href={`tel:${phoneNumber}`} // The tel: link initiates the phone call
+                aria-label="contact phone"
+              >
+                <Phone />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </div>
+
+        {/* Stream Section */}
+        <Tooltip title="Blog & Updates | Stay tuned for latest news and posts!">
+          <div
+            style={{
+              flex: 1,
+              backgroundColor: theme?.palette?.background?.paper,
+              overflowY: 'auto',
+              padding: '20px',
+            }}
+          >
+            <Box
+              sx={{
+                marginTop: '20px',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}
+            >
+              {[...Array(3)].map((_, i) => (
+                <Box
+                  key={i}
+                  sx={{
+                    padding: '15px',
+                    marginBottom: '15px',
+                    borderRadius: '8px',
+                    opacity: 0.7,
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      opacity: 1,
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.9)',
+                    },
+                  }}
+                >
+                  <h3>Post Title {i + 1}</h3>
+                  <p>This is a placeholder for blog content {i + 1}.</p>
+                </Box>
+              ))}
+            </Box>
+          </div>
+        </Tooltip>
+
+        {/* Footer Section */}
+        <Tooltip title="App is powered by these awesome technologies!">
+          <Box
+            flexDirection={isPortrait ? 'column' : 'row'}
+            sx={{
+              flex: 1,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              maxHeight: '20vh',
+              background: theme.palette.background.default,
+              padding: '20px',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                backgroundColor: theme.palette.background.paper,
+              },
+            }}
+          >
+            {logos.map(({ alt, src }) => (
+              <Image key={alt} alt={alt} src={src} />
+            ))}
+          </Box>
+        </Tooltip>
+      </div>
     </>
   );
 }
