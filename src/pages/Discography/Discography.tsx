@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -7,21 +7,26 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import DescriptionIcon from '@mui/icons-material/Description';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import { Tooltip, IconButton } from '@mui/material';
 
 type Release = {
   title: string;
   description: string;
   releaseDate: string;
   lastUpdate: string;
-  totalPlayTime: string;
   files: { name: string; length: string; link: string }[];
-  downloadLink: string;
-  readmeContent: string;
+  githubLink: string;
+  readmeLink: string;
   folder: string;
 };
 
@@ -52,80 +57,172 @@ const ReleasePage: React.FC<Release> = ({
   description,
   releaseDate,
   lastUpdate,
-  totalPlayTime,
   files,
-  downloadLink,
-  readmeContent,
-}) => (
-  <div style={{ padding: '1em', maxWidth: '800px', margin: '0 auto' }}>
-    <header style={{ textAlign: 'center', marginBottom: '1.5em' }}>
-      <h1>{title}</h1>
-    </header>
-    <section style={{ marginBottom: '1.5em' }}>
-      <h2>Description</h2>
-      <p>{description}</p>
-    </section>
-    <section style={{ marginBottom: '1.5em' }}>
-      <h2>Details</h2>
-      <p>
-        <strong>Release Date:</strong> {releaseDate}
-      </p>
-      <p>
-        <strong>Last Update:</strong> {lastUpdate}
-      </p>
-    </section>
-    <section style={{ marginBottom: '1.5em' }}>
-      <h2>Play</h2>
-      <button
+  githubLink,
+  readmeLink,
+}) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentFileIndex, setCurrentFileIndex] = useState<number | null>(null);
+  const [audio] = useState(new Audio());
+
+  const playAudio = useCallback(
+    (fileIndex: number) => {
+      if (audio.src !== files[fileIndex].link) {
+        audio.src = files[fileIndex].link;
+        console.log(audio.src);
+        console.log(files[fileIndex].link);
+        audio.load(); // Reload audio source if it's different
+      }
+
+      audio
+        .play()
+        .then(() => {
+          setIsPlaying(true);
+          setCurrentFileIndex(fileIndex);
+        })
+        .catch((error) => {
+          console.error('Error playing audio', error);
+        });
+    },
+    [audio, files, setCurrentFileIndex],
+  );
+
+  const stopAudio = () => {
+    audio.pause();
+    setIsPlaying(false);
+    setCurrentFileIndex(null);
+  };
+
+  const handleNextTrack = useCallback(() => {
+    if (currentFileIndex === null || currentFileIndex === files.length - 1) return;
+    playAudio(currentFileIndex + 1);
+  }, [playAudio, files.length, currentFileIndex]);
+
+  //const handlePrevTrack = () => {
+  //  if (currentFileIndex === null || currentFileIndex === 0) return;
+  //  playAudio(currentFileIndex - 1);
+  //};
+
+  useEffect(() => {
+    audio.addEventListener('ended', handleNextTrack);
+    return () => {
+      audio.removeEventListener('ended', handleNextTrack);
+    };
+  }, [handleNextTrack, audio, currentFileIndex]);
+
+  return (
+    <div style={{ padding: '1em', maxWidth: '800px', margin: '0 auto' }}>
+      <header
         style={{
-          padding: '0.5em 1em',
-          backgroundColor: '#1DB954',
-          color: '#FFFFFF',
-          border: 'none',
-          borderRadius: '5px',
+          display: 'flex',
+          flexDirection: 'row',
+          textAlign: 'center',
+          marginBottom: '1.5em',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
-        Play All
-      </button>
-      <p style={{ marginTop: '0.5em' }}>
-        <strong>Total Play Time:</strong> {totalPlayTime}
-      </p>
-    </section>
-    <section style={{ marginBottom: '1.5em' }}>
-      <h2>Files</h2>
-      {files.map((file) => (
-        <div
-          key={file.name}
-          style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5em' }}
-        >
-          <span>{file.name}</span>
-          <a
-            href={file.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: '#1DB954' }}
+        <h1>{title}</h1>
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+          <Box>
+            <Button
+              id="github"
+              variant="text"
+              href={githubLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Tooltip title="Visit repo" placement="top" arrow>
+                <IconButton>
+                  <GitHubIcon />
+                </IconButton>
+              </Tooltip>
+            </Button>
+            <Button
+              id="README"
+              variant="text"
+              href={readmeLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Tooltip title="View files" placement="top" arrow>
+                <IconButton>
+                  <DescriptionIcon />
+                </IconButton>
+              </Tooltip>
+            </Button>
+          </Box>
+          <Tooltip title="Listen to walkthrough" placement="top" arrow>
+            <Button
+              variant="contained"
+              sx={{
+                padding: '0.5em 1em',
+                border: 'none',
+                height: '50px',
+                width: '50px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onClick={() => {
+                if (currentFileIndex === null) playAudio(0);
+                else stopAudio();
+              }}
+            >
+              {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+            </Button>
+          </Tooltip>
+        </Box>
+      </header>
+      <section style={{ marginBottom: '1.5em' }}>
+        <p>{description}</p>
+      </section>
+      <section style={{ marginBottom: '1.5em' }}>
+        {files.map((file, index) => (
+          <Button
+            className="release"
+            variant="contained"
+            key={file.name}
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: '0.5em',
+              width: '100%',
+              position: 'relative',
+              '&:hover .play-icon': {
+                opacity: 1, // Show the icon on hover
+              },
+            }}
+            onClick={() => playAudio(index)}
           >
-            View ({file.length})
-          </a>
-        </div>
-      ))}
-    </section>
-    <section style={{ marginBottom: '1.5em' }}>
-      <h2>Download</h2>
-      <a href={downloadLink} target="_blank" rel="noopener noreferrer" style={{ color: '#1DB954' }}>
-        Download All
-      </a>
-    </section>
-    <section style={{ marginBottom: '1.5em' }}>
-      <h2>README</h2>
-      <p>{readmeContent}</p>
-    </section>
-  </div>
-);
-
+            <Typography>{file.name}</Typography>
+            <PlayArrowIcon
+              className="play-icon"
+              sx={{
+                opacity: 0, // Initially hidden
+                transition: 'opacity 0.3s', // Smooth transition for opacity
+                position: 'absolute', // Position it over the button
+                right: '10px', // Adjust right position if needed
+              }}
+            />
+          </Button>
+        ))}
+      </section>
+      <section style={{ marginBottom: '1.5em' }}>
+        <Box style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+          <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Typography>Release Date: {releaseDate}</Typography>
+            <Typography>Last Update: {lastUpdate}</Typography>
+          </Box>
+        </Box>
+      </section>
+    </div>
+  );
+};
 function Discography(): JSX.Element {
   const [releases, setReleases] = useState<Releases>({});
-  const [selectedTab, setSelectedTab] = useState<keyof Releases>('episodes');
+  const [selectedTab, setSelectedTab] = useState<string>('all'); // Default to "all"
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRelease, setSelectedRelease] = useState<Release | null>(null);
   const [loading, setLoading] = useState(true); // Track loading state for individual release
@@ -138,7 +235,7 @@ function Discography(): JSX.Element {
       .catch((error) => console.error('Error loading releases:', error));
   }, []);
 
-  const handleTabChange = (_event: React.SyntheticEvent, newValue: keyof Releases) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: string) => {
     setSelectedTab(newValue);
   };
 
@@ -163,38 +260,76 @@ function Discography(): JSX.Element {
     setSelectedRelease(null);
   };
 
+  const renderAllReleases = () => {
+    return Object.entries(releases).map(([section, sectionReleases]) => (
+      <React.Fragment key={section}>
+        <Typography variant="h6" sx={{ mt: 3 }}>
+          {section.charAt(0).toUpperCase() + section.slice(1)}
+        </Typography>
+        <List>
+          {sectionReleases.map((release) => (
+            <React.Fragment key={release.title}>
+              <ListItemButton onClick={() => handleOpenModal(release)}>
+                <ListItemText primary={release.title} />
+              </ListItemButton>
+              <Divider />
+            </React.Fragment>
+          ))}
+        </List>
+      </React.Fragment>
+    ));
+  };
+
+  const renderSelectedReleases = () => {
+    const sectionReleases = releases[selectedTab] || [];
+    return (
+      <List>
+        {sectionReleases.map((release) => (
+          <React.Fragment key={release.title}>
+            <ListItemButton onClick={() => handleOpenModal(release)}>
+              <ListItemText primary={release.title} />
+            </ListItemButton>
+            <Divider />
+          </React.Fragment>
+        ))}
+      </List>
+    );
+  };
+
   return (
     <>
       <Meta title="Discography" />
       <FullSizeCenteredFlexBox>
         <div style={{ width: '100%', maxWidth: 800 }}>
           {/* Top filter bar */}
-          <Tabs
-            value={selectedTab}
-            onChange={handleTabChange}
-            centered
-            textColor="secondary"
-            indicatorColor="secondary"
+          <Typography variant="h4">Discography</Typography>
+          <Typography>A collection of my work in code.</Typography>
+          <Tooltip
+            title="Releases are organized by size, with the order from smallest to largest being Single, Episode, Album"
+            placement="top"
+            arrow
           >
-            {Object.keys(releases).map((key) => (
-              <Tab key={key} label={key.charAt(0).toUpperCase() + key.slice(1)} value={key} />
-            ))}
-          </Tabs>
+            <Tabs
+              value={selectedTab}
+              onChange={handleTabChange}
+              centered
+              textColor="secondary"
+              indicatorColor="secondary"
+            >
+              <Tab key="all" label="All" value="all" />
+              {Object.keys(releases).map((key) => (
+                <Tab key={key} label={key.charAt(0).toUpperCase() + key.slice(1)} value={key} />
+              ))}
+            </Tabs>
+          </Tooltip>
 
           {/* Releases */}
           <Typography variant="h5" sx={{ mt: 2 }}>
-            {`${String(selectedTab).charAt(0).toUpperCase()}${String(selectedTab).slice(1)}`}
+            {selectedTab === 'all'
+              ? ''
+              : `${String(selectedTab).charAt(0).toUpperCase()}${String(selectedTab).slice(1)}`}
           </Typography>
-          <List>
-            {releases[selectedTab]?.map((release) => (
-              <React.Fragment key={release.title}>
-                <ListItemButton onClick={() => handleOpenModal(release)}>
-                  <ListItemText primary={release.title} />
-                </ListItemButton>
-                <Divider />
-              </React.Fragment>
-            ))}
-          </List>
+          {selectedTab === 'all' ? renderAllReleases() : renderSelectedReleases()}
         </div>
       </FullSizeCenteredFlexBox>
 

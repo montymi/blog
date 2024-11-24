@@ -7,8 +7,8 @@
     ],
     "singles": [
         {
-            "title": "RESTful Postman Testing",
-            "folder": "/releases/single-1"
+            "title": "SchemaAPITesting",
+            "folder": "single-1"
         }
     ] 
   }
