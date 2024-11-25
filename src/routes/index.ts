@@ -1,8 +1,8 @@
 import AlbumIcon from '@mui/icons-material/Album';
 import BugReportIcon from '@mui/icons-material/BugReport';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import HomeIcon from '@mui/icons-material/Home';
 import TerrainIcon from '@mui/icons-material/Terrain';
+import { LibraryBooksOutlined } from '@mui/icons-material';
 
 import asyncComponentLoader from '@/utils/loader';
 
@@ -15,11 +15,11 @@ const routes: Routes = {
     title: 'Welcome',
     icon: HomeIcon,
   },
-  [Pages.Page2]: {
-    component: asyncComponentLoader(() => import('@/pages/Page2')),
-    path: '/page-2',
-    title: 'Page 2',
-    icon: GitHubIcon,
+  [Pages.Library]: {
+    component: asyncComponentLoader(() => import('@/pages/Library')),
+    path: '/library',
+    title: 'Library',
+    icon: LibraryBooksOutlined,
   },
   [Pages.Page3]: {
     component: asyncComponentLoader(() => import('@/pages/Page3')),

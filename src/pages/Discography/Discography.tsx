@@ -125,43 +125,39 @@ const ReleasePage: React.FC<Release> = ({
         <h1>{title}</h1>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
           <Box>
-            <Button
-              id="github"
-              variant="text"
-              href={githubLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Tooltip title="Visit repo" placement="top" arrow>
-                <IconButton>
-                  <GitHubIcon />
-                </IconButton>
-              </Tooltip>
-            </Button>
-            <Button
-              id="README"
-              variant="text"
-              href={readmeLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Tooltip title="View files" placement="top" arrow>
-                <IconButton>
-                  <DescriptionIcon />
-                </IconButton>
-              </Tooltip>
-            </Button>
+            <Tooltip title="Visit repo" placement="top" arrow>
+              <IconButton
+                id="github"
+                color="secondary"
+                href={githubLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GitHubIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="View files" placement="top" arrow>
+              <IconButton
+                id="README"
+                color="secondary"
+                href={readmeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <DescriptionIcon />
+              </IconButton>
+            </Tooltip>
           </Box>
           <Tooltip title="Listen to walkthrough" placement="top" arrow>
-            <Button
-              variant="contained"
+            <IconButton
+              color="secondary"
               sx={{
-                padding: '0.5em 1em',
                 border: 'none',
                 height: '50px',
                 width: '50px',
                 borderRadius: '50%',
                 display: 'flex',
+                backgroundColor: 'background.default',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
@@ -171,7 +167,7 @@ const ReleasePage: React.FC<Release> = ({
               }}
             >
               {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
-            </Button>
+            </IconButton>
           </Tooltip>
         </Box>
       </header>
@@ -182,13 +178,13 @@ const ReleasePage: React.FC<Release> = ({
         {files.map((file, index) => (
           <Button
             className="release"
-            variant="contained"
+            variant="outlined"
+            color="secondary"
             key={file.name}
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
               marginBottom: '0.5em',
-              backgroundColor: 'background.default',
               mb: '15px',
               width: '100%',
               position: 'relative',

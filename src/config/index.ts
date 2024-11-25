@@ -5,8 +5,10 @@ import type { Notifications } from './types';
 const title = 'Blog de Miguel';
 
 const email = 'mcmontanaro01@gmail.com';
+const phone = '+16175999973';
 
-const repository = 'https://github.com/montymi/blog';
+const repository = 'https://www.github.com/montymi';
+const spotify = 'https://open.spotify.com/user/mumugoalie';
 
 const messages = {
   app: {
@@ -59,6 +61,8 @@ export {
   messages,
   repository,
   email,
+  phone,
+  spotify,
   title,
   defaultMetaTags,
   giphy404,

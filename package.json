@@ -34,6 +34,9 @@
     "@mui/material": "^5.15.0",
     "@mui/system": "^5.15.0",
     "@mui/utils": "^5.15.0",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
+    "@react-spring/three": "^9.7.5",
     "@react-three/drei": "^9.117.3",
     "@react-three/fiber": "^8.17.10",
     "howler": "^2.2.4",
@@ -45,6 +48,7 @@
     "react-helmet-async": "^2.0.3",
     "react-hotkeys-hook": "^4.4.1",
     "react-router-dom": "^6.21.0",
+    "react-spring": "^9.7.4",
     "recoil": "^0.7.7",
     "swiper": "^11.1.15",
     "three": "^0.170.0"
