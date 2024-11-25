@@ -11,8 +11,8 @@ import { Image } from './styled';
 import { useTheme } from '@emotion/react';
 import { Box } from '@mui/system';
 import { GitHub, Mail, MusicNote, Phone } from '@mui/icons-material';
-import { Tooltip } from '@mui/material';
-import { IconButton } from '@mui/material';
+import { IconButton, Tooltip, Typography } from '@mui/material';
+import Spotlight from './Spotlight';
 
 const logos = [
   { alt: 'React Router', src: rrLogo },
@@ -43,19 +43,16 @@ function Welcome() {
           justifyContent: 'space-between',
         }}
       >
-        {/* Headliner Section */}
-        <div
-          style={{
-            flex: 1,
+        <Box
+          flexDirection={isPortrait ? 'column' : 'row'}
+          sx={{
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '20px',
+            width: '100%',
+            justifyContent: 'space-between',
           }}
         >
-          <h1 style={{ fontSize: '3rem', margin: 0 }}>Michael Montanaro</h1>
-          <Box>
+          <h1 style={{ fontSize: '3em', margin: 0 }}>Michael Montanaro`s Corner of the Web</h1>
+          <Box m="1em">
             <Tooltip title="Code with me">
               <IconButton
                 color="primary"
@@ -101,49 +98,77 @@ function Welcome() {
               </IconButton>
             </Tooltip>
           </Box>
-        </div>
-
-        {/* Stream Section */}
-        <Tooltip title="Blog & Updates | Stay tuned for latest news and posts!">
+        </Box>
+        {/* Headliner Section */}
+        <Box
+          flexDirection={isPortrait ? 'column' : 'row'}
+          sx={{
+            display: 'flex',
+            height: '100%',
+          }}
+        >
           <div
             style={{
               flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
               backgroundColor: theme?.palette?.background?.paper,
-              overflowY: 'auto',
-              padding: '20px',
             }}
           >
-            <Box
-              sx={{
-                marginTop: '20px',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
+            <Box sx={{ height: '100%' }}>
+              <Typography m="1em">
+                Hi, I’m Michael, a full-stack developer and a recent computer engineering graduate
+                who thrives on crafting innovative solutions and intuitive experiences. When I’m not
+                coding, I’m analyzing soccer plays, curating the perfect playlist, or exploring new
+                ideas to keep inspired. Explore my Discography to see the projects and tools I’ve
+                built—I’m excited to share my journey with you!
+              </Typography>
+            </Box>
+            <Spotlight />
+          </div>
+
+          {/* Stream Section */}
+          <Tooltip title="Blog & Updates | Stay tuned for latest news and posts!">
+            <div
+              style={{
+                flex: 1,
+                backgroundColor: theme?.palette?.background?.paper,
+                overflowY: 'auto',
+                padding: '20px',
               }}
             >
-              {[...Array(3)].map((_, i) => (
-                <Box
-                  key={i}
-                  sx={{
-                    padding: '15px',
-                    marginBottom: '15px',
-                    borderRadius: '8px',
-                    opacity: 0.7,
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      opacity: 1,
-                      boxShadow: '0 2px 5px rgba(0,0,0,0.9)',
-                    },
-                  }}
-                >
-                  <h3>Post Title {i + 1}</h3>
-                  <p>This is a placeholder for blog content {i + 1}.</p>
-                </Box>
-              ))}
-            </Box>
-          </div>
-        </Tooltip>
+              <Box
+                sx={{
+                  marginTop: '20px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                {[...Array(3)].map((_, i) => (
+                  <Box
+                    key={i}
+                    sx={{
+                      padding: '15px',
+                      marginBottom: '15px',
+                      borderRadius: '8px',
+                      opacity: 0.7,
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        opacity: 1,
+                        boxShadow: '0 2px 5px rgba(0,0,0,0.9)',
+                      },
+                    }}
+                  >
+                    <h3>Post Title {i + 1}</h3>
+                    <p>This is a placeholder for blog content {i + 1}.</p>
+                  </Box>
+                ))}
+              </Box>
+            </div>
+          </Tooltip>
+        </Box>
 
         {/* Footer Section */}
         <Tooltip title="App is powered by these awesome technologies!">
