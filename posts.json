@@ -1,0 +1,15 @@
+[
+    {
+      "id": 1,
+      "title": "Welcome to My Portfolio",
+      "content": "This is the first blog post. Stay tuned for updates!",
+      "date": "2024-11-25"
+    },
+    {
+        "id": 2,
+        "title": "TTS & STT",
+        "content": "Anytime technology breaks out of the keyboard is disrupting for the market. Alexa spawned the home assistant wave, and that was rudementary language processing. Now, we have companies like Spotify creating a STS translation tool so that they can allow multi-lingual podcast support. Not too long after, OpenAI open sourced their STT model, whisper. This officially set into motion the completion of the local speech pipeline! With the release of whisper, speech recognition became no more than an import. All that remained: Text-To-Speech. After a bit of digging, I came across a popular and very developed repository known as Coqui TTS. The library supported multi-lingual speech using local or remote models, as well as the ability to clone voices from an audio file. In fact, the project seems to specialize in this, and after some testing on my 2019 Macbook Intel-series, the results were impressive though not realistic, mainly capturing voice pitch. With the tools described, the pipeline of STT and TTS is complete! Link that with an LLM for a brain and you have yourself a brainstorming parnter.",
+        "date": "2024-11-25"
+      }
+]
+  
