@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Typography,
-  List,
-  ListItemText,
-  IconButton,
-  ListItemButton,
-  Box,
-  Divider,
-} from '@mui/material';
+import { Typography, List, ListItemText, IconButton, ListItemButton, Divider } from '@mui/material';
 import { Close } from '@mui/icons-material';
 
 import Meta from '@/components/Meta';
@@ -49,7 +41,7 @@ const Library: React.FC = () => {
     <>
       <Meta title="Library" />
       <FullSizeCenteredFlexBox>
-        <Box>
+        <div>
           <Typography variant="h3" gutterBottom>
             Library
           </Typography>
@@ -64,18 +56,18 @@ const Library: React.FC = () => {
               </>
             ))}
           </List>
-        </Box>
+        </div>
       </FullSizeCenteredFlexBox>
 
       {selectedPdf && (
-        <Box
-          sx={{
+        <div
+          style={{
             position: 'fixed',
             top: 0,
             left: 0,
             width: '100%',
             height: '100%',
-            bgcolor: 'rgba(0, 0, 0, 0.8)',
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
@@ -94,19 +86,19 @@ const Library: React.FC = () => {
           >
             <Close />
           </IconButton>
-          <Box
-            sx={{
+          <div
+            style={{
               width: '90%',
               height: '90%',
-              bgcolor: 'white',
+              backgroundColor: 'white',
               borderRadius: 2,
               overflow: 'hidden',
-              boxShadow: 3,
+              boxShadow: '3',
             }}
           >
             <PDFViewer fileUrl={selectedPdf} />
-          </Box>
-        </Box>
+          </div>
+        </div>
       )}
     </>
   );
