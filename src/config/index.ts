@@ -2,11 +2,13 @@ import isMobile from '@/utils/is-mobile';
 
 import type { Notifications } from './types';
 
-const title = 'React PWA';
+const title = 'Blog de Miguel';
 
-const email = 'auther-email@gmail.com';
+const email = 'mcmontanaro01@gmail.com';
+const phone = '+16175999973';
 
-const repository = 'https://github.com/suren-atoyan/react-pwa';
+const repository = 'https://www.github.com/montymi';
+const spotify = 'https://open.spotify.com/user/mumugoalie';
 
 const messages = {
   app: {
@@ -24,7 +26,7 @@ const messages = {
   images: {
     failed: 'something went wrong during image loading :(',
   },
-  404: 'Hey bro? What are you looking for?',
+  404: 'Hey, you seem lost. What are you looking for?',
 };
 
 const dateFormat = 'MMMM DD, YYYY';
@@ -48,7 +50,7 @@ const loader = {
 
 const defaultMetaTags = {
   image: '/cover.png',
-  description: 'Starter kit for modern web applications',
+  description: 'Personal Portfolio for Michael Montanaro, @montymi',
 };
 const giphy404 = 'https://giphy.com/embed/xTiN0L7EW5trfOvEk0';
 
@@ -59,6 +61,8 @@ export {
   messages,
   repository,
   email,
+  phone,
+  spotify,
   title,
   defaultMetaTags,
   giphy404,
