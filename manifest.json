@@ -1,7 +1,7 @@
 {
-  "name": "React PWA",
-  "short_name": "reactpwa",
-  "description": "Starter kit for modern web applications",
+  "name": "Blog de Miguel",
+  "short_name": "blog",
+  "description": "Personal portfolio, blog, and virtual sandbox of Michael Montanaro",
   "theme_color": "#ffffff",
   "icons": [
     {
