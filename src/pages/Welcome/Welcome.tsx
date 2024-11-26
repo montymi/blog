@@ -69,7 +69,7 @@ function Welcome() {
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '1em' }}>
               <HelpOutline sx={{ marginRight: 1 }} />
-              <Typography variant="h5" sx={{ fontWeight: 300 }}>
+              <Typography variant="body1" sx={{ fontWeight: 150 }}>
                 Full-Stack Developer, Computer Engineer, Athlete, Music Enthusiast
               </Typography>
             </Box>

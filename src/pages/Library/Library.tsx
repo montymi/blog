@@ -1,42 +1,70 @@
 import { useEffect, useState } from 'react';
-import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
-import { IconButton, ListItemButton, Box } from '@mui/material';
+import {
+  Typography,
+  List,
+  ListItemText,
+  IconButton,
+  ListItemButton,
+  Box,
+  Divider,
+} from '@mui/material';
 import { Close } from '@mui/icons-material';
 
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
 import PDFViewer from './PDFViewer'; // Import your PDFViewer component
 
-function Library() {
-  const [papers, setPapers] = useState([]);
+interface Paper {
+  title: string;
+  file: string;
+}
+
+const Library: React.FC = () => {
+  const [papers, setPapers] = useState<Paper[]>([]);
   const [selectedPdf, setSelectedPdf] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch the list of papers
-    fetch('/library.json')
-      .then((response) => response.json())
-      .then((data) => setPapers(data))
-      .catch((error) => console.error('Error loading library.json:', error));
+    const fetchPapers = async () => {
+      try {
+        const response = await fetch('/library.json');
+        const data: Paper[] = await response.json();
+        setPapers(data);
+      } catch (error) {
+        console.error('Error loading library.json:', error);
+      }
+    };
+
+    fetchPapers();
   }, []);
+
+  const handlePdfSelect = (file: string) => {
+    setSelectedPdf(file);
+  };
+
+  const handleCloseViewer = () => {
+    setSelectedPdf(null);
+  };
 
   return (
     <>
       <Meta title="Library" />
       <FullSizeCenteredFlexBox>
-        <div>
+        <Box>
           <Typography variant="h3" gutterBottom>
             Library
           </Typography>
+          <Typography>Collection of my papers and presentations.</Typography>
           <List>
             {papers.map((paper, index) => (
-              <ListItemButton key={index} onClick={() => setSelectedPdf(paper.file)}>
-                <ListItemText primary={paper.title} />
-              </ListItemButton>
+              <>
+                <ListItemButton key={index} onClick={() => handlePdfSelect(paper.file)}>
+                  <ListItemText primary={paper.title} />
+                </ListItemButton>
+                <Divider />
+              </>
             ))}
           </List>
-        </div>
+        </Box>
       </FullSizeCenteredFlexBox>
 
       {selectedPdf && (
@@ -47,7 +75,7 @@ function Library() {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            bgcolor: 'rgba(0, 0, 0, 0.8)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
@@ -55,8 +83,13 @@ function Library() {
           }}
         >
           <IconButton
-            sx={{ position: 'absolute', top: 16, right: 16, color: 'white' }}
-            onClick={() => setSelectedPdf(null)}
+            sx={{
+              position: 'absolute',
+              top: 16,
+              right: 16,
+              color: 'white',
+            }}
+            onClick={handleCloseViewer}
             aria-label="Close PDF Viewer"
           >
             <Close />
@@ -65,8 +98,8 @@ function Library() {
             sx={{
               width: '90%',
               height: '90%',
-              backgroundColor: 'white',
-              borderRadius: '8px',
+              bgcolor: 'white',
+              borderRadius: 2,
               overflow: 'hidden',
               boxShadow: 3,
             }}
@@ -77,6 +110,6 @@ function Library() {
       )}
     </>
   );
-}
+};
 
 export default Library;

@@ -7,8 +7,7 @@ enum Pages {
   Welcome,
   Discography,
   Library,
-  Page3,
-  Page4,
+  Activity,
   NotFound,
 }
 

@@ -299,7 +299,9 @@ function Discography(): JSX.Element {
       <Meta title="Discography" />
       <FullSizeCenteredFlexBox>
         <div style={{ width: '100%', maxWidth: 800 }}>
-          <Typography variant="h4">Discography</Typography>
+          <Typography variant="h3" gutterBottom>
+            Discography
+          </Typography>
           <Typography>Collection of my released code.</Typography>
           <Tooltip
             title="Releases are organized by size, with the order from smallest to largest being Single, Episode, Album"

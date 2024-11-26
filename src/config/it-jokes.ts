@@ -9,7 +9,6 @@ const jokes: string[] = [
   'Why are PCs like air conditioners? They stop working properly if you open Windows!',
   'What did the turkey say to the computer? Google, google, google!',
   'There are 10 types of people in this world, those who understand binary and those who dont',
-  "OOP sucks and this one isn't a joke",
   'What did the robot say to the dead robot? Rust-in-peace',
 ];
 
