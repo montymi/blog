@@ -1,22 +1,23 @@
 {
-  "name": "react-pwa",
-  "version": "2.3.0",
+  "name": "blog de miguel",
+  "version": "1.0.0",
   "type": "module",
-  "description": "Starter kit for modern web applications",
-  "homepage": "https://react-pwa.surenatoyan.com/",
+  "description": "Personal portfolio, blog, and virtual sandbox of Michael Montanaro",
+  "homepage": "https://montymi.github.io/blog",
   "repository": {
     "type": "git",
-    "url": "https://github.com/suren-atoyan/react-pwa.git"
+    "url": "https://github.com/montymi/blog.git"
   },
   "bugs": {
-    "url": "https://github.com/suren-atoyan/react-pwa/issues",
-    "email": "contact@surenatoyan.com"
+    "url": "https://github.com/montymi/blog/issues",
+    "email": "mcmontanaor01@gmail.com"
   },
   "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "deploy": "gh-pages -d build",
     "https-preview": "serve dist",
     "prepare": "husky install && cp -n env/.shared .env &",
     "prettier:check": "prettier --check \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
@@ -85,9 +86,9 @@
     ]
   },
   "author": {
-    "name": "Suren Atoyan",
-    "email": "contact@surenatoyan.com",
-    "url": "http://surenatoyan.com/"
+    "name": "Michael Montanaro",
+    "email": "mcmontanaro01@gmail.com",
+    "url": "https://montymi.github.io/blog"
   },
   "keywords": [
     "react",

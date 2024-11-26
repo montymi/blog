@@ -2,7 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
+import { Group, Object3DEventMap } from 'three';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
+
+type TextureProps = {
+  aoTexture?: THREE.Texture;
+  normalTexture?: THREE.Texture;
+  roughnessTexture?: THREE.Texture;
+};
+
+const textureTypes: TextureProps = {
+  aoTexture: undefined, // or your initialized texture
+  normalTexture: undefined,
+  roughnessTexture: undefined,
+};
 
 const Spotlight = () => (
   <div style={{ height: '100%', position: 'relative', width: '600px' }}>
@@ -11,8 +24,8 @@ const Spotlight = () => (
 );
 
 const VinylScene = () => {
-  const [model, setModel] = useState(null);
-  const [textures, setTextures] = useState({});
+  const [model, setModel] = useState<Group<Object3DEventMap> | null>(null);
+  const [textures, setTextures] = useState(textureTypes);
   const scale = 0.15; // Initial scale
   const [hovered, setHovered] = useState(false);
 

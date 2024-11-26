@@ -8,8 +8,8 @@ import useOrientation from '@/hooks/useOrientation';
 // import rrLogo from './logos/rr.svg';
 // import tsLogo from './logos/ts.svg';
 // import viteLogo from './logos/vite.svg';
-import { useTheme } from '@emotion/react';
-import { Box, Typography, Tooltip } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Typography, Tooltip } from '@mui/material';
 import Spotlight from './Spotlight';
 import { Person, HelpOutline, Place, Schedule, Lightbulb, Build } from '@mui/icons-material';
 
@@ -23,9 +23,17 @@ import { Person, HelpOutline, Place, Schedule, Lightbulb, Build } from '@mui/ico
 //   { alt: 'PWA', src: pwaLogo },
 // ];
 
+type Post = {
+  id: string;
+  title: string;
+  date: string; // ISO date string
+  content: string;
+};
+
 function Welcome() {
   const [posts, setPosts] = useState([]);
   const isPortrait = useOrientation();
+  const flexDirection = isPortrait ? 'column' : 'row';
   const theme = useTheme();
 
   useEffect(() => {
@@ -40,80 +48,80 @@ function Welcome() {
   return (
     <>
       <Meta title="Welcome" />
-      <Box
-        sx={{
+      <div
+        style={{
           display: 'flex',
-          flexDirection: isPortrait ? 'column' : 'row',
+          flexDirection,
           height: '100%',
         }}
       >
         {/* Left Section */}
-        <Box
-          sx={{
+        <div
+          style={{
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'top',
             alignItems: 'center',
             padding: '1em',
-            backgroundColor: theme.palette.background.default,
+            backgroundColor: theme.palette?.background?.default,
           }}
         >
           {/* Header */}
-          <Box sx={{ textAlign: 'left', maxWidth: '600px', margin: '2em' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
+          <div style={{ textAlign: 'left', maxWidth: '600px', margin: '2em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
               <Person sx={{ marginRight: 1 }} />
               <Typography variant="h4" sx={{ fontWeight: 600 }}>
                 Michael Montanaro
               </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '1em' }}>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1em' }}>
               <HelpOutline sx={{ marginRight: 1 }} />
               <Typography variant="body1" sx={{ fontWeight: 150 }}>
                 Full-Stack Developer, Computer Engineer, Athlete, Music Enthusiast
               </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <Place sx={{ marginRight: 1 }} />
               <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
                 Explore the Discography for latest coding projects and tools!
               </Typography>
-            </Box>
-          </Box>
+            </div>
+          </div>
 
           {/* Spotlight Section */}
           <Tooltip title="Click Vinyl for Discography">
-            <Box m="1em">
+            <div style={{ margin: '1em' }}>
               <Spotlight />
-            </Box>
+            </div>
           </Tooltip>
 
           {/* Bio */}
-          <Box sx={{ textAlign: 'left', maxWidth: '600px', margin: '2em' }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '1.5em' }}>
+          <div style={{ textAlign: 'left', maxWidth: '600px', margin: '2em' }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5em' }}>
               <Schedule sx={{ marginRight: 1 }} />
               <Typography variant="body1">Began programming in March 2019.</Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '1.5em' }}>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5em' }}>
               <Lightbulb sx={{ marginRight: 1 }} />
               <Typography variant="body1">
                 I started programming to create efficient solutions that simplify tasks, enhance
                 productivity, and leave more time for life.
               </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <Build sx={{ marginRight: 1 }} />
               <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
                 Programming sharpened my analytical thinking, applying it to solve problems, analyze
                 fútbol, curate music, and explore ideas that inspire me.
               </Typography>
-            </Box>
-          </Box>
-        </Box>
+            </div>
+          </div>
+        </div>
 
         {/* Right Section */}
-        <Box
-          sx={{
+        <div
+          style={{
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
@@ -124,20 +132,18 @@ function Welcome() {
         >
           {/* Blog and Updates Section */}
           <Tooltip title="Stay tuned for the latest news and posts!">
-            <Box sx={{ marginBottom: '2em' }}>
-              {posts.map((post) => (
-                <Box
+            <div style={{ marginBottom: '2em' }}>
+              {posts.map((post: Post) => (
+                <div
+                  className="hover-box"
                   key={post.id}
-                  sx={{
+                  style={{
                     padding: '1em',
                     marginBottom: '1em',
                     borderRadius: '8px',
                     backgroundColor: 'background.paper',
                     transition: 'all 0.3s ease',
                     cursor: 'pointer',
-                    '&:hover': {
-                      boxShadow: '0 4px 10px rgba(0,0,0,0.9)',
-                    },
                   }}
                 >
                   <Typography variant="h6" sx={{ fontWeight: 500 }}>
@@ -147,12 +153,17 @@ function Welcome() {
                     {new Date(post.date).toLocaleDateString()}
                   </Typography>
                   <Typography variant="body2">{post.content}</Typography>
-                </Box>
+                  <style>{`
+		    .hover-box:hover {
+		      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+		    }
+		  `}</style>
+                </div>
               ))}
-            </Box>
+            </div>
           </Tooltip>
-        </Box>
-      </Box>
+        </div>
+      </div>
     </>
   );
 }
