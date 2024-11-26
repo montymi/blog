@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -8,7 +9,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Meta from '@/components/Meta';
@@ -32,23 +32,6 @@ type Release = {
 
 type Releases = {
   [key: string]: Release[];
-};
-
-// Styles for the modal
-const modalStyle = {
-  position: 'absolute' as const,
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '80%',
-  height: '80%',
-  backgroundColor: 'background.paper',
-  boxShadow: 24,
-  p: 4,
-  display: 'flex',
-  flexDirection: 'column',
-  overflow: 'auto',
-  scrollbarWidth: null /* For Firefox */,
 };
 
 // ReleasePage Component to show release content
@@ -123,8 +106,8 @@ const ReleasePage: React.FC<Release> = ({
         }}
       >
         <h1>{title}</h1>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-          <Box>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+          <div>
             <Tooltip title="Visit repo" placement="top" arrow>
               <IconButton
                 id="github"
@@ -147,7 +130,7 @@ const ReleasePage: React.FC<Release> = ({
                 <DescriptionIcon />
               </IconButton>
             </Tooltip>
-          </Box>
+          </div>
           <Tooltip title="Listen to walkthrough" placement="top" arrow>
             <IconButton
               color="secondary"
@@ -169,7 +152,7 @@ const ReleasePage: React.FC<Release> = ({
               {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
             </IconButton>
           </Tooltip>
-        </Box>
+        </div>
       </header>
       <section style={{ marginBottom: '1.5em' }}>
         <p>{description}</p>
@@ -208,17 +191,18 @@ const ReleasePage: React.FC<Release> = ({
         ))}
       </section>
       <section style={{ marginBottom: '1.5em' }}>
-        <Box style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-          <Box style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
             <Typography>Release Date: {releaseDate}</Typography>
             <Typography>Last Update: {lastUpdate}</Typography>
-          </Box>
-        </Box>
+          </div>
+        </div>
       </section>
     </div>
   );
 };
 function Discography(): JSX.Element {
+  const theme = useTheme();
   const [releases, setReleases] = useState<Releases>({});
   const [selectedTab, setSelectedTab] = useState<string>('all'); // Default to "all"
   const [modalOpen, setModalOpen] = useState(false);
@@ -335,7 +319,23 @@ function Discography(): JSX.Element {
 
       {/* Modal for ReleasePage */}
       <Modal open={modalOpen} onClose={handleCloseModal}>
-        <Box sx={modalStyle}>
+        <div
+          style={{
+            position: 'absolute' as const,
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '80%',
+            height: '80%',
+            backgroundColor: theme.palette.background.paper,
+            boxShadow: '24',
+            padding: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto',
+            scrollbarWidth: undefined /* For Firefox */,
+          }}
+        >
           <style>
             {`
               /* Webkit browsers */
@@ -364,7 +364,7 @@ function Discography(): JSX.Element {
           ) : (
             <Alert severity="error">Error loading release data</Alert>
           )}
-        </Box>
+        </div>
       </Modal>
     </>
   );

@@ -1,7 +1,6 @@
 import ThemeIcon from '@mui/icons-material/InvertColors';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -41,7 +40,7 @@ function Header() {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }} data-pw={`theme-${theme}`}>
+    <div style={{ flexGrow: 1 }} data-pw={`theme-${theme}`}>
       <AppBar color="transparent" elevation={1} position="static">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <FlexBox sx={{ alignItems: 'center' }}>
@@ -131,7 +130,7 @@ function Header() {
           </FlexBox>
         </Toolbar>
       </AppBar>
-    </Box>
+    </div>
   );
 }
 
