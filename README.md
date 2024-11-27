@@ -60,8 +60,7 @@ The goal is simple: to document and share my progress while providing a snapshot
 
 Let me know if you'd like any further tweaks!
 
-
-
+<br />
 
 ### Built With
 [![React][reactLogo]][reactLogo-url]
@@ -217,8 +216,6 @@ See the [open issues](https://github.com/montymi/blog/issues) for a full list of
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are, in my opinion, the greatest part of OSS and are what will be the key to continuing the growth of the community. One of the main goals of this README is to facilitate contributions of potential developers. 
-
 1. [Fork the Project](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
@@ -232,8 +229,6 @@ Contributions are, in my opinion, the greatest part of OSS and are what will be 
 <!-- LICENSE -->
 ## License
 
-*Documentation must include a license section in which the type of license and a link or reference to the full license in the repository is given.*
-
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -243,7 +238,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Michael Montanaro [![LinkedIn][linkedin-shield]][linkedin-url] [![Email][email-shield]][email-url] [![Portfolio][website-shield]][website-url]
+[![LinkedIn][linkedin-shield]][linkedin-url] [![Email][email-shield]][email-url] [![Portfolio][website-shield]][website-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -252,11 +247,9 @@ Michael Montanaro [![LinkedIn][linkedin-shield]][linkedin-url] [![Email][email-s
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Use this space to list any resources used or that may be helpful in understanding the project
-
 * [react-pwa](https://github.com/suren-atoyan/react-pwa) by @suren-atoyan for the amazing PWA template
 * [ClearDocs](https://github.com/montymi/ClearDocs) for the high quality README template
-* [![Vercel][vercelLogo]][vercelLogo-url] for fast deployment and hosting
+* [Vercel][vercelLogo-url] for fast deployment and hosting
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
