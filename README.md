@@ -246,7 +246,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Michael Montanaro - [LinkedIn](https://www.linkedin.com/in/michael-montanaro/) - montanaro.m@northeastern.edu
+Michael Montanaro - [LinkedIn](https://www.linkedin.com/in/michael-montanaro/) - [email](mcmontanaro01@gmail.com) - [website](blog-michael-montanaros-projects.vercel.app)
 
 Project Link: [blog-michael-montanaros-projects.vercel.app](https://blog-michael-montanaros-projects.vercel.app)
 
