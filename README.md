@@ -1,7 +1,6 @@
 <div id="readme-top"></div>
 
 <!-- PROJECT SHIELDS -->
-[![LinkedIn][linkedin-shield]][linkedin-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -206,9 +205,7 @@ src
 - [ ] Add a FastAPI for sending new blog posts
 - [ ] Continue adding projects to the Discography
 - [ ] Continue various paper and presentation transfer to the Library
-- [ ] Allow scrolling in the Welcome Page
-  - [ ] Set overflow: auto 
-  - [ ] Remove scrollbar detail (using something like: `.container-name::wekbit-scrollbar{ display: none }`)
+- [X] Allow scrolling in the Welcome Page
 - [ ] Design and upload the Activity Page
 
 See the [open issues](https://github.com/montymi/blog/issues) for a full list of issues and proposed features.
@@ -246,9 +243,10 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Michael Montanaro - [LinkedIn](https://www.linkedin.com/in/michael-montanaro/) - [email](mcmontanaro01@gmail.com) - [website](blog-michael-montanaros-projects.vercel.app)
-
-Project Link: [blog-michael-montanaros-projects.vercel.app](https://blog-michael-montanaros-projects.vercel.app)
+Michael Montanaro  
+[![LinkedIn][linkedin-shield]][linkedin-url]
+[![Email][email-shield]][email-url]
+[![Website][website-shield]][website-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -259,15 +257,11 @@ Project Link: [blog-michael-montanaros-projects.vercel.app](https://blog-michael
 
 Use this space to list any resources used or that may be helpful in understanding the project
 
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
+* [react-pwa by @suren-atoyan for the amazing PWA template](https://github.com/suren-atoyan/react-pwa)
+* [ClearDocs for the high quality README template](https://github.com/montymi/ClearDocs)
+* [Vercel for fast deployment and hosting](https://vercel.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -300,6 +294,7 @@ Use this space to list any resources used or that may be helpful in understandin
 [viteLogo-url]: https://vitejs.dev/
 [vercelLogo]: https://img.shields.io/badge/-Vercel-black.svg?style=for-the-badge&logo=vercel&logoColor=natural
 [vercelLogo-url]: https://vercel.com/
-
-
-[MIT](./LICENSE)
+[email-shield]: https://img.shields.io/badge/Email-%40-black?style=for-the-badge&logo=gmail&logoColor=natural
+[email-url]: mailto:mcmontanaro01@gmail.com
+[website-shield]: https://img.shields.io/badge/Website-Visit%20Us-black?style=for-the-badge&logo=internet-explorer&logoColor=natural
+[website-url]: https://blog-michael-montanaros-projects.vercel.app
