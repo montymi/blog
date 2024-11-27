@@ -243,10 +243,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Michael Montanaro  
-[![LinkedIn][linkedin-shield]][linkedin-url]
-[![Email][email-shield]][email-url]
-[![Portfolio][website-shield]][website-url]
+Michael Montanaro [![LinkedIn][linkedin-shield]][linkedin-url] [![Email][email-shield]][email-url] [![Portfolio][website-shield]][website-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -259,7 +256,7 @@ Use this space to list any resources used or that may be helpful in understandin
 
 * [react-pwa](https://github.com/suren-atoyan/react-pwa) by @suren-atoyan for the amazing PWA template
 * [ClearDocs](https://github.com/montymi/ClearDocs) for the high quality README template
-* [[Vercel][vercelLogo]][vercelLogo-url] for fast deployment and hosting
+* [![Vercel][vercelLogo]][vercelLogo-url] for fast deployment and hosting
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
