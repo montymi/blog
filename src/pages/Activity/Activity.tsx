@@ -17,7 +17,7 @@ function Activity() {
 
   return (
     <>
-      <Meta title="page 3" />
+      <Meta title="activity" />
       <FullSizeCenteredFlexBox>
         <Typography variant="h3">Activity</Typography>
       </FullSizeCenteredFlexBox>
