@@ -246,7 +246,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 Michael Montanaro  
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![Email][email-shield]][email-url]
-[![Website][website-shield]][website-url]
+[![Portfolio][website-shield]][website-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -257,9 +257,9 @@ Michael Montanaro
 
 Use this space to list any resources used or that may be helpful in understanding the project
 
-* [react-pwa by @suren-atoyan for the amazing PWA template](https://github.com/suren-atoyan/react-pwa)
-* [ClearDocs for the high quality README template](https://github.com/montymi/ClearDocs)
-* [Vercel for fast deployment and hosting](https://vercel.com/)
+* [react-pwa](https://github.com/suren-atoyan/react-pwa) by @suren-atoyan for the amazing PWA template
+* [ClearDocs](https://github.com/montymi/ClearDocs) for the high quality README template
+* [[Vercel][vercelLogo]][vercelLogo-url] for fast deployment and hosting
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -294,7 +294,7 @@ Use this space to list any resources used or that may be helpful in understandin
 [viteLogo-url]: https://vitejs.dev/
 [vercelLogo]: https://img.shields.io/badge/-Vercel-black.svg?style=for-the-badge&logo=vercel&logoColor=natural
 [vercelLogo-url]: https://vercel.com/
-[email-shield]: https://img.shields.io/badge/Email-%40-black?style=for-the-badge&logo=gmail&logoColor=natural
+[email-shield]: https://img.shields.io/badge/-Gmail-black.svg?style=for-the-badge&logo=gmail&logoColor=natural
 [email-url]: mailto:mcmontanaro01@gmail.com
-[website-shield]: https://img.shields.io/badge/Website-Visit%20Us-black?style=for-the-badge&logo=internet-explorer&logoColor=natural
+[website-shield]: https://img.shields.io/badge/-Chromium-black.svg?style=for-the-badge&logo=chromium&logoColor=natural
 [website-url]: https://blog-michael-montanaros-projects.vercel.app
