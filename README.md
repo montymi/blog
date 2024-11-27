@@ -278,5 +278,5 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [vercelLogo-url]: https://vercel.com/
 [email-shield]: https://img.shields.io/badge/-Gmail-black.svg?style=for-the-badge&logo=gmail&logoColor=natural
 [email-url]: mailto:mcmontanaro01@gmail.com
-[website-shield]: https://img.shields.io/badge/-Chromium-black.svg?style=for-the-badge&logo=chromium&logoColor=natural
+[website-shield]: https://img.shields.io/badge/-Google-black.svg?style=for-the-badge&logo=google&logoColor=natural
 [website-url]: https://blog-michael-montanaros-projects.vercel.app
