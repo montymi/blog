@@ -110,14 +110,14 @@ For interacting with the code:
 
 "My Sandbox on the Web" is divided into three main sections: Discography, Library, and Activity, each offering a unique way to explore my journey as a developer and academic.
 
-1. Discography 🎙️
+### Discography 🎙️
 The Discography takes you on an audio-driven walkthrough of my projects, styled like a musical catalog. Each entry is crafted to give you deeper insights into the story behind the work:
 
 - Singles: Bite-sized projects or experiments that showcase quick ideas or concepts.
 - Episodes: Medium-scale projects, often part of a series, reflecting a deeper dive into specific topics.
 - Albums: Comprehensive, larger-scale projects that represent significant milestones in my career.
 
-2. Library 📚
+### Library 📚
 The Library serves as a repository of my academic work and technical writing, including:
 
 - Research papers and publications, complete with summaries and external links.
@@ -125,7 +125,7 @@ The Library serves as a repository of my academic work and technical writing, in
 - Notes and reflections that capture the thinking behind my work.
 - It’s the ideal place for a more in-depth look at my technical expertise and academic contributions.
 
-3. Activity 🔍
+### Activity 🔍
 The Activity section is a live feed of what I’m currently working on, experimenting with, or learning about. Here, you’ll find:
 
 - Updates on ongoing projects and experiments.
@@ -133,7 +133,7 @@ The Activity section is a live feed of what I’m currently working on, experime
 - Personal insights and reflections about my process and challenges.
 - This section keeps things fresh and offers a behind-the-scenes look at my development as a creator and researcher.
 
-How to Use It
+### What's Next?
 - Listen: Start with the Discography for an engaging overview of my work, guided by audio storytelling.
 - Explore: Dive into the Library for a detailed understanding of my academic and technical background.
 - Follow: Check the Activity feed for the latest updates and ideas I’m exploring.
