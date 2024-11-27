@@ -1,7 +1,6 @@
 <div id="readme-top"></div>
 
 <!-- PROJECT SHIELDS -->
-[![LinkedIn][linkedin-shield]][linkedin-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -61,8 +60,7 @@ The goal is simple: to document and share my progress while providing a snapshot
 
 Let me know if you'd like any further tweaks!
 
-
-
+<br />
 
 ### Built With
 [![React][reactLogo]][reactLogo-url]
@@ -112,14 +110,14 @@ For interacting with the code:
 
 "My Sandbox on the Web" is divided into three main sections: Discography, Library, and Activity, each offering a unique way to explore my journey as a developer and academic.
 
-1. Discography 🎙️
+### Discography 🎙️
 The Discography takes you on an audio-driven walkthrough of my projects, styled like a musical catalog. Each entry is crafted to give you deeper insights into the story behind the work:
 
 - Singles: Bite-sized projects or experiments that showcase quick ideas or concepts.
 - Episodes: Medium-scale projects, often part of a series, reflecting a deeper dive into specific topics.
 - Albums: Comprehensive, larger-scale projects that represent significant milestones in my career.
 
-2. Library 📚
+### Library 📚
 The Library serves as a repository of my academic work and technical writing, including:
 
 - Research papers and publications, complete with summaries and external links.
@@ -127,7 +125,7 @@ The Library serves as a repository of my academic work and technical writing, in
 - Notes and reflections that capture the thinking behind my work.
 - It’s the ideal place for a more in-depth look at my technical expertise and academic contributions.
 
-3. Activity 🔍
+### Activity 🔍
 The Activity section is a live feed of what I’m currently working on, experimenting with, or learning about. Here, you’ll find:
 
 - Updates on ongoing projects and experiments.
@@ -135,7 +133,7 @@ The Activity section is a live feed of what I’m currently working on, experime
 - Personal insights and reflections about my process and challenges.
 - This section keeps things fresh and offers a behind-the-scenes look at my development as a creator and researcher.
 
-How to Use It
+### What's Next?
 - Listen: Start with the Discography for an engaging overview of my work, guided by audio storytelling.
 - Explore: Dive into the Library for a detailed understanding of my academic and technical background.
 - Follow: Check the Activity feed for the latest updates and ideas I’m exploring.
@@ -206,9 +204,7 @@ src
 - [ ] Add a FastAPI for sending new blog posts
 - [ ] Continue adding projects to the Discography
 - [ ] Continue various paper and presentation transfer to the Library
-- [ ] Allow scrolling in the Welcome Page
-  - [ ] Set overflow: auto 
-  - [ ] Remove scrollbar detail (using something like: `.container-name::wekbit-scrollbar{ display: none }`)
+- [X] Allow scrolling in the Welcome Page
 - [ ] Design and upload the Activity Page
 
 See the [open issues](https://github.com/montymi/blog/issues) for a full list of issues and proposed features.
@@ -216,11 +212,8 @@ See the [open issues](https://github.com/montymi/blog/issues) for a full list of
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- CONTRIBUTING -->
 ## Contributing
-
-Contributions are, in my opinion, the greatest part of OSS and are what will be the key to continuing the growth of the community. One of the main goals of this README is to facilitate contributions of potential developers. 
 
 1. [Fork the Project](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -231,43 +224,26 @@ Contributions are, in my opinion, the greatest part of OSS and are what will be 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- LICENSE -->
-## License
-
-*Documentation must include a license section in which the type of license and a link or reference to the full license in the repository is given.*
+## License 
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- CONTACT -->
 ## Contact
 
-Michael Montanaro - [LinkedIn](https://www.linkedin.com/in/michael-montanaro/) - [email](mcmontanaro01@gmail.com) - [website](blog-michael-montanaros-projects.vercel.app)
-
-Project Link: [blog-michael-montanaros-projects.vercel.app](https://blog-michael-montanaros-projects.vercel.app)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+[![LinkedIn][linkedin-shield]][linkedin-url] [![Email][email-shield]][email-url] [![Portfolio][website-shield]][website-url]
 
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Use this space to list any resources used or that may be helpful in understanding the project
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
+* [react-pwa](https://github.com/suren-atoyan/react-pwa) by @suren-atoyan for the amazing PWA template
+* [ClearDocs](https://github.com/montymi/ClearDocs) for the high quality README template
+* [Vercel][vercelLogo-url] for fast deployment and hosting
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -290,7 +266,7 @@ Use this space to list any resources used or that may be helpful in understandin
 [pwaLogo-url]: https://web.dev/progressive-web-apps/
 [reactLogo]: https://img.shields.io/badge/-React-black.svg?style=for-the-badge&logo=react&logoColor=natural
 [reactLogo-url]: https://reactjs.org/
-[recoilLogo]: https://img.shields.io/badge/-Recoil-black.svg?style=for-the-badge&logo=react&logoColor=natural
+[recoilLogo]: https://img.shields.io/badge/-Recoil-black.svg?style=for-the-badge&logo=recoil&logoColor=natural
 [recoilLogo-url]: https://recoiljs.org/
 [rrLogo]: https://img.shields.io/badge/-React%20Router-black.svg?style=for-the-badge&logo=react-router&logoColor=natural
 [rrLogo-url]: https://reactrouter.com/
@@ -300,6 +276,7 @@ Use this space to list any resources used or that may be helpful in understandin
 [viteLogo-url]: https://vitejs.dev/
 [vercelLogo]: https://img.shields.io/badge/-Vercel-black.svg?style=for-the-badge&logo=vercel&logoColor=natural
 [vercelLogo-url]: https://vercel.com/
-
-
-[MIT](./LICENSE)
+[email-shield]: https://img.shields.io/badge/-Email-black.svg?style=for-the-badge&logo=gmail&logoColor=natural
+[email-url]: mailto:mcmontanaro01@gmail.com
+[website-shield]: https://img.shields.io/badge/-Portfolio-black.svg?style=for-the-badge&logo=react&logoColor=natural
+[website-url]: https://blog-michael-montanaros-projects.vercel.app

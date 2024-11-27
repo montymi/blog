@@ -83,7 +83,7 @@ function Header() {
                 <GitHub />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Listen with me">
+            <Tooltip title="Listen with me" arrow>
               <IconButton
                 color="secondary"
                 component="a"
@@ -95,7 +95,7 @@ function Header() {
                 <MusicNote />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Write to me">
+            <Tooltip title="Write to me" arrow>
               <IconButton
                 color="secondary"
                 component="a"
@@ -105,7 +105,7 @@ function Header() {
                 <Mail />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Talk with me">
+            <Tooltip title="Talk with me" arrow>
               <IconButton
                 color="secondary"
                 component="a"
