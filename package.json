@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Personal portfolio, blog, and virtual sandbox of Michael Montanaro",
-  "homepage": "https://montymi.github.io/blog/",
+  "homepage": "https://montymi.github.io/blog/blog/",
   "repository": {
     "type": "git",
     "url": "https://github.com/montymi/blog.git"
