@@ -3,6 +3,9 @@
   "short_name": "blog",
   "description": "Personal portfolio, blog, and virtual sandbox of Michael Montanaro",
   "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "./index.html",
   "icons": [
     {
       "src": "pwa-192x192.png",
@@ -22,3 +25,4 @@
     }
   ]
 }
+
