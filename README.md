@@ -276,7 +276,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [viteLogo-url]: https://vitejs.dev/
 [vercelLogo]: https://img.shields.io/badge/-Vercel-black.svg?style=for-the-badge&logo=vercel&logoColor=natural
 [vercelLogo-url]: https://vercel.com/
-[email-shield]: https://img.shields.io/badge/-Gmail-black.svg?style=for-the-badge&logo=gmail&logoColor=natural
+[email-shield]: https://img.shields.io/badge/-Email-black.svg?style=for-the-badge&logo=gmail&logoColor=natural
 [email-url]: mailto:mcmontanaro01@gmail.com
-[website-shield]: https://img.shields.io/badge/-Google-black.svg?style=for-the-badge&logo=google&logoColor=natural
+[website-shield]: https://img.shields.io/badge/-Portfolio-black.svg?style=for-the-badge&logo=react&logoColor=natural
 [website-url]: https://blog-michael-montanaros-projects.vercel.app
