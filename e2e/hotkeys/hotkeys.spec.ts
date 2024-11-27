@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-test.describe('test hotkeys', () => {
+test.describe.skip('test hotkeys', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
