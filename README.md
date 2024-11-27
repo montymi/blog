@@ -266,7 +266,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [pwaLogo-url]: https://web.dev/progressive-web-apps/
 [reactLogo]: https://img.shields.io/badge/-React-black.svg?style=for-the-badge&logo=react&logoColor=natural
 [reactLogo-url]: https://reactjs.org/
-[recoilLogo]: https://img.shields.io/badge/-Recoil-black.svg?style=for-the-badge&logo=react&logoColor=natural
+[recoilLogo]: https://img.shields.io/badge/-Recoil-black.svg?style=for-the-badge&logo=recoil&logoColor=natural
 [recoilLogo-url]: https://recoiljs.org/
 [rrLogo]: https://img.shields.io/badge/-React%20Router-black.svg?style=for-the-badge&logo=react-router&logoColor=natural
 [rrLogo-url]: https://reactrouter.com/
