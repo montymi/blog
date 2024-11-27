@@ -49,10 +49,12 @@ function Welcome() {
     <>
       <Meta title="Welcome" />
       <div
+        className="welcome"
         style={{
           display: 'flex',
           flexDirection,
-          height: '100%',
+          overflowY: 'auto',
+          height: '100%', // Ensure the full height of the screen is used
         }}
       >
         {/* Left Section */}
@@ -61,10 +63,10 @@ function Welcome() {
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'top',
             alignItems: 'center',
             padding: '1em',
             backgroundColor: theme.palette?.background?.default,
+            justifyContent: 'flex-start', // Align to the top
           }}
         >
           {/* Header */}
@@ -91,7 +93,18 @@ function Welcome() {
 
           {/* Spotlight Section */}
           <Tooltip title="Click Vinyl for Discography">
-            <div style={{ margin: '1em' }}>
+            <div
+              style={{
+                margin: '1em',
+                backgroundColor: theme.palette?.background?.paper,
+                width: '30%',
+                borderRadius: '8px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'grab',
+              }}
+            >
               <Spotlight />
             </div>
           </Tooltip>
@@ -125,8 +138,8 @@ function Welcome() {
             flex: 1,
             display: 'flex',
             flexDirection: 'column',
+            justifyContent: 'flex-start', // Align to the top
             backgroundColor: theme.palette.background.default,
-            overflowY: 'auto',
             padding: '2em',
           }}
         >
@@ -141,7 +154,7 @@ function Welcome() {
                     padding: '1em',
                     marginBottom: '1em',
                     borderRadius: '8px',
-                    backgroundColor: 'background.paper',
+                    backgroundColor: theme.palette.background.paper,
                     transition: 'all 0.3s ease',
                     cursor: 'pointer',
                   }}
@@ -154,10 +167,10 @@ function Welcome() {
                   </Typography>
                   <Typography variant="body2">{post.content}</Typography>
                   <style>{`
-		    .hover-box:hover {
-		      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
-		    }
-		  `}</style>
+                    .hover-box:hover {
+                      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
+                    }
+                  `}</style>
                 </div>
               ))}
             </div>
