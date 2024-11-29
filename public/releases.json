@@ -1,15 +1,45 @@
 {
+    "albums": [
+	{
+	    "title": "blog",
+	    "folder": "album-1"
+	},
+	{
+	    "title": "sesh",
+	    "folder": "album-2"
+	},
+	{
+	    "title": "Capstone",
+	    "folder": "album-3"
+	}
+    ],
     "episodes": [
         {
             "title": "Sound of the Future",
             "folder": "episode-1"
-        }
+        },
+	{
+	    "title": "Lazygrocer",
+	    "folder": "episode-2"
+	}
     ],
     "singles": [
         {
-            "title": "SchemaAPITesting",
+            "title": "Schema API Validation",
             "folder": "single-1"
-        }
+        },
+	{
+	    "title": "Serialpy",
+	    "folder": "single-2"
+	},
+	{
+	    "title": "Coding from Zero",
+	    "folder": "single-3"
+	},
+	{
+	    "title": "ClearDocs",
+	    "folder": "single-4"
+	}
     ] 
   }
   

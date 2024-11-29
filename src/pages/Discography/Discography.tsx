@@ -9,7 +9,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
-import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Meta from '@/components/Meta';
 import { FullSizeCenteredFlexBox } from '@/components/styled';
@@ -34,7 +33,6 @@ type Releases = {
   [key: string]: Release[];
 };
 
-// ReleasePage Component to show release content
 const ReleasePage: React.FC<Release> = ({
   title,
   description,
@@ -52,22 +50,17 @@ const ReleasePage: React.FC<Release> = ({
     (fileIndex: number) => {
       if (audio.src !== files[fileIndex].link) {
         audio.src = files[fileIndex].link;
-        console.log(audio.src);
-        console.log(files[fileIndex].link);
-        audio.load(); // Reload audio source if it's different
+        audio.load();
       }
-
       audio
         .play()
         .then(() => {
           setIsPlaying(true);
           setCurrentFileIndex(fileIndex);
         })
-        .catch((error) => {
-          console.error('Error playing audio', error);
-        });
+        .catch((error) => console.error('Error playing audio', error));
     },
-    [audio, files, setCurrentFileIndex],
+    [audio, files],
   );
 
   const stopAudio = () => {
@@ -81,126 +74,113 @@ const ReleasePage: React.FC<Release> = ({
     playAudio(currentFileIndex + 1);
   }, [playAudio, files.length, currentFileIndex]);
 
-  //const handlePrevTrack = () => {
-  //  if (currentFileIndex === null || currentFileIndex === 0) return;
-  //  playAudio(currentFileIndex - 1);
-  //};
-
   useEffect(() => {
     audio.addEventListener('ended', handleNextTrack);
-    return () => {
-      audio.removeEventListener('ended', handleNextTrack);
-    };
-  }, [handleNextTrack, audio, currentFileIndex]);
+    return () => audio.removeEventListener('ended', handleNextTrack);
+  }, [handleNextTrack, audio]);
 
   return (
-    <div style={{ padding: '1em', maxWidth: '800px', margin: '0 auto' }}>
+    <div style={{ padding: '2em', maxWidth: '900px', margin: '0 auto', color: 'white' }}>
+      {/* Header Section with Cover */}
       <header
         style={{
-          display: 'flex',
-          flexDirection: 'row',
           textAlign: 'center',
-          marginBottom: '1.5em',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          marginBottom: '2em',
+          padding: '2em',
+          background: 'linear-gradient(to bottom, #333, #111)',
+          borderRadius: '15px',
         }}
       >
-        <h1>{title}</h1>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5em' }}>{title}</h1>
+        <p style={{ fontSize: '1.2rem', color: '#aaa' }}>{description}</p>
+        <div
+          style={{
+            marginTop: '1em',
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
+        >
           <div>
-            <Tooltip title="Visit repo" placement="top" arrow>
+            <Tooltip title="GitHub Repository" placement="top" arrow>
               <IconButton
-                id="github"
-                color="secondary"
                 href={githubLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                style={{ color: 'white', margin: '0 0.5em' }}
               >
-                <GitHubIcon />
+                <GitHubIcon fontSize="large" />
               </IconButton>
             </Tooltip>
-            <Tooltip title="View files" placement="top" arrow>
+            <Tooltip title="View README" placement="top" arrow>
               <IconButton
-                id="README"
-                color="secondary"
                 href={readmeLink}
                 target="_blank"
                 rel="noopener noreferrer"
+                style={{ color: 'white', margin: '0 0.5em' }}
               >
-                <DescriptionIcon />
+                <DescriptionIcon fontSize="large" />
               </IconButton>
             </Tooltip>
           </div>
-          <Tooltip title="Listen to walkthrough" placement="top" arrow>
-            <IconButton
-              color="secondary"
-              sx={{
-                border: 'none',
-                height: '50px',
-                width: '50px',
-                borderRadius: '50%',
-                display: 'flex',
-                backgroundColor: 'background.default',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-              onClick={() => {
-                if (currentFileIndex === null) playAudio(0);
-                else stopAudio();
-              }}
-            >
-              {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
-            </IconButton>
-          </Tooltip>
-        </div>
-      </header>
-      <section style={{ marginBottom: '1.5em' }}>
-        <p>{description}</p>
-      </section>
-      <section style={{ marginBottom: '1.5em' }}>
-        {files.map((file, index) => (
-          <Button
-            className="release"
-            variant="outlined"
-            color="secondary"
-            key={file.name}
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginBottom: '0.5em',
-              mb: '15px',
-              width: '100%',
-              position: 'relative',
-              '&:hover .play-icon': {
-                opacity: 1, // Show the icon on hover
-              },
-            }}
-            onClick={() => playAudio(index)}
-          >
-            <Typography>{file.name}</Typography>
-            <PlayArrowIcon
-              className="play-icon"
-              sx={{
-                opacity: 0, // Initially hidden
-                transition: 'opacity 0.3s', // Smooth transition for opacity
-                position: 'absolute', // Position it over the button
-                right: '10px', // Adjust right position if needed
-              }}
-            />
-          </Button>
-        ))}
-      </section>
-      <section style={{ marginBottom: '1.5em' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Typography>Release Date: {releaseDate}</Typography>
-            <Typography>Last Update: {lastUpdate}</Typography>
+          {/* Play Button */}
+          <div>
+            <Tooltip title="Play Audio Walkthrough" placement="top" arrow>
+              <IconButton
+                onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
+                style={{
+                  height: '70px',
+                  width: '70px',
+                  backgroundColor: '#1db954',
+                  color: 'white',
+                  borderRadius: '50%',
+                  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+                }}
+              >
+                {isPlaying ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
+      </header>
+
+      {/* File Cards */}
+      <section>
+        {files.map((file, index) => (
+          <div
+            key={file.name}
+            onClick={() => playAudio(index)}
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '1em',
+              marginBottom: '1em',
+              backgroundColor: '#222',
+              borderRadius: '10px',
+              cursor: 'pointer',
+              transition: 'background 0.3s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#333')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#222')}
+          >
+            <Typography style={{ color: 'white', fontSize: '1rem', fontWeight: 500 }}>
+              {file.name}
+            </Typography>
+            <PlayArrowIcon style={{ color: 'white' }} />
+          </div>
+        ))}
       </section>
+
+      {/* Footer */}
+      <footer style={{ textAlign: 'center', marginTop: '2em', fontSize: '0.9rem', color: '#aaa' }}>
+        <p>Release Date: {releaseDate}</p>
+        <p>Last Update: {lastUpdate}</p>
+      </footer>
     </div>
   );
 };
+
 function Discography(): JSX.Element {
   const theme = useTheme();
   const [releases, setReleases] = useState<Releases>({});
