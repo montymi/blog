@@ -3,7 +3,6 @@ import { Typography, List, ListItemText, IconButton, ListItemButton, Divider } f
 import { Close } from '@mui/icons-material';
 
 import Meta from '@/components/Meta';
-import { FullSizeCenteredFlexBox } from '@/components/styled';
 import PDFViewer from './PDFViewer'; // Import your PDFViewer component
 
 interface Paper {
@@ -40,12 +39,25 @@ const Library: React.FC = () => {
   return (
     <>
       <Meta title="Library" />
-      <FullSizeCenteredFlexBox>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          overflowY: 'auto',
+          width: '100%',
+          alignItems: 'center',
+          height: '90%',
+          padding: '1em',
+        }}
+      >
         <div>
           <Typography variant="h3" gutterBottom>
             Library
           </Typography>
-          <Typography>Collection of my papers and presentations.</Typography>
+          <Typography fontStyle="italic" mb="1em">
+            Collection of my papers and presentations.
+          </Typography>
           <List>
             {papers.map((paper, index) => (
               <>
@@ -57,7 +69,7 @@ const Library: React.FC = () => {
             ))}
           </List>
         </div>
-      </FullSizeCenteredFlexBox>
+      </div>
 
       {selectedPdf && (
         <div

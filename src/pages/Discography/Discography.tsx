@@ -11,7 +11,6 @@ import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
 import Meta from '@/components/Meta';
-import { FullSizeCenteredFlexBox } from '@/components/styled';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -261,12 +260,23 @@ function Discography(): JSX.Element {
   return (
     <>
       <Meta title="Discography" />
-      <FullSizeCenteredFlexBox>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          overflowY: 'auto',
+          width: '100%',
+          alignItems: 'center',
+          height: '90%',
+          padding: '1em',
+        }}
+      >
         <div style={{ width: '100%', maxWidth: 800 }}>
           <Typography variant="h3" gutterBottom>
             Discography
           </Typography>
-          <Typography>Collection of my released code.</Typography>
+          <Typography fontStyle="italic">Collection of my released code.</Typography>
           <Tooltip
             title="Releases are organized by size, with the order from smallest to largest being Single, Episode, Album"
             placement="top"
@@ -295,7 +305,7 @@ function Discography(): JSX.Element {
           </Typography>
           {selectedTab === 'all' ? renderAllReleases() : renderSelectedReleases()}
         </div>
-      </FullSizeCenteredFlexBox>
+      </div>
 
       {/* Modal for ReleasePage */}
       <Modal open={modalOpen} onClose={handleCloseModal}>
