@@ -1,0 +1,76 @@
+{
+    "title": "blog",
+    "description": "'My Sandbox on the Web' is a personal portfolio that brings together my work as a software developer and academic. It serves as a central hub for showcasing my projects, research, and other contributions throughout my career.",
+    "releaseDate": "2024-11-27",
+    "lastUpdate": "2024-11-27",
+    "files": [
+      {
+        "name": "components",
+        "length": "02:30",
+        "link": "/releases/album-1/components.mp3"
+      },
+      {
+        "name": "config",
+        "length": "03:00",
+        "link": "/releases/album-1/config.mp3"
+      },
+      {
+        "name": "error-handling",
+        "length": "01:15",
+        "link": "/releases/album-1/error-handling.mp3"
+      },
+      {
+        "name": "hooks -- interlude",
+        "length": "00:45",
+        "link": "/releases/album-1/hooks.mp3"
+      },
+      {
+        "name": "pages",
+        "length": "00:45",
+        "link": "/releases/album-1/pages.mp3"
+      },
+      {
+	"name": "routes",
+	"length": "5:30",
+	"link": "/releases/album-1/routes.mp3"
+      },
+      {
+	"name": "sections",
+	"length": "5:30",
+	"link": "/releases/album-1/sections.mp3"
+      },
+      {
+	"name": "store",
+	"length": "5:30",
+	"link": "/releases/album-1/store.mp3"
+      },
+      {
+	"name": "theme",
+	"length": "5:30",
+	"link": "/releases/album-1/theme.mp3"
+      },
+      {
+	"name": "utils",
+	"length": "5:30",
+	"link": "/releases/album-1/utils.mp3"
+      },
+      {
+	"name": "App.tsx",
+	"length": "5:30",
+	"link": "/releases/album-1/App.mp3"
+      },
+      {
+	"name": "Root.tsx",
+	"length": "5:30",
+	"link": "/releases/album-1/Root.mp3"
+      },
+      {
+	"name": "main.tsx",
+	"length": "5:30",
+	"link": "/releases/album-1/main.mp3"
+      }
+    ],
+    "githubLink": "https://www.github.com/montymi/blog",
+    "readmeLink": "https://github.com/montymi/blog/blob/main/README.md"
+  }
+  
