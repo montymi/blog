@@ -4,12 +4,14 @@ import Typography from '@mui/material/Typography';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import List from '@mui/material/List';
+import Grid from '@mui/material/Grid';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Modal from '@mui/material/Modal';
 import CircularProgress from '@mui/material/CircularProgress';
 import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 import Meta from '@/components/Meta';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -19,13 +21,17 @@ import { Tooltip, IconButton } from '@mui/material';
 
 type Release = {
   title: string;
+  folder: string;
+  status: string; // Example: "Draft", "Published", "Archived"
+  author: string; // The creator's name, default to '@montymi'
+  coauthors: string[]; // Array of coauthors
+  version: string; // Example: "v1.0.0"
   description: string;
   releaseDate: string;
   lastUpdate: string;
   files: { name: string; length: string; link: string }[];
   githubLink: string;
   readmeLink: string;
-  folder: string;
 };
 
 type Releases = {
@@ -41,6 +47,7 @@ const ReleasePage: React.FC<Release> = ({
   githubLink,
   readmeLink,
 }) => {
+  const theme = useTheme();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentFileIndex, setCurrentFileIndex] = useState<number | null>(null);
   const [audio] = useState(new Audio());
@@ -79,19 +86,29 @@ const ReleasePage: React.FC<Release> = ({
   }, [handleNextTrack, audio]);
 
   return (
-    <div style={{ padding: '2em', maxWidth: '900px', margin: '0 auto', color: 'white' }}>
+    <div
+      style={{
+        padding: '2em',
+        maxWidth: '900px',
+        margin: '0 auto',
+        color: theme.palette.text.primary,
+      }}
+    >
       {/* Header Section with Cover */}
       <header
         style={{
           textAlign: 'center',
           marginBottom: '2em',
           padding: '2em',
-          background: 'linear-gradient(to bottom, #333, #111)',
+          background: theme.palette.background.default,
           borderRadius: '15px',
+          boxShadow: theme.shadows[4],
         }}
       >
         <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5em' }}>{title}</h1>
-        <p style={{ fontSize: '1.2rem', color: '#aaa' }}>{description}</p>
+        <p style={{ fontSize: '1.2rem', color: theme.palette.text.secondary, textAlign: 'left' }}>
+          {description}
+        </p>
         <div
           style={{
             marginTop: '1em',
@@ -106,7 +123,7 @@ const ReleasePage: React.FC<Release> = ({
                 href={githubLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: 'white', margin: '0 0.5em' }}
+                style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
               >
                 <GitHubIcon fontSize="large" />
               </IconButton>
@@ -116,7 +133,7 @@ const ReleasePage: React.FC<Release> = ({
                 href={readmeLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: 'white', margin: '0 0.5em' }}
+                style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
               >
                 <DescriptionIcon fontSize="large" />
               </IconButton>
@@ -127,13 +144,13 @@ const ReleasePage: React.FC<Release> = ({
             <Tooltip title="Play Audio Walkthrough" placement="top" arrow>
               <IconButton
                 onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
+                color="secondary"
                 style={{
                   height: '70px',
                   width: '70px',
-                  backgroundColor: '#1db954',
-                  color: 'white',
+                  backgroundColor: 'secondary',
                   borderRadius: '50%',
-                  boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+                  boxShadow: theme.shadows[4],
                 }}
               >
                 {isPlaying ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}
@@ -146,7 +163,8 @@ const ReleasePage: React.FC<Release> = ({
       {/* File Cards */}
       <section>
         {files.map((file, index) => (
-          <div
+          <Button
+            variant="contained"
             key={file.name}
             onClick={() => playAudio(index)}
             style={{
@@ -155,24 +173,44 @@ const ReleasePage: React.FC<Release> = ({
               alignItems: 'center',
               padding: '1em',
               marginBottom: '1em',
-              backgroundColor: '#222',
-              borderRadius: '10px',
+              backgroundColor: theme.palette.background.default,
+              borderRadius: theme.shape.borderRadius,
               cursor: 'pointer',
-              transition: 'background 0.3s',
+              transition: 'all 0.3s ease',
+              width: '100%',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#333')}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#222')}
+            onMouseEnter={(e) =>
+              (e.currentTarget.querySelector('.play-icon')!.style.visibility = 'visible')
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.querySelector('.play-icon')!.style.visibility = 'hidden')
+            }
           >
-            <Typography style={{ color: 'white', fontSize: '1rem', fontWeight: 500 }}>
+            <Typography
+              style={{ color: theme.palette.text.primary, fontSize: '1rem', fontWeight: 500 }}
+            >
               {file.name}
             </Typography>
-            <PlayArrowIcon style={{ color: 'white' }} />
-          </div>
+            <PlayArrowIcon
+              className="play-icon"
+              style={{
+                color: theme.palette.text.secondary,
+                visibility: 'hidden', // Initially hidden
+              }}
+            />
+          </Button>
         ))}
       </section>
 
       {/* Footer */}
-      <footer style={{ textAlign: 'center', marginTop: '2em', fontSize: '0.9rem', color: '#aaa' }}>
+      <footer
+        style={{
+          textAlign: 'center',
+          marginTop: '2em',
+          fontSize: '0.9rem',
+          color: theme.palette.text.secondary,
+        }}
+      >
         <p>Release Date: {releaseDate}</p>
         <p>Last Update: {lastUpdate}</p>
       </footer>
@@ -221,22 +259,50 @@ function Discography(): JSX.Element {
     setSelectedRelease(null);
   };
 
+  const renderReleases = (
+    sectionReleases: Release[],
+    handleOpenModal: (release: Release) => void,
+  ) => {
+    return sectionReleases.map((release, index) => (
+      <React.Fragment key={release.title}>
+        <ListItemButton onClick={() => handleOpenModal(release)}>
+          <Grid container spacing={2} alignItems="center">
+            {/* Index on the left */}
+            <Grid item xs={1}>
+              <Typography>{index + 1}</Typography>
+            </Grid>
+
+            {/* Title in the middle */}
+            <Grid item xs={5}>
+              <ListItemText primary={release.title} />
+            </Grid>
+
+            {/* Folder name */}
+            <Grid item xs={4}>
+              <Typography variant="body2" color="textSecondary">
+                {release.version}
+              </Typography>
+            </Grid>
+
+            <Grid item xs={2}>
+              <Typography variant="body2" color="secondary" fontWeight="100" textAlign="right">
+                {release.status}
+              </Typography>
+            </Grid>
+          </Grid>
+        </ListItemButton>
+        <Divider />
+      </React.Fragment>
+    ));
+  };
+
   const renderAllReleases = () => {
     return Object.entries(releases).map(([section, sectionReleases]) => (
       <React.Fragment key={section}>
         <Typography variant="h6" sx={{ mt: 3 }}>
           {section.charAt(0).toUpperCase() + section.slice(1)}
         </Typography>
-        <List>
-          {sectionReleases.map((release) => (
-            <React.Fragment key={release.title}>
-              <ListItemButton onClick={() => handleOpenModal(release)}>
-                <ListItemText primary={release.title} />
-              </ListItemButton>
-              <Divider />
-            </React.Fragment>
-          ))}
-        </List>
+        <List>{renderReleases(sectionReleases, handleOpenModal)}</List>
       </React.Fragment>
     ));
   };
@@ -273,10 +339,14 @@ function Discography(): JSX.Element {
         }}
       >
         <div style={{ width: '100%', maxWidth: 800 }}>
-          <Typography variant="h3" gutterBottom>
-            Discography
-          </Typography>
-          <Typography fontStyle="italic">Collection of my released code.</Typography>
+          <div style={{ textAlign: 'center' }}>
+            <Typography variant="h3" gutterBottom>
+              Discography
+            </Typography>
+            <Typography fontStyle="italic" mb="1em" color="text.secondary">
+              A collection of my released projects and work in code.
+            </Typography>
+          </div>
           <Tooltip
             title="Releases are organized by size, with the order from smallest to largest being Single, Episode, Album"
             placement="top"
@@ -324,6 +394,7 @@ function Discography(): JSX.Element {
             flexDirection: 'column',
             overflow: 'auto',
             scrollbarWidth: undefined /* For Firefox */,
+            borderRadius: theme.shape.borderRadius,
           }}
         >
           <style>

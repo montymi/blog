@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { Group, Object3DEventMap } from 'three';
@@ -73,28 +73,61 @@ const VinylScene = () => {
         <ambientLight intensity={0.5} />
         <directionalLight intensity={1} position={[5, 5, 5]} />
 
-        {model && textures.aoTexture && textures.normalTexture && textures.roughnessTexture && (
-          <primitive
-            object={model}
+        {model && (
+          <SpinningVinyl
+            model={model}
+            textures={textures}
             scale={scale}
-            position={[0, 0, 0]}
-            onPointerOver={handlePointerOver}
-            onPointerOut={handlePointerOut}
-            onClick={() => (window.location.href = '/discography')}
-          >
-            <meshStandardMaterial
-              attach="material"
-              map={textures.aoTexture}
-              normalMap={textures.normalTexture}
-              roughnessMap={textures.roughnessTexture}
-              color={hovered ? new THREE.Color(0xffff00) : new THREE.Color(0xffffff)}
-            />
-          </primitive>
+            hovered={hovered}
+            handlePointerOver={handlePointerOver}
+            handlePointerOut={handlePointerOut}
+          />
         )}
 
         <OrbitControls />
       </Canvas>
     </div>
+  );
+};
+
+// New component for spinning logic
+const SpinningVinyl = ({
+  model,
+  textures,
+  scale,
+  hovered,
+  handlePointerOver,
+  handlePointerOut,
+}: {
+  model: Group<Object3DEventMap>;
+  textures: TextureProps;
+  scale: number;
+  hovered: boolean;
+  handlePointerOver: () => void;
+  handlePointerOut: () => void;
+}) => {
+  // Spin logic using useFrame
+  useFrame(() => {
+    model.rotation.z += 0.01; // Adjust this for spin speed
+  });
+
+  return (
+    <primitive
+      object={model}
+      scale={scale}
+      position={[0, 0, 0]}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+      onClick={() => (window.location.href = '/discography')}
+    >
+      <meshStandardMaterial
+        attach="material"
+        map={textures.aoTexture}
+        normalMap={textures.normalTexture}
+        roughnessMap={textures.roughnessTexture}
+        color={hovered ? new THREE.Color(0xffff00) : new THREE.Color(0xffffff)}
+      />
+    </primitive>
   );
 };
 
