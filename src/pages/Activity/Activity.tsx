@@ -20,8 +20,7 @@ const Tile = styled('div')<{ flipped: boolean }>(({ flipped, theme }) => ({
   zIndex: '1',
   transition: 'all 0.3s ease',
   '&:hover': {
-    scale: '1.5',
-    border: '1px solid rgba(0, 0, 0, 0.2)',
+    scale: '1.25',
     zIndex: '2',
   },
   '& > div': {
@@ -90,23 +89,40 @@ const Activity: React.FC = () => {
   return (
     <>
       <Meta title="Activity" />
-      <MosaicContainer>
-        {activities.map((activity, index) => (
-          <Tile
-            key={index}
-            flipped={flippedStates[index]}
-            onClick={() => handleTileClick(index)}
-            theme={theme}
-          >
-            <div className="front">
-              <Typography variant="h6">{activity.title}</Typography>
-            </div>
-            <div className="back">
-              <Typography variant="body2">{activity.description}</Typography>
-            </div>
-          </Tile>
-        ))}
-      </MosaicContainer>
+      <div
+        style={{
+          justifyContent: 'flex-start',
+          overflowY: 'auto',
+          width: '100%',
+          textAlign: 'center',
+          height: '90%',
+          padding: '1em',
+        }}
+      >
+        <Typography variant="h3" gutterBottom>
+          Activity
+        </Typography>
+        <Typography fontStyle="italic" color="text.secondary">
+          A cluster of some activities that take up my time.
+        </Typography>
+        <MosaicContainer>
+          {activities.map((activity, index) => (
+            <Tile
+              key={index}
+              flipped={flippedStates[index]}
+              onClick={() => handleTileClick(index)}
+              theme={theme}
+            >
+              <div className="front">
+                <Typography variant="h6">{activity.title}</Typography>
+              </div>
+              <div className="back">
+                <Typography variant="body2">{activity.description}</Typography>
+              </div>
+            </Tile>
+          ))}
+        </MosaicContainer>
+      </div>
     </>
   );
 };
