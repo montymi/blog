@@ -55,6 +55,7 @@ const ReleasePage: React.FC<Release> = ({
   files,
   githubLink,
   readmeLink,
+  status,
 }) => {
   const theme = useTheme();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -161,7 +162,7 @@ const ReleasePage: React.FC<Release> = ({
               >
                 @montymi
               </a>{' '}
-              • {new Date(releaseDate).getFullYear()} • {files.length} segments, {totalTime(files)}
+              • {new Date(lastUpdate).getFullYear()} • {files.length} segments, {totalTime(files)}
             </Typography>
           </div>
         </div>
@@ -174,127 +175,133 @@ const ReleasePage: React.FC<Release> = ({
             width: '100%',
           }}
         >
-          {/* Play Button */}
-          <div>
-            <Tooltip title="Play Audio Walkthrough" placement="top" arrow>
-              <IconButton
-                onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
-                color="secondary"
-                style={{
-                  height: '70px',
-                  width: '70px',
-                  backgroundColor: 'secondary',
-                  borderRadius: '50%',
-                  boxShadow: theme.shadows[4],
-                }}
-              >
-                {isPlaying ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}
-              </IconButton>
-            </Tooltip>
-          </div>
-          {/* Project Links */}
-          <div>
-            <Tooltip title="GitHub Repository" placement="top" arrow>
-              <IconButton
-                href={githubLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
-              >
-                <GitHubIcon fontSize="large" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="View README" placement="top" arrow>
-              <IconButton
-                href={readmeLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
-              >
-                <DescriptionIcon fontSize="large" />
-              </IconButton>
-            </Tooltip>
-          </div>
+          {/* Conditionally render Play button and links */}
+          {status === 'Published' && (
+            <div>
+              <Tooltip title="Play Audio Walkthrough" placement="top" arrow>
+                <IconButton
+                  onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
+                  color="secondary"
+                  style={{
+                    height: '70px',
+                    width: '70px',
+                    backgroundColor: 'secondary',
+                    borderRadius: '50%',
+                    boxShadow: theme.shadows[4],
+                  }}
+                >
+                  {isPlaying ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}
+                </IconButton>
+              </Tooltip>
+            </div>
+          )}
+
+          {/* Conditionally render project links */}
+          {status === 'Published' && (
+            <div>
+              <Tooltip title="GitHub Repository" placement="top" arrow>
+                <IconButton
+                  href={githubLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
+                >
+                  <GitHubIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="View README" placement="top" arrow>
+                <IconButton
+                  href={readmeLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
+                >
+                  <DescriptionIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
+            </div>
+          )}
         </div>
       </header>
 
-      <TableContainer
-        sx={{
-          borderRadius: '15px',
-        }}
-      >
-        <Table
+      {status === 'Published' && (
+        <TableContainer
           sx={{
-            width: '100%',
+            borderRadius: '15px',
           }}
         >
-          <TableHead>
-            <TableRow
-              sx={{
-                opacity: 0.2,
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  opacity: 0.9,
-                },
-              }}
-            >
-              <TableCell>#</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Length</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {files.map((file, index) => (
+          <Table
+            sx={{
+              width: '100%',
+            }}
+          >
+            <TableHead>
               <TableRow
-                key={index}
-                onClick={() => playAudio(index)}
                 sx={{
-                  textTransform: 'none',
-                  justifyContent: 'spaceBetween',
+                  opacity: 0.2,
                   cursor: 'pointer',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
-                    bgcolor: 'background.default',
-                  },
-                  '&:hover .play-row': {
-                    opacity: 1,
+                    opacity: 0.9,
                   },
                 }}
               >
-                <TableCell className="index-row" sx={{ color: theme.palette.text.secondary }}>
-                  {index + 1}
-                </TableCell>
-                <TableCell>
-                  <Typography>{file.name}</Typography>
-                </TableCell>
-                <TableCell color="textSecondary" sx={{ color: theme.palette.text.secondary }}>
-                  {file.length}
-                </TableCell>
-                <TableCell
-                  className="play-row"
-                  color="textSecondary"
+                <TableCell>#</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Length</TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {files.map((file, index) => (
+                <TableRow
+                  key={index}
+                  onClick={() => playAudio(index)}
                   sx={{
-                    opacity: 0,
-                    transition: 'all 0.3s ease',
+                    textTransform: 'none',
+                    justifyContent: 'spaceBetween',
+                    cursor: 'pointer',
+                    '&:hover': {
+                      bgcolor: 'background.default',
+                    },
+                    '&:hover .play-row': {
+                      opacity: 1,
+                    },
                   }}
                 >
-                  <IconButton
-                    onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
-                    color="secondary"
-                    style={{
-                      background: 'transparent',
+                  <TableCell className="index-row" sx={{ color: theme.palette.text.secondary }}>
+                    {index + 1}
+                  </TableCell>
+                  <TableCell>
+                    <Typography>{file.name}</Typography>
+                  </TableCell>
+                  <TableCell color="textSecondary" sx={{ color: theme.palette.text.secondary }}>
+                    {file.length}
+                  </TableCell>
+                  <TableCell
+                    className="play-row"
+                    color="textSecondary"
+                    sx={{
+                      opacity: 0,
+                      transition: 'all 0.3s ease',
                     }}
                   >
-                    <PlayArrowIcon />
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
+                    <IconButton
+                      onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
+                      color="secondary"
+                      style={{
+                        background: 'transparent',
+                      }}
+                    >
+                      <PlayArrowIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
       {/* Footer */}
       <footer
         style={{
@@ -309,7 +316,10 @@ const ReleasePage: React.FC<Release> = ({
           color: theme.palette.text.secondary,
         }}
       >
-        <Typography fontStyle="italic"></Typography>
+        <Typography>
+          Status:{' '}
+          <span style={{ color: theme.palette.text.primary, fontStyle: 'italic' }}>{status}</span>
+        </Typography>
         <div
           style={{
             display: 'flex',
@@ -352,7 +362,11 @@ function Discography(): JSX.Element {
     fetch(`/releases/${release.folder}/release.json`) // Fetch the selected release's data
       .then((response) => response.json())
       .then((data) => {
-        setSelectedRelease(data); // Set the selected release data
+        const updatedData = {
+          ...data,
+          status: release.status, // Add the status from the release
+        };
+        setSelectedRelease(updatedData); // Set the selected release data
         setLoading(false); // Stop loading once data is fetched
       })
       .catch((error) => {
