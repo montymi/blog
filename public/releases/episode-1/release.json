@@ -1,22 +1,22 @@
 {
-    "title": "Episode 1: The Beginning",
-    "description": "The first episode of our exciting journey, diving deep into the world of technology and innovation.",
-    "releaseDate": "2024-11-15",
-    "lastUpdate": "2024-11-20",
+    "title": "Sound of the Future",
+    "description": "An initial exploration of the Coqui TTS library.",
+    "releaseDate": "2024-11-01",
+    "lastUpdate": "2024-11-02",
     "totalPlayTime": "45:30",
     "files": [
       {
-        "name": "Episode 1 - Audio.mp3",
-        "length": "45:30",
-        "link": "/releases/episode-1/audio.mp3"
+        "name": "Linguist.py",
+        "length": "08:00",
+        "link": "/releases/episode-1/Linguist.mp3"
       },
       {
-        "name": "Episode 1 - Transcript.pdf",
-        "length": "5 pages",
-        "link": "/releases/episode-1/transcript.pdf"
+        "name": "Translator.py",
+        "length": "03:15",
+        "link": "/releases/episode-1/Translator.mp3"
       }
     ],
-    "downloadLink": "/releases/episode-1/download.zip",
-    "readmeContent": "In this episode, we explore the foundations of technology, looking at how the first innovations shaped the modern world. The transcript provides a full breakdown of the discussion for your reference."
+    "githubLink": "https://www.github.com/montymi/SoF",
+    "readmeLink": "https://github.com/montymi/SoF/blob/main/README.md"
   }
   

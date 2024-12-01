@@ -1,0 +1,61 @@
+{
+    "title": "sesh",
+    "description": "Secure spaces for boundless creativity",
+    "releaseDate": "TBD",
+    "lastUpdate": "2024-11-15",
+    "files": [
+      {
+	"name": "index.js",
+	"length": "5:30",
+	"link": "/releases/album-1/index.mp3"
+      },
+      {
+	"name": "App.js",
+	"length": "5:30",
+	"link": "/releases/album-1/App.mp3"
+      },
+      {
+        "name": "components",
+        "length": "02:30",
+        "link": "/releases/album-1/components.mp3"
+      },
+      {
+	"name": "services",
+	"length": "5:30",
+	"link": "/releases/album-1/services.mp3"
+      },
+      {
+	"name": "store",
+	"length": "5:30",
+	"link": "/releases/album-1/store.mp3"
+      },
+      {
+	"name": "theme.js",
+	"length": "1:30",
+	"link": "/releases/album-1/theme.mp3"
+      },
+      {
+	"name": "account",
+	"length": "6:45",
+	"link": "/releases/album-2/account.mp3"
+      },
+      {
+	"name": "clerk",
+	"length": "6:45",
+	"link": "/releases/album-2/account.mp3"
+      },
+      {
+	"name": "session_catalog",
+	"length": "6:45",
+	"link": "/releases/album-2/session_catalog.mp3"
+      },
+      {
+	"name": "sesh",
+	"length": "6:45",
+	"link": "/releases/album-2/sesh.mp3"
+      }
+    ],
+    "githubLink": "https://www.github.com/montymi/sesh",
+    "readmeLink": "https://github.com/montymi/sesh/blob/main/README.md"
+  }
+  

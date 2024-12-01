@@ -1,0 +1,70 @@
+[
+  {
+    "title": "Coding",
+    "description": "Developing software, building projects, and experimenting with new programming languages like Python and Dart. I love creating applications and tools that solve real-world problems."
+  },
+  {
+    "title": "Hiking",
+    "description": "Exploring trails and appreciating the serenity of nature. I enjoy disconnecting from the digital world and challenging myself with new hikes, whether in the mountains or by the coast."
+  },
+  {
+    "title": "Soccer",
+    "description": "Playing and practicing soccer regularly to stay fit and maintain discipline. I’ve also played at the D1 collegiate level, which has shaped my teamwork and competitive mindset."
+  },
+  {
+    "title": "Coaching",
+    "description": "Coaching young athletes at soccer camps, providing guidance, and developing drills that foster skills, teamwork, and fun. I strive to create an environment where each player can improve and thrive."
+  },
+  {
+    "title": "Tutoring",
+    "description": "Helping students understand complex topics like programming and computer science concepts. I break down tough ideas into simpler steps and encourage curiosity through hands-on learning."
+  },
+  {
+    "title": "Running",
+    "description": "Running for fitness and stress relief. Whether it’s a daily jog or training for a race, running helps me stay healthy and clear my mind."
+  },
+  {
+    "title": "Lifting",
+    "description": "Weightlifting to build strength and improve overall fitness. I enjoy setting goals, tracking progress, and pushing my physical limits in the gym."
+  },
+  {
+    "title": "Reading",
+    "description": "Reading a variety of books, from tech articles and programming books to fiction and philosophy. I’m constantly looking to expand my knowledge and dive into new worlds."
+  },
+  {
+    "title": "Concerts",
+    "description": "Music fuels my creativity and helps me unwind after intense work or training sessions. This is especially true with live music, leading me to see artists like Benson Boone, Dave, Martin Luke Brown, Sammy Rae & Friends, and others in concerts across North America."
+  },
+  {
+    "title": "Writing",
+    "description": "Writing blogs, articles, or personal notes to document my learning journey, whether in software engineering or life in general. I find writing helps me organize my thoughts and share ideas with others."
+  },
+  {
+    "title": "Television",
+    "description": "Watching sports events, movies, and anime. I enjoy the storytelling and the emotions that come with following different series, sports seasons, or cinematic worlds."
+  },
+  {
+    "title": "Tech Exploration",
+    "description": "Staying up-to-date with the latest trends in tech, such as AI, machine learning, and open-source tools. I constantly experiment with new technologies to expand my skill set."
+  },
+  {
+    "title": "Traveling",
+    "description": "Exploring new cities and cultures, seeking out new experiences to broaden my perspective. I love discovering new places, trying new foods, and meeting new people."
+  },
+  {
+    "title": "Fitness Challenges",
+    "description": "Taking part in fitness challenges like 5k runs, obstacle races, or strength competitions to push myself and track progress over time."
+  },
+  {
+    "title": "Gaming",
+    "description": "Playing video games for relaxation and strategy. I enjoy competitive gaming as well as narrative-driven experiences that let me immerse in different worlds."
+  },
+  {
+    "title": "Learning Languages",
+    "description": "Currently learning Italian as part of my goal to move to Italy. I love picking up new languages to connect with different cultures and expand my global mindset."
+  },
+  {
+    "title": "Podcasts",
+    "description": "I am an infrequent listener of podcasts, but that trend seems to be shifting. When the mood has struck recently, I have tended to lean towards the Nerd Out podcast by Spotify developers for developers. Great listen both in terms of entertainment and learning tech jargon."
+  }
+]

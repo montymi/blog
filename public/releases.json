@@ -1,15 +1,63 @@
 {
-    "episodes": [
-        {
-            "title": "Sound of the Future",
-            "folder": "episode-1"
-        }
-    ],
-    "singles": [
-        {
-            "title": "SchemaAPITesting",
-            "folder": "single-1"
-        }
-    ] 
-  }
-  
+  "albums": [
+    {
+      "title": "blog",
+      "folder": "album-1",
+      "version": "1.0.0",
+      "status": "Published"
+    },
+    {
+      "title": "sesh",
+      "folder": "album-2",
+      "version": "1.1.0",
+      "status": "Draft"
+    },
+    {
+      "title": "Capstone",
+      "folder": "album-3",
+      "version": "2.0.0",
+      "status": "Published"
+    }
+  ],
+  "episodes": [
+    {
+      "title": "Sound of the Future",
+      "folder": "episode-1",
+      "version": "0.9.0",
+      "status": "Draft"
+    },
+    {
+      "title": "LazyGrocer",
+      "folder": "episode-2",
+      "version": "1.0.2",
+      "status": "Published"
+    }
+  ],
+  "singles": [
+    {
+      "title": "Schema API Validation",
+      "folder": "single-1",
+      "version": "1.2.0",
+      "status": "Published"
+    },
+    {
+      "title": "Serialpy",
+      "folder": "single-2",
+      "version": "0.8.5",
+      "status": "Draft"
+    },
+    {
+      "title": "Coding from Zero",
+      "folder": "single-3",
+      "version": "1.0.0",
+      "status": "Archived"
+    },
+    {
+      "title": "ClearDocs",
+      "folder": "single-4",
+      "version": "1.3.1",
+      "status": "Published"
+    }
+  ]
+}
+
