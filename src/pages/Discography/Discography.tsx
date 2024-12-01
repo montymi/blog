@@ -1,23 +1,32 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tabs,
+  Tab,
+  List,
+  Grid,
+  ListItemButton,
+  ListItemText,
+  Divider,
+  Modal,
+  CircularProgress,
+  Alert,
+  Tooltip,
+  IconButton,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import List from '@mui/material/List';
-import Grid from '@mui/material/Grid';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import Modal from '@mui/material/Modal';
-import CircularProgress from '@mui/material/CircularProgress';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 import Meta from '@/components/Meta';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-import { Tooltip, IconButton } from '@mui/material';
+import { repository } from '@/config';
 
 type Release = {
   title: string;
@@ -69,6 +78,35 @@ const ReleasePage: React.FC<Release> = ({
     [audio, files],
   );
 
+  const addTime = (timeStrings: string[]): string => {
+    let totalSeconds = 0;
+
+    // Convert each time string into total seconds and accumulate them
+    timeStrings.forEach((time) => {
+      const [minutes, seconds] = time.split(':').map(Number); // Split by ':' and convert to numbers
+      totalSeconds += minutes * 60 + seconds; // Add minutes converted to seconds and the seconds
+    });
+
+    // Convert total seconds to hours, minutes, and seconds
+    const hours = Math.floor(totalSeconds / 3600); // 1 hour = 3600 seconds
+    const minutes = Math.floor((totalSeconds % 3600) / 60); // Remaining minutes after extracting hours
+    const seconds = totalSeconds % 60; // Remaining seconds after extracting minutes
+
+    // Format output based on total time
+    if (hours > 0) {
+      return `${hours} hour${hours > 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+    } else if (minutes > 0) {
+      return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+    } else {
+      return `${seconds} second${seconds !== 1 ? 's' : ''}`;
+    }
+  };
+
+  const totalTime = (files: { length: string }[]): string => {
+    const timeStrings = files.map((file) => file.length);
+    return addTime(timeStrings);
+  };
+
   const stopAudio = () => {
     audio.pause();
     setIsPlaying(false);
@@ -97,7 +135,7 @@ const ReleasePage: React.FC<Release> = ({
       {/* Header Section with Cover */}
       <header
         style={{
-          textAlign: 'center',
+          textAlign: 'left',
           marginBottom: '2em',
           padding: '2em',
           background: theme.palette.background.default,
@@ -105,10 +143,29 @@ const ReleasePage: React.FC<Release> = ({
           boxShadow: theme.shadows[4],
         }}
       >
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '0.5em' }}>{title}</h1>
-        <p style={{ fontSize: '1.2rem', color: theme.palette.text.secondary, textAlign: 'left' }}>
-          {description}
-        </p>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
+          <div className="album-cover"></div>
+          <div
+            className="album-header-info"
+            style={{ display: 'flex', flexDirection: 'column', marginBottom: '0.5em' }}
+          >
+            <Typography fontStyle="h1" sx={{ fontSize: '3rem', fontWeight: 700 }}>
+              {title}
+            </Typography>
+            <Typography fontStyle="body1" sx={{ color: theme.palette.text.secondary }}>
+              <a
+                href={repository}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none' }}
+              >
+                @montymi
+              </a>{' '}
+              • {new Date(releaseDate).getFullYear()} • {files.length} segments, {totalTime(files)}
+            </Typography>
+          </div>
+        </div>
+        <p style={{ fontSize: '1.2rem', color: theme.palette.text.secondary }}>{description}</p>
         <div
           style={{
             marginTop: '1em',
@@ -117,6 +174,25 @@ const ReleasePage: React.FC<Release> = ({
             width: '100%',
           }}
         >
+          {/* Play Button */}
+          <div>
+            <Tooltip title="Play Audio Walkthrough" placement="top" arrow>
+              <IconButton
+                onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
+                color="secondary"
+                style={{
+                  height: '70px',
+                  width: '70px',
+                  backgroundColor: 'secondary',
+                  borderRadius: '50%',
+                  boxShadow: theme.shadows[4],
+                }}
+              >
+                {isPlaying ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}
+              </IconButton>
+            </Tooltip>
+          </div>
+          {/* Project Links */}
           <div>
             <Tooltip title="GitHub Repository" placement="top" arrow>
               <IconButton
@@ -139,80 +215,112 @@ const ReleasePage: React.FC<Release> = ({
               </IconButton>
             </Tooltip>
           </div>
-          {/* Play Button */}
-          <div>
-            <Tooltip title="Play Audio Walkthrough" placement="top" arrow>
-              <IconButton
-                onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
-                color="secondary"
-                style={{
-                  height: '70px',
-                  width: '70px',
-                  backgroundColor: 'secondary',
-                  borderRadius: '50%',
-                  boxShadow: theme.shadows[4],
-                }}
-              >
-                {isPlaying ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}
-              </IconButton>
-            </Tooltip>
-          </div>
         </div>
       </header>
 
-      {/* File Cards */}
-      <section>
-        {files.map((file, index) => (
-          <Button
-            variant="contained"
-            key={file.name}
-            onClick={() => playAudio(index)}
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '1em',
-              marginBottom: '1em',
-              backgroundColor: theme.palette.background.default,
-              borderRadius: theme.shape.borderRadius,
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              width: '100%',
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.querySelector('.play-icon')!.style.visibility = 'visible')
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.querySelector('.play-icon')!.style.visibility = 'hidden')
-            }
-          >
-            <Typography
-              style={{ color: theme.palette.text.primary, fontSize: '1rem', fontWeight: 500 }}
-            >
-              {file.name}
-            </Typography>
-            <PlayArrowIcon
-              className="play-icon"
-              style={{
-                color: theme.palette.text.secondary,
-                visibility: 'hidden', // Initially hidden
+      <TableContainer
+        sx={{
+          borderRadius: '15px',
+        }}
+      >
+        <Table
+          sx={{
+            width: '100%',
+          }}
+        >
+          <TableHead>
+            <TableRow
+              sx={{
+                opacity: 0.2,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  opacity: 0.9,
+                },
               }}
-            />
-          </Button>
-        ))}
-      </section>
+            >
+              <TableCell>#</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Length</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {files.map((file, index) => (
+              <TableRow
+                key={index}
+                onClick={() => playAudio(index)}
+                sx={{
+                  textTransform: 'none',
+                  justifyContent: 'spaceBetween',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    bgcolor: 'background.default',
+                  },
+                  '&:hover .play-row': {
+                    opacity: 1,
+                  },
+                }}
+              >
+                <TableCell className="index-row" sx={{ color: theme.palette.text.secondary }}>
+                  {index + 1}
+                </TableCell>
+                <TableCell>
+                  <Typography>{file.name}</Typography>
+                </TableCell>
+                <TableCell color="textSecondary" sx={{ color: theme.palette.text.secondary }}>
+                  {file.length}
+                </TableCell>
+                <TableCell
+                  className="play-row"
+                  color="textSecondary"
+                  sx={{
+                    opacity: 0,
+                    transition: 'all 0.3s ease',
+                  }}
+                >
+                  <IconButton
+                    onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
+                    color="secondary"
+                    style={{
+                      background: 'transparent',
+                    }}
+                  >
+                    <PlayArrowIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
       {/* Footer */}
       <footer
         style={{
+          display: 'flex',
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
           textAlign: 'center',
           marginTop: '2em',
           fontSize: '0.9rem',
           color: theme.palette.text.secondary,
         }}
       >
-        <p>Release Date: {releaseDate}</p>
-        <p>Last Update: {lastUpdate}</p>
+        <Typography fontStyle="italic"></Typography>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Typography>Released: {releaseDate}</Typography>
+          <Typography>Updated: {lastUpdate}</Typography>
+        </div>
       </footer>
     </div>
   );
