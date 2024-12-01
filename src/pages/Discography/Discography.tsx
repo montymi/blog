@@ -167,7 +167,7 @@ const ReleasePage: React.FC<Release> = ({
             variant="contained"
             key={file.name}
             onClick={() => playAudio(index)}
-            style={{
+            sx={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',

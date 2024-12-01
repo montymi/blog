@@ -153,7 +153,7 @@ const Library: React.FC = () => {
             <div
               style={{
                 position: 'relative',
-                height: '90%', // Adjustable based on your needs
+                height: '70vh', // Adjustable based on your needs
                 overflow: 'hidden',
               }}
             >
