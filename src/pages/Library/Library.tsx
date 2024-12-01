@@ -21,7 +21,7 @@ import PDFViewer from './PDFViewer'; // Import your PDFViewer component
 interface Paper {
   title: string;
   file: string;
-  pages?: number | typeof Element; // Store the number of pages
+  pages?: number; // Store the number of pages
 }
 
 const Library: React.FC = () => {
@@ -56,10 +56,15 @@ const Library: React.FC = () => {
         const response = await fetch('/library.json');
         const data: Paper[] = await response.json();
 
-        // Load page count for each paper
         const updatedPapers: Paper[] = await Promise.all(
           data.map(async (paper) => {
-            const pageCount = await getPDFPageCount(paper.file);
+            let pageCount = await getPDFPageCount(paper.file);
+
+            if (typeof pageCount !== 'number' || isNaN(pageCount)) {
+              pageCount = -1; // Fallback to a valid number if pageCount is invalid
+            }
+
+            // Return paper with pages type as number
             return { ...paper, pages: pageCount };
           }),
         );
