@@ -21,7 +21,7 @@ import PDFViewer from './PDFViewer'; // Import your PDFViewer component
 interface Paper {
   title: string;
   file: string;
-  pages?: number; // Store the number of pages
+  pages?: number | typeof Element; // Store the number of pages
 }
 
 const Library: React.FC = () => {
@@ -42,7 +42,7 @@ const Library: React.FC = () => {
           await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second before retry
           return getPDFPageCount(file, retries - 1); // Retry
         }
-        return <CircularProgress size={24} />; // Return a loading spinner if all retries fail
+        return -1; // Return a loading spinner if all retries fail
       }
     },
     [],
@@ -57,7 +57,7 @@ const Library: React.FC = () => {
         const data: Paper[] = await response.json();
 
         // Load page count for each paper
-        const updatedPapers = await Promise.all(
+        const updatedPapers: Paper[] = await Promise.all(
           data.map(async (paper) => {
             const pageCount = await getPDFPageCount(paper.file);
             return { ...paper, pages: pageCount };
@@ -137,7 +137,9 @@ const Library: React.FC = () => {
                   <TableCell>
                     <Typography>{paper.title}</Typography>
                   </TableCell>
-                  <TableCell>{paper.pages}</TableCell>
+                  <TableCell>
+                    {paper.pages !== -1 ? paper.pages : <CircularProgress size={24} />}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
