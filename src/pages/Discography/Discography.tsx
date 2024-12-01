@@ -431,18 +431,7 @@ function Discography(): JSX.Element {
 
   const renderSelectedReleases = () => {
     const sectionReleases = releases[selectedTab] || [];
-    return (
-      <List>
-        {sectionReleases.map((release) => (
-          <React.Fragment key={release.title}>
-            <ListItemButton onClick={() => handleOpenModal(release)}>
-              <ListItemText primary={release.title} />
-            </ListItemButton>
-            <Divider />
-          </React.Fragment>
-        ))}
-      </List>
-    );
+    return <List>{renderReleases(sectionReleases, handleOpenModal)}</List>;
   };
 
   return (
