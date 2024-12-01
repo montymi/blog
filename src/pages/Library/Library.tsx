@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   Typography,
   Table,
@@ -10,9 +10,10 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  CircularProgress,
 } from '@mui/material';
 import { Visibility } from '@mui/icons-material';
-import { getDocument } from 'pdfjs-dist';
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 
 import Meta from '@/components/Meta';
 import PDFViewer from './PDFViewer'; // Import your PDFViewer component
@@ -28,7 +29,28 @@ const Library: React.FC = () => {
   const [selectedPdf, setSelectedPdf] = useState<string | null>(null);
   const [openDialog, setOpenDialog] = useState(false);
 
+  // Function to get page count from a PDF
+  const getPDFPageCount = useCallback(
+    async (file: string, retries: number = 3): Promise<number | JSX.Element> => {
+      try {
+        const pdf = await getDocument(file).promise;
+        return pdf.numPages; // Return the number of pages
+      } catch (error) {
+        console.error('Error loading PDF:', error);
+        if (retries > 0) {
+          console.log(`Retrying... (${4 - retries} attempts left)`);
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second before retry
+          return getPDFPageCount(file, retries - 1); // Retry
+        }
+        return <CircularProgress size={24} />; // Return a loading spinner if all retries fail
+      }
+    },
+    [],
+  );
+
   useEffect(() => {
+    GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
+
     const fetchPapers = async () => {
       try {
         const response = await fetch('/library.json');
@@ -37,7 +59,7 @@ const Library: React.FC = () => {
         // Load page count for each paper
         const updatedPapers = await Promise.all(
           data.map(async (paper) => {
-            const pageCount = await getPdfPageCount(paper.file);
+            const pageCount = await getPDFPageCount(paper.file);
             return { ...paper, pages: pageCount };
           }),
         );
@@ -49,18 +71,7 @@ const Library: React.FC = () => {
     };
 
     fetchPapers();
-  }, []);
-
-  // Function to get page count from a PDF
-  const getPdfPageCount = async (file: string) => {
-    try {
-      const pdf = await getDocument(file).promise;
-      return pdf.numPages; // Return the number of pages
-    } catch (error) {
-      console.error('Error loading PDF:', error);
-      return 0; // Return 0 pages if error occurs
-    }
-  };
+  }, [getPDFPageCount]);
 
   const handlePdfSelect = (file: string) => {
     setSelectedPdf(file);
