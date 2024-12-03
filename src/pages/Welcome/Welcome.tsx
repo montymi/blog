@@ -13,6 +13,7 @@ import { Typography, Tooltip } from '@mui/material';
 import Spotlight from './Spotlight';
 import { Person, HelpOutline, Place, Schedule, Lightbulb, Build } from '@mui/icons-material';
 import Icon from '@mui/material/Icon';
+import ReactMarkdown from 'react-markdown';
 
 // const logos = [
 //   { alt: 'React Router', src: rrLogo },
@@ -34,7 +35,9 @@ type Post = {
 function Welcome() {
   const [posts, setPosts] = useState([]);
   const isPortrait = useOrientation();
+  const maxWords = 20;
   const flexDirection = isPortrait ? 'column' : 'row';
+  const [expanded, setExpanded] = useState(false);
   const theme = useTheme();
 
   useEffect(() => {
@@ -45,6 +48,18 @@ function Welcome() {
     }
     fetchPosts();
   }, []);
+
+  const toggleExpanded = () => {
+    setExpanded(!expanded);
+  };
+
+  const renderContent = (content: string) => {
+    const words = content.split(' ');
+    if (words.length > maxWords && !expanded) {
+      return `${words.slice(0, maxWords).join(' ')}...\n\n*Click to read more!*`;
+    }
+    return content;
+  };
 
   return (
     <>
@@ -188,8 +203,12 @@ function Welcome() {
                   <Typography variant="body2" sx={{ marginBottom: '0.5em' }}>
                     {new Date(post.date).toLocaleDateString()}
                   </Typography>
-                  <Typography variant="body2" sx={{ lineHeight: '1.75em' }}>
-                    {post.content}
+                  <Typography
+                    variant="body2"
+                    sx={{ lineHeight: '1.75em' }}
+                    onClick={toggleExpanded}
+                  >
+                    <ReactMarkdown>{renderContent(post.content)}</ReactMarkdown>
                   </Typography>
                   <style>{`
                     .hover-box:hover {
