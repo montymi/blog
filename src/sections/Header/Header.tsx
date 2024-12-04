@@ -104,7 +104,7 @@ function Header() {
               </IconButton>
             </Tooltip>
             <Divider orientation="vertical" flexItem />
-            <Tooltip title="Toggle blog" arrow>
+            <Tooltip title="Open Blog" arrow>
               <IconButton
                 color="secondary"
                 edge="end"

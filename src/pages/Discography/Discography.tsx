@@ -571,8 +571,8 @@ function Discography(): JSX.Element {
                 .modal-content-container {
                   width: 100% !important; /* Full width on small screens */
                   max-width: 100% !important;
-		  height: 100% !important;
-		  max-height: 100% !important;
+                  height: 100% !important;
+                  max-height: 100% !important;
                 }
               }
             `}
