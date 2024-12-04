@@ -187,8 +187,9 @@ function Welcome() {
                 <Build />
               </Icon>
               <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
-                Analytical thinking has been ever present in my approach to life, from analyzing
-                fútbol, curating a music queue, to exploring topics that inspire me.
+                Analytical thinking has always been a cornerstone of my approach to life, whether
+                assessing fútbol strategies, curating the perfect music queue, or diving into topics
+                that spark my curiosity.
               </Typography>
             </div>
           </div>
