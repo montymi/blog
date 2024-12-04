@@ -50,28 +50,57 @@ const Library: React.FC = () => {
 
   useEffect(() => {
     GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
-
     const fetchPapers = async () => {
       try {
         const response = await fetch('/library.json');
         const data: Paper[] = await response.json();
 
+        let isUpdated = false;
+
         const updatedPapers: Paper[] = await Promise.all(
           data.map(async (paper) => {
-            let pageCount = await getPDFPageCount(paper.file);
-
-            if (typeof pageCount !== 'number' || isNaN(pageCount)) {
-              pageCount = -1; // Fallback to a valid number if pageCount is invalid
+            // Skip if pages already exist and are valid
+            if (typeof paper.pages === 'number' && !isNaN(paper.pages)) {
+              return paper;
             }
 
-            // Return paper with pages type as number
+            // Calculate page count if missing or invalid
+            let pageCount = await getPDFPageCount(paper.file);
+            if (typeof pageCount !== 'number' || isNaN(pageCount)) {
+              pageCount = -1; // Default fallback
+            }
+
+            isUpdated = true; // Track that we made changes
             return { ...paper, pages: pageCount };
           }),
         );
 
-        setPapers(updatedPapers);
+        // Write back to library.json if updates were made
+        if (isUpdated) {
+          await writeToLibraryJson(updatedPapers);
+        }
+
+        setPapers(updatedPapers); // Set state with updated papers
       } catch (error) {
         console.error('Error loading library.json:', error);
+      }
+    };
+
+    // Function to write updated papers to library.json
+    const writeToLibraryJson = async (papers: Paper[]) => {
+      try {
+        const response = await fetch('/library.json', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(papers),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to update library.json: ${response.statusText}`);
+        }
+        console.log('Successfully wrote to the Library');
+      } catch (error) {
+        console.error('Error saving to library.json:', error);
       }
     };
 
@@ -168,15 +197,47 @@ const Library: React.FC = () => {
         </DialogTitle>
         <DialogContent>
           {selectedPdf && (
-            <div
-              style={{
-                position: 'relative',
-                height: '70vh', // Adjustable based on your needs
-                overflow: 'hidden',
-              }}
-            >
-              <PDFViewer fileUrl={selectedPdf} />
-            </div>
+            <>
+              <div
+                className="pdf-content-container"
+                style={{
+                  position: 'relative',
+                  height: '70%', // Adjustable based on your needs
+                }}
+              >
+                <PDFViewer fileUrl={selectedPdf} />
+              </div>
+              <style>
+                {`
+              /* Webkit browsers */
+              ::-webkit-scrollbar {
+                width: 5px; /* Adjust width */
+                height: 5px; /* Adjust height */
+              }
+              ::-webkit-scrollbar-thumb {
+                background-color: rgba(0, 0, 0, 0.5); /* Scrollbar thumb color */
+                border-radius: 10px; /* Rounded edges */
+              }
+              ::-webkit-scrollbar-track {
+                background: transparent; /* Track background color */
+              }
+              /* For Firefox */
+              * {
+                scrollbar-width: thin;
+                scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+              }
+
+              @media (max-width: 600px) {
+                .pdf-content-container {
+                  width: 100% !important; /* Full width on small screens */
+                  max-width: 100% !important;
+		  height: 100% !important;
+		  max-height: 100% !important;
+                }
+               }
+              `}
+              </style>
+            </>
           )}
         </DialogContent>
       </Dialog>

@@ -25,8 +25,10 @@ import Meta from '@/components/Meta';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PauseIcon from '@mui/icons-material/Pause';
 import { repository } from '@/config';
+import useNotifications from '@/store/notifications';
 
 type Release = {
   title: string;
@@ -343,6 +345,19 @@ function Discography(): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRelease, setSelectedRelease] = useState<Release | null>(null);
   const [loading, setLoading] = useState(true); // Track loading state for individual release
+  const [, notificationsActions] = useNotifications();
+
+  useEffect(() => {
+    function showNotification() {
+      notificationsActions.push({
+        options: {
+          variant: 'customNotification',
+        },
+        message: 'Audio files for each release are coming soon!',
+      });
+    }
+    showNotification();
+  }, [notificationsActions]);
 
   // Fetch releases.json from public/releases
   useEffect(() => {
@@ -491,6 +506,7 @@ function Discography(): JSX.Element {
       {/* Modal for ReleasePage */}
       <Modal open={modalOpen} onClose={handleCloseModal}>
         <div
+          className="modal-content-container"
           style={{
             position: 'absolute' as const,
             top: '50%',
@@ -503,7 +519,7 @@ function Discography(): JSX.Element {
             padding: 4,
             display: 'flex',
             flexDirection: 'column',
-            overflow: 'auto',
+            overflowY: 'auto',
             scrollbarWidth: undefined /* For Firefox */,
             borderRadius: theme.shape.borderRadius,
           }}
@@ -527,8 +543,31 @@ function Discography(): JSX.Element {
                 scrollbar-width: thin;
                 scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
               }
+
+              @media (max-width: 600px) {
+                .modal-content-container {
+                  width: 100% !important; /* Full width on small screens */
+                  max-width: 100% !important;
+		  height: 100% !important;
+		  max-height: 100% !important;
+                }
+              }
             `}
           </style>
+          {/* Back Arrow */}
+          <IconButton
+            color="secondary"
+            onClick={handleCloseModal}
+            sx={{
+              position: 'absolute',
+              top: '8px',
+              left: '8px',
+              cursor: 'pointer',
+              zIndex: 10,
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
           {loading ? (
             <CircularProgress sx={{ margin: 'auto' }} />
           ) : selectedRelease ? (
