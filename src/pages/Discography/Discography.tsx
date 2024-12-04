@@ -524,8 +524,31 @@ function Discography(): JSX.Element {
             borderRadius: theme.shape.borderRadius,
           }}
         >
-          <style>
-            {`
+          {/* Back Arrow */}
+          <IconButton
+            color="secondary"
+            onClick={handleCloseModal}
+            sx={{
+              position: 'absolute',
+              top: '8px',
+              left: '8px',
+              cursor: 'pointer',
+              zIndex: 10,
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          {loading ? (
+            <CircularProgress sx={{ margin: 'auto' }} />
+          ) : selectedRelease ? (
+            <ReleasePage {...selectedRelease} />
+          ) : (
+            <Alert severity="error">Error loading release data</Alert>
+          )}
+        </div>
+      </Modal>
+      <style>
+        {`
               /* Webkit browsers */
               ::-webkit-scrollbar {
                 width: 5px; /* Adjust width */
@@ -553,30 +576,7 @@ function Discography(): JSX.Element {
                 }
               }
             `}
-          </style>
-          {/* Back Arrow */}
-          <IconButton
-            color="secondary"
-            onClick={handleCloseModal}
-            sx={{
-              position: 'absolute',
-              top: '8px',
-              left: '8px',
-              cursor: 'pointer',
-              zIndex: 10,
-            }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-          {loading ? (
-            <CircularProgress sx={{ margin: 'auto' }} />
-          ) : selectedRelease ? (
-            <ReleasePage {...selectedRelease} />
-          ) : (
-            <Alert severity="error">Error loading release data</Alert>
-          )}
-        </div>
-      </Modal>
+      </style>
     </>
   );
 }
