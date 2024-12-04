@@ -28,6 +28,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PauseIcon from '@mui/icons-material/Pause';
 import { repository } from '@/config';
+import useNotifications from '@/store/notifications';
 
 type Release = {
   title: string;
@@ -344,6 +345,19 @@ function Discography(): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedRelease, setSelectedRelease] = useState<Release | null>(null);
   const [loading, setLoading] = useState(true); // Track loading state for individual release
+  const [, notificationsActions] = useNotifications();
+
+  useEffect(() => {
+    function showNotification() {
+      notificationsActions.push({
+        options: {
+          variant: 'customNotification',
+        },
+        message: 'Audio files for each release are coming soon!',
+      });
+    }
+    showNotification();
+  }, [notificationsActions]);
 
   // Fetch releases.json from public/releases
   useEffect(() => {

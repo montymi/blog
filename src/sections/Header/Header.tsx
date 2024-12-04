@@ -61,7 +61,7 @@ function Header() {
           <FlexBox>
             <Tooltip title="Code with me" arrow>
               <IconButton
-                color="secondary"
+                color="inherit"
                 size="large"
                 component="a"
                 href={repository}
@@ -72,7 +72,8 @@ function Header() {
             </Tooltip>
             <Tooltip title="Listen with me" arrow>
               <IconButton
-                color="secondary"
+                color="inherit"
+                size="large"
                 component="a"
                 href={spotify}
                 target="_blank"
@@ -84,7 +85,7 @@ function Header() {
             </Tooltip>
             <Tooltip title="Write to me" arrow>
               <IconButton
-                color="secondary"
+                color="inherit"
                 component="a"
                 href={`mailto:${email}`}
                 aria-label="contact email"
@@ -94,7 +95,7 @@ function Header() {
             </Tooltip>
             <Tooltip title="Talk with me" arrow>
               <IconButton
-                color="secondary"
+                color="inherit"
                 component="a"
                 href={`tel:${phone}`} // The tel: link initiates the phone call
                 aria-label="contact phone"
@@ -105,7 +106,7 @@ function Header() {
             <Divider orientation="vertical" flexItem />
             <Tooltip title="Toggle blog" arrow>
               <IconButton
-                color="inherit"
+                color="secondary"
                 edge="end"
                 size="large"
                 onClick={blogActions.toggle}
@@ -116,7 +117,7 @@ function Header() {
             </Tooltip>
             <Tooltip title="Switch theme" arrow>
               <IconButton
-                color="inherit"
+                color="secondary"
                 edge="end"
                 size="large"
                 onClick={themeActions.toggle}
