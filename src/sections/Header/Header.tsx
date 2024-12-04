@@ -1,4 +1,5 @@
 import ThemeIcon from '@mui/icons-material/InvertColors';
+import InboxIcon from '@mui/icons-material/Inbox';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -10,19 +11,18 @@ import Tooltip from '@mui/material/Tooltip';
 import { FlexBox } from '@/components/styled';
 import { GitHub, Mail, MusicNote, Phone } from '@mui/icons-material';
 import { repository, title, email, phone, spotify } from '@/config';
-import useHotKeysDialog from '@/store/hotkeys';
 import useNotifications from '@/store/notifications';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
 
-import { HotKeysButton } from './styled';
 import { getRandomJoke } from './utils';
+import useBlog from '@/store/blog';
 
 function Header() {
   const [, sidebarActions] = useSidebar();
+  const [, blogActions] = useBlog();
   const [theme, themeActions] = useTheme();
   const [, notificationsActions] = useNotifications();
-  const [, hotKeysDialogActions] = useHotKeysDialog();
 
   function showNotification() {
     notificationsActions.push({
@@ -59,19 +59,6 @@ function Header() {
             </Button>
           </FlexBox>
           <FlexBox>
-            <FlexBox>
-              <Tooltip title="Hot keys" arrow>
-                <HotKeysButton
-                  size="small"
-                  variant="outlined"
-                  aria-label="open hotkeys dialog"
-                  onClick={hotKeysDialogActions.open}
-                >
-                  alt + k
-                </HotKeysButton>
-              </Tooltip>
-            </FlexBox>
-            <Divider orientation="vertical" flexItem />
             <Tooltip title="Code with me" arrow>
               <IconButton
                 color="secondary"
@@ -116,6 +103,17 @@ function Header() {
               </IconButton>
             </Tooltip>
             <Divider orientation="vertical" flexItem />
+            <Tooltip title="Toggle blog" arrow>
+              <IconButton
+                color="inherit"
+                edge="end"
+                size="large"
+                onClick={blogActions.toggle}
+                data-pw="blog-toggle"
+              >
+                <InboxIcon />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="Switch theme" arrow>
               <IconButton
                 color="inherit"
