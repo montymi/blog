@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,8 +11,20 @@ import HotKeys from '@/sections/HotKeys';
 import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
 import Sidebar from '@/sections/Sidebar';
+import Blog from './sections/Blog';
 
 function App() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    async function fetchPosts() {
+      const response = await fetch('/posts.json'); // Adjust the path as needed
+      const data = await response.json();
+      setPosts(data);
+    }
+    fetchPosts();
+  }, []);
+
   return (
     <Fragment>
       <CssBaseline />
@@ -22,6 +34,7 @@ function App() {
       <BrowserRouter>
         <Header />
         <Sidebar />
+        <Blog posts={posts} />
         <Pages />
       </BrowserRouter>
     </Fragment>

@@ -10,10 +10,12 @@ import { FlexBox } from '@/components/styled';
 import useHotKeysDialog from '@/store/hotkeys';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
+import useBlog from '@/store/blog';
 
 function HotKeys() {
   const [, themeActions] = useTheme();
   const [, sidebarActions] = useSidebar();
+  const [, blogActions] = useBlog();
   const [isHotKeysDialogOpen, hotKeysDialogActions] = useHotKeysDialog();
 
   // I would love to define all hotkeys in the config and loop it here and avoid this repetitive code.
@@ -23,6 +25,7 @@ function HotKeys() {
   useHotkeys('alt+s', sidebarActions.toggle);
   useHotkeys('alt+t', themeActions.toggle);
   useHotkeys('alt+k', hotKeysDialogActions.toggle);
+  useHotkeys('alt+b', blogActions.toggle);
 
   return (
     <Dialog
@@ -34,6 +37,12 @@ function HotKeys() {
     >
       <DialogTitle>Hot Keys</DialogTitle>
       <DialogContent>
+        <FlexBox alignItems="center" height={50} justifyContent="space-between">
+          <Typography>Toggle Blog</Typography>
+          <Button color="warning" variant="outlined" onClick={blogActions.toggle}>
+            alt + b
+          </Button>
+        </FlexBox>
         <FlexBox alignItems="center" height={50} justifyContent="space-between">
           <Typography>Toggle Theme</Typography>
           <Button color="warning" variant="outlined" onClick={themeActions.toggle}>

@@ -7,12 +7,18 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Tooltip from '@mui/material/Tooltip';
+import { FlexBox } from '@/components/styled';
+
+import { HotKeysButton } from './styled';
 
 import routes from '@/routes';
 import useSidebar from '@/store/sidebar';
+import useHotKeysDialog from '@/store/hotkeys';
 
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
+  const [, hotKeysDialogActions] = useHotKeysDialog();
 
   return (
     <SwipeableDrawer
@@ -23,6 +29,7 @@ function Sidebar() {
       disableBackdropTransition={false}
       swipeAreaWidth={30}
       data-pw="sidebar"
+      sx={{ display: 'flex', flexDirection: 'column' }}
     >
       <List sx={{ width: 250, pt: (theme) => `${theme.mixins.toolbar.minHeight}px` }}>
         {Object.values(routes)
@@ -36,6 +43,18 @@ function Sidebar() {
             </ListItem>
           ))}
       </List>
+      <FlexBox sx={{ padding: '1em' }}>
+        <Tooltip title="Hot keys" arrow>
+          <HotKeysButton
+            size="small"
+            variant="outlined"
+            aria-label="open hotkeys dialog"
+            onClick={hotKeysDialogActions.open}
+          >
+            alt + k
+          </HotKeysButton>
+        </Tooltip>
+      </FlexBox>
     </SwipeableDrawer>
   );
 }

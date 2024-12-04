@@ -18,7 +18,7 @@ const textureTypes: TextureProps = {
 };
 
 const Spotlight = () => (
-  <div style={{ height: '100%', position: 'relative', width: '600px' }}>
+  <div style={{ height: '100%', position: 'relative' }}>
     <VinylScene />
   </div>
 );
@@ -84,7 +84,7 @@ const VinylScene = () => {
           />
         )}
 
-        <OrbitControls />
+        <OrbitControls enableZoom={false} />
       </Canvas>
     </div>
   );
