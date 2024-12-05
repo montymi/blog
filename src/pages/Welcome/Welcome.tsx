@@ -78,7 +78,8 @@ function Welcome() {
                 <Place />
               </Icon>
               <Typography variant="body1" sx={{ fontWeight: 150 }}>
-                Boston, MA • Northeastern School of Engineering and Varsity Soccer Alumnus
+                Boston, MA • Northeastern University College of Engineering and Varsity Soccer
+                Alumnus
               </Typography>
             </div>
           </div>
