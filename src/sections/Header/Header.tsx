@@ -7,7 +7,7 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-
+import isMobile from '@/utils/is-mobile';
 import { FlexBox } from '@/components/styled';
 import { GitHub, Mail, MusicNote, Phone } from '@mui/icons-material';
 import { repository, title, email, phone, spotify } from '@/config';
@@ -104,31 +104,35 @@ function Header() {
                   <Phone />
                 </IconButton>
               </Tooltip>
-              <div className="right-btns">
-                <Divider orientation="vertical" flexItem />
-                <Tooltip title="Open Blog" arrow>
-                  <IconButton
-                    color="secondary"
-                    edge="end"
-                    size="large"
-                    onClick={blogActions.toggle}
-                    data-pw="blog-toggle"
-                  >
-                    <InboxIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Switch theme" arrow>
-                  <IconButton
-                    color="secondary"
-                    edge="end"
-                    size="large"
-                    onClick={themeActions.toggle}
-                    data-pw="theme-toggle"
-                  >
-                    <ThemeIcon />
-                  </IconButton>
-                </Tooltip>
-              </div>
+              {!isMobile ? (
+                <div className="right-btns" style={{ display: 'flex' }}>
+                  <Divider orientation="vertical" flexItem />
+                  <Tooltip title="Open Blog" arrow>
+                    <IconButton
+                      color="secondary"
+                      edge="end"
+                      size="large"
+                      onClick={blogActions.toggle}
+                      data-pw="blog-toggle"
+                    >
+                      <InboxIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Switch theme" arrow>
+                    <IconButton
+                      color="secondary"
+                      edge="end"
+                      size="large"
+                      onClick={themeActions.toggle}
+                      data-pw="theme-toggle"
+                    >
+                      <ThemeIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              ) : (
+                <div></div>
+              )}
             </FlexBox>
           </Toolbar>
         </AppBar>
@@ -150,12 +154,6 @@ function Header() {
       * {
         scrollbar-width: thin;
         scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
-      }
-    
-      @media (max-width: 600px) {
-        .right-btns {
-          display: none;
-        }
       }
     `}</style>
     </>
