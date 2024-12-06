@@ -18,7 +18,7 @@
     Created by: <span><a href="https://github.com/montymi">Michael Montanaro</a></span>
     <br />
     <br />
-    <a href="https://github.com/montymi/blog">View Demo</a>
+    <a href="https://montymi.com">View Demo</a>
     ·
     <a href="https://github.com/montymi/blog/issues">Report Bug</a>
     ·
@@ -80,7 +80,7 @@ Let me know if you'd like any further tweaks!
 <!-- GETTING STARTED -->
 ## Getting Started
 
-For interacting with the demo: <a href="https://blog-michael-montanaros-projects.vercel.app" target="_blank">Check out the website!</a>
+For interacting with the demo: <a href="https://montymi.com" target="_blank">Check out the website!</a>
 
 For interacting with the code:
 1. Clone and navigate into the repo with:
@@ -169,6 +169,7 @@ src
 │   ├── index.ts
 │   └── types.ts
 ├── sections
+│   ├── Blog
 │   ├── Header
 │   ├── HotKeys
 │   ├── Notifications
@@ -202,10 +203,13 @@ src
 ## Tasks
 
 - [ ] Add a FastAPI for sending new blog posts
-- [ ] Continue adding projects to the Discography
-- [ ] Continue various paper and presentation transfer to the Library
+- [X] Continue adding projects to the Discography
+- [X] Continue various paper and presentation transfer to the Library
 - [X] Allow scrolling in the Welcome Page
-- [ ] Design and upload the Activity Page
+- [X] Design and upload the Activity Page
+- [ ] Optimize PDF view on phone (using isMobile to show PDF as full-screen perhaps)
+- [ ] Create a more interactive 3D environment for the Vinyl object
+- [ ] Add audio files for all Published projects in the Discography
 
 See the [open issues](https://github.com/montymi/blog/issues) for a full list of issues and proposed features.
 
@@ -279,4 +283,4 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [email-shield]: https://img.shields.io/badge/-Email-black.svg?style=for-the-badge&logo=gmail&logoColor=natural
 [email-url]: mailto:mcmontanaro01@gmail.com
 [website-shield]: https://img.shields.io/badge/-Portfolio-black.svg?style=for-the-badge&logo=react&logoColor=natural
-[website-url]: https://blog-michael-montanaros-projects.vercel.app
+[website-url]: https://montymi.com/
