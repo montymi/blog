@@ -524,36 +524,6 @@ function Discography(): JSX.Element {
             borderRadius: theme.shape.borderRadius,
           }}
         >
-          <style>
-            {`
-              /* Webkit browsers */
-              ::-webkit-scrollbar {
-                width: 5px; /* Adjust width */
-                height: 5px; /* Adjust height */
-              }
-              ::-webkit-scrollbar-thumb {
-                background-color: rgba(0, 0, 0, 0.5); /* Scrollbar thumb color */
-                border-radius: 10px; /* Rounded edges */
-              }
-              ::-webkit-scrollbar-track {
-                background: transparent; /* Track background color */
-              }
-              /* For Firefox */
-              * {
-                scrollbar-width: thin;
-                scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
-              }
-
-              @media (max-width: 600px) {
-                .modal-content-container {
-                  width: 100% !important; /* Full width on small screens */
-                  max-width: 100% !important;
-		  height: 100% !important;
-		  max-height: 100% !important;
-                }
-              }
-            `}
-          </style>
           {/* Back Arrow */}
           <IconButton
             color="secondary"
@@ -577,6 +547,36 @@ function Discography(): JSX.Element {
           )}
         </div>
       </Modal>
+      <style>
+        {`
+              /* Webkit browsers */
+              ::-webkit-scrollbar {
+                width: 5px; /* Adjust width */
+                height: 5px; /* Adjust height */
+              }
+              ::-webkit-scrollbar-thumb {
+                background-color: rgba(0, 0, 0, 0.5); /* Scrollbar thumb color */
+                border-radius: 10px; /* Rounded edges */
+              }
+              ::-webkit-scrollbar-track {
+                background: transparent; /* Track background color */
+              }
+              /* For Firefox */
+              * {
+                scrollbar-width: thin;
+                scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+              }
+
+              @media (max-width: 600px) {
+                .modal-content-container {
+                  width: 100% !important; /* Full width on small screens */
+                  max-width: 100% !important;
+                  height: 100% !important;
+                  max-height: 100% !important;
+                }
+              }
+            `}
+      </style>
     </>
   );
 }

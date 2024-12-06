@@ -3,30 +3,14 @@ import useOrientation from '@/hooks/useOrientation';
 import { useTheme } from '@mui/material/styles';
 import { Typography, Tooltip, IconButton } from '@mui/material';
 import Spotlight from './Spotlight';
-import { Person, HelpOutline, Place, Schedule, Lightbulb, Build } from '@mui/icons-material';
+import { Person, HelpOutline, Place, Schedule, Lightbulb, Build, Inbox } from '@mui/icons-material';
 import Icon from '@mui/material/Icon';
-
-// import muiLogo from './logos/mui.svg';
-// import pwaLogo from './logos/pwa.svg';
-// import reactLogo from './logos/react_ed.svg';
-// import recoilLogo from './logos/recoil.svg';
-// import rrLogo from './logos/rr.svg';
-// import tsLogo from './logos/ts.svg';
-// import viteLogo from './logos/vite.svg';
-
-// const logos = [
-//   { alt: 'React Router', src: rrLogo },
-//   { alt: 'Vite', src: viteLogo },
-//   { alt: 'TypeScript', src: tsLogo },
-//   { alt: 'React', src: reactLogo },
-//   { alt: 'MUI', src: muiLogo },
-//   { alt: 'Recoil', src: recoilLogo },
-//   { alt: 'PWA', src: pwaLogo },
-// ];
+import useBlog from '@/store/blog';
 
 function Welcome() {
   const isPortrait = useOrientation();
   const flexDirection = isPortrait ? 'column' : 'row';
+  const [isBlogOpen, blogActions] = useBlog();
   const theme = useTheme();
 
   return (
@@ -75,8 +59,9 @@ function Welcome() {
               <Icon sx={{ marginRight: 1, color: 'grey' }}>
                 <Place />
               </Icon>
-              <Typography variant="body1">
-                Boston, MA • Northeastern School of Engineering and Varsity Soccer Alumnus
+              <Typography variant="body1" sx={{ fontWeight: 150 }}>
+                Boston, MA • Northeastern University College of Engineering and Varsity Soccer
+                Alumnus
               </Typography>
             </div>
           </div>
@@ -132,7 +117,12 @@ function Welcome() {
                     borderRadius: '50%',
                     cursor: 'grab',
                     margin: '1em',
+                    '&:focus': {
+                      boxShadow: '1px 4px 4px rgba(0, 0, 0, 0.5)',
+                    },
                   }}
+                  onClick={() => (window.location.href = '/discography')}
+                  aria-label="visit-discography-call-to-action"
                 >
                   <Spotlight />
                 </IconButton>
@@ -145,24 +135,24 @@ function Welcome() {
 
           <style>
             {`
-	  @keyframes spinClockwise {
-	    0% {
-	      transform: translate(-50%, -50%) rotate(0deg);
-	    }
-	    100% {
-	      transform: translate(-50%, -50%) rotate(360deg);
-	    }
-	  }
+              @keyframes spinClockwise {
+                0% {
+                  transform: translate(-50%, -50%) rotate(0deg);
+                }
+                100% {
+                  transform: translate(-50%, -50%) rotate(360deg);
+                }
+              }
 
-	  @keyframes spinCounterClockwise {
-	    0% {
-	      transform: translate(-50%, -50%) rotate(0deg);
-	    }
-	    100% {
-	      transform: translate(-50%, -50%) rotate(-360deg);
-	    }
-	  }
-	`}
+              @keyframes spinCounterClockwise {
+                0% {
+                  transform: translate(-50%, -50%) rotate(0deg);
+                }
+                100% {
+                  transform: translate(-50%, -50%) rotate(-360deg);
+                }
+              }
+            `}
           </style>
 
           {/* Bio */}
@@ -171,13 +161,15 @@ function Welcome() {
               <Icon sx={{ marginRight: 1, color: 'grey' }}>
                 <Schedule />
               </Icon>
-              <Typography variant="body1">Began programming in March of 2019.</Typography>
+              <Typography variant="body1" sx={{ fontWeight: 150 }}>
+                Began programming in March of 2019.
+              </Typography>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5em' }}>
               <Icon sx={{ marginRight: 1, color: 'grey' }}>
                 <Lightbulb />
               </Icon>
-              <Typography variant="body2">
+              <Typography variant="body2" sx={{ lineHeight: 1.5, fontWeight: 150 }}>
                 Wanted to solve problems that simplify tasks, facilitate creativity, and leverage
                 data, ultimately leaving more time for life.
               </Typography>
@@ -186,12 +178,35 @@ function Welcome() {
               <Icon sx={{ marginRight: 1, color: 'grey' }}>
                 <Build />
               </Icon>
-              <Typography variant="body2" sx={{ lineHeight: 1.5 }}>
+              <Typography variant="body2" sx={{ lineHeight: 1.5, fontWeight: 150 }}>
                 Analytical thinking has always been a cornerstone of my approach to life, whether
                 assessing fútbol strategies, curating the perfect music queue, or diving into topics
                 that spark my curiosity.
               </Typography>
             </div>
+          </div>
+          <div className="blog-action">
+            <Tooltip title="Read More" arrow>
+              <IconButton
+                color="secondary"
+                edge="end"
+                size="large"
+                onClick={blogActions.toggle}
+                data-pw="blog-toggle"
+                sx={{
+                  border: '1px solid',
+                  borderColor: 'secondary.main', // Matches the secondary color
+                  backgroundColor: isBlogOpen ? 'secondary.main' : 'transparent', // Dynamic bg color
+                  color: isBlogOpen ? 'white' : 'secondary.main', // Adjust text/icon color
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.7)',
+                  },
+                }}
+              >
+                <Inbox />
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
       </div>

@@ -98,7 +98,8 @@ const Blog = ({ posts }: BlogProps) => {
           </div>
         </Tooltip>
 
-        <style>{`
+        <style>
+          {`
           .hover-box:hover {
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
           }
@@ -109,7 +110,25 @@ const Blog = ({ posts }: BlogProps) => {
               max-width: 100% !important;
             }
           }
-        `}</style>
+              /* Webkit browsers */
+              ::-webkit-scrollbar {
+                width: 5px; /* Adjust width */
+                height: 5px; /* Adjust height */
+              }
+              ::-webkit-scrollbar-thumb {
+                background-color: rgba(0, 0, 0, 0.5); /* Scrollbar thumb color */
+                border-radius: 10px; /* Rounded edges */
+              }
+              ::-webkit-scrollbar-track {
+                background: transparent; /* Track background color */
+              }
+              /* For Firefox */
+              * {
+                scrollbar-width: thin;
+                scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
+              }
+            `}
+        </style>
       </div>
     </SwipeableDrawer>
   );

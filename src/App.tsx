@@ -26,18 +26,20 @@ function App() {
   }, []);
 
   return (
-    <Fragment>
-      <CssBaseline />
-      <Notifications />
-      <HotKeys />
-      <SW />
-      <BrowserRouter>
-        <Header />
-        <Sidebar />
-        <Blog posts={posts} />
-        <Pages />
-      </BrowserRouter>
-    </Fragment>
+    <div style={{ overflow: 'hidden' }}>
+      <Fragment>
+        <CssBaseline />
+        <Notifications />
+        <HotKeys />
+        <SW />
+        <BrowserRouter>
+          <Header />
+          <Sidebar />
+          <Blog posts={posts} />
+          <Pages />
+        </BrowserRouter>
+      </Fragment>
+    </div>
   );
 }
 
