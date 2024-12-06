@@ -1,7 +1,6 @@
 import { Fragment, useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from '@vercel/analytics/react';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { withErrorHandler } from '@/error-handling';
@@ -48,8 +47,7 @@ function App() {
           <Pages />
         </BrowserRouter>
       </Fragment>
-      {process.env.NODE_ENV === 'production' && <Analytics mode="production" />}
-      {process.env.NODE_ENV !== 'production' && <Analytics debug={true} />}
+      {process.env.NODE_ENV === 'production' && <Analytics />}
     </div>
   );
 }
