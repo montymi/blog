@@ -1,8 +1,8 @@
 [
-    { "title": "Resume", "file": "/library/Resume-MichaelMontanaro.pdf" },
-    { "title": "Solar Charging for E-Mobility Devices Report", "file": "/library/Capstone-Report.pdf" },
-    { "title": "Capstone Software Presentation", "file": "/library/Capstone-Project-Walkthrough.pdf" },
-    { "title": "Capstone Software Ecosystem Report", "file": "/library/Capstone-Software-Ecosystem.pdf" },
-    { "title": "BRCA1 Gene Mutation Report", "file": "/library/BRCA1-Gene-Mutation.pdf" }
+    { "title": "Resume", "file": "/library/Resume-MichaelMontanaro.pdf", "pages": 1 },
+    { "title": "Solar Charging for E-Mobility Devices Report", "file": "/library/Capstone-Report.pdf", "pages": 57 },
+    { "title": "Capstone Software Presentation", "file": "/library/Capstone-Project-Walkthrough.pdf", "pages": 11 },
+    { "title": "Capstone Software Ecosystem Report", "file": "/library/Capstone-Software-Ecosystem.pdf", "pages": 8 },
+    { "title": "BRCA1 Gene Mutation Report", "file": "/library/BRCA1-Gene-Mutation.pdf", "pages": 51 }
 ]
   

@@ -108,7 +108,7 @@ function HotKeys() {
             </IconButton>
           )}
         </FlexBox>
-        <Divider orientation="horizontal" />
+        <Divider orientation="horizontal" sx={{ marginTop: '1em' }} />
         <FlexBox alignItems="center" height={50} width="100%" justifyContent="space-between">
           <Typography fontStyle="italic">This portfolio is built using the following:</Typography>
         </FlexBox>

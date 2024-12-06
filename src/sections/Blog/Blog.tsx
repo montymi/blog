@@ -71,30 +71,40 @@ const Blog = ({ posts }: BlogProps) => {
         {/* Conditional Rendering for Posts */}
         <Tooltip title="Stay tuned for the latest news and posts!">
           <div style={{ marginBottom: '2em' }}>
-            {posts.map((post: Post) => (
-              <div
-                className="hover-box"
-                key={post.id}
-                style={{
-                  padding: '1.5em',
-                  marginBottom: '1.5em',
-                  borderRadius: '8px',
-                  backgroundColor: theme.palette?.background?.paper,
-                  transition: 'all 0.3s ease',
-                  cursor: 'pointer',
-                }}
-              >
-                <Typography variant="h6" sx={{ fontWeight: 500 }}>
-                  {post.title}
-                </Typography>
-                <Typography variant="body2" sx={{ marginBottom: '0.5em' }}>
-                  {new Date(post.date).toLocaleDateString()}
-                </Typography>
-                <Typography variant="body2" sx={{ lineHeight: '1.75em' }} onClick={toggleExpanded}>
-                  <ReactMarkdown>{renderContent(post.content)}</ReactMarkdown>
-                </Typography>
-              </div>
-            ))}
+            {posts.length > 0 ? (
+              posts.map((post: Post) => (
+                <div
+                  className="hover-box"
+                  key={post.id}
+                  style={{
+                    padding: '1.5em',
+                    marginBottom: '1.5em',
+                    borderRadius: '8px',
+                    backgroundColor: theme.palette?.background?.paper,
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Typography variant="h6" sx={{ fontWeight: 500 }}>
+                    {post.title}
+                  </Typography>
+                  <Typography variant="body2" sx={{ marginBottom: '0.5em' }}>
+                    {new Date(post.date).toLocaleDateString()}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ lineHeight: '1.75em' }}
+                    onClick={toggleExpanded}
+                  >
+                    <ReactMarkdown>{renderContent(post.content)}</ReactMarkdown>
+                  </Typography>
+                </div>
+              ))
+            ) : (
+              <Typography variant="body1" sx={{ textAlign: 'center', marginTop: '2em' }}>
+                No posts available. Please check back later!
+              </Typography>
+            )}
           </div>
         </Tooltip>
 
