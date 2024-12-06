@@ -1,6 +1,7 @@
 import { Fragment, useState, useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
+import { Analytics } from '@vercel/analytics/next';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { withErrorHandler } from '@/error-handling';
@@ -18,15 +19,23 @@ function App() {
 
   useEffect(() => {
     async function fetchPosts() {
-      const response = await fetch('/posts.json'); // Adjust the path as needed
-      const data = await response.json();
-      setPosts(data);
+      try {
+        const response = await fetch('/posts.json');
+        if (!response.ok) {
+          throw new Error(`Error fetching posts: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setPosts(data);
+      } catch (error) {
+        console.error(error);
+        // Optionally, display a notification to the user
+      }
     }
     fetchPosts();
-  }, []);
+  }, [setPosts]);
 
   return (
-    <div style={{ overflow: 'hidden' }}>
+    <div>
       <Fragment>
         <CssBaseline />
         <Notifications />
@@ -39,6 +48,8 @@ function App() {
           <Pages />
         </BrowserRouter>
       </Fragment>
+      {process.env.NODE_ENV === 'production' && <Analytics mode="production" />}
+      {process.env.NODE_ENV !== 'production' && <Analytics debug={true} />}
     </div>
   );
 }

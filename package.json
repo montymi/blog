@@ -41,6 +41,7 @@
     "@react-spring/three": "^9.7.5",
     "@react-three/drei": "^9.117.3",
     "@react-three/fiber": "^8.17.10",
+    "@vercel/analytics": "^1.4.1",
     "howler": "^2.2.4",
     "is-mobile": "^4.0.0",
     "notistack": "^3.0.1",
