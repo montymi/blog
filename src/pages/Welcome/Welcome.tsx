@@ -7,24 +7,6 @@ import { Person, HelpOutline, Place, Schedule, Lightbulb, Build, Inbox } from '@
 import Icon from '@mui/material/Icon';
 import useBlog from '@/store/blog';
 
-// import muiLogo from './logos/mui.svg';
-// import pwaLogo from './logos/pwa.svg';
-// import reactLogo from './logos/react_ed.svg';
-// import recoilLogo from './logos/recoil.svg';
-// import rrLogo from './logos/rr.svg';
-// import tsLogo from './logos/ts.svg';
-// import viteLogo from './logos/vite.svg';
-
-// const logos = [
-//   { alt: 'React Router', src: rrLogo },
-//   { alt: 'Vite', src: viteLogo },
-//   { alt: 'TypeScript', src: tsLogo },
-//   { alt: 'React', src: reactLogo },
-//   { alt: 'MUI', src: muiLogo },
-//   { alt: 'Recoil', src: recoilLogo },
-//   { alt: 'PWA', src: pwaLogo },
-// ];
-
 function Welcome() {
   const isPortrait = useOrientation();
   const flexDirection = isPortrait ? 'column' : 'row';
