@@ -9,8 +9,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import isMobile from '@/utils/is-mobile';
 import { FlexBox } from '@/components/styled';
-import { GitHub, Mail, MusicNote, Phone } from '@mui/icons-material';
-import { repository, title, email, phone, spotify } from '@/config';
+import { GitHub, Mail, MusicNote } from '@mui/icons-material';
+import { repository, title, email, spotify } from '@/config';
 import useNotifications from '@/store/notifications';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
@@ -94,7 +94,7 @@ function Header() {
                   <Mail />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Talk with me" arrow>
+              {/* <Tooltip title="Talk with me" arrow>
                 <IconButton
                   color="inherit"
                   component="a"
@@ -103,7 +103,7 @@ function Header() {
                 >
                   <Phone />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
               {!isMobile ? (
                 <div className="right-btns" style={{ display: 'flex' }}>
                   <Divider orientation="vertical" flexItem />
