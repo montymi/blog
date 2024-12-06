@@ -199,6 +199,7 @@ function Welcome() {
                   backgroundColor: isBlogOpen ? 'secondary.main' : 'transparent', // Dynamic bg color
                   color: isBlogOpen ? 'white' : 'secondary.main', // Adjust text/icon color
                   transition: 'all 0.3s ease',
+                  marginBottom: '1em',
                   '&:hover': {
                     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.7)',
                   },
