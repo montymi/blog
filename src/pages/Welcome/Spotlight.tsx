@@ -118,7 +118,6 @@ const SpinningVinyl = ({
       position={[0, 0, 0]}
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
-      onClick={() => (window.location.href = '/discography')}
     >
       <meshStandardMaterial
         attach="material"

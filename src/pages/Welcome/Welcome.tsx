@@ -117,7 +117,12 @@ function Welcome() {
                     borderRadius: '50%',
                     cursor: 'grab',
                     margin: '1em',
+                    '&:focus': {
+                      boxShadow: '1px 4px 4px rgba(0, 0, 0, 0.5)',
+                    },
                   }}
+                  onClick={() => (window.location.href = '/discography')}
+                  aria-label="visit-discography-call-to-action"
                 >
                   <Spotlight />
                 </IconButton>

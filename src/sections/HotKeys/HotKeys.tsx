@@ -72,7 +72,6 @@ function HotKeys() {
             </IconButton>
           )}
         </FlexBox>
-        <Divider orientation="horizontal" />
         <FlexBox alignItems="center" height={50} justifyContent="space-between">
           <Typography>View Blog</Typography>
           {!isMobile ? (
@@ -111,13 +110,13 @@ function HotKeys() {
         </FlexBox>
         <Divider orientation="horizontal" />
         <FlexBox alignItems="center" height={50} width="100%" justifyContent="space-between">
-          <Typography>Built with:</Typography>
+          <Typography fontStyle="italic">This portfolio is built using the following:</Typography>
         </FlexBox>
         <Grid container spacing={2} justifyContent="center">
           {logos.map((logo, index) => (
             <Grid item key={index}>
               <Tooltip title={logo.alt}>
-                <Avatar src={logo.src} alt={logo.alt} />
+                <Avatar src={logo.src} alt={logo.alt} style={{ margin: '0.25em' }} />
               </Tooltip>
             </Grid>
           ))}
