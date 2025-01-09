@@ -1,7 +1,7 @@
 import AlbumIcon from '@mui/icons-material/Album';
 import HomeIcon from '@mui/icons-material/Home';
 import TerrainIcon from '@mui/icons-material/Terrain';
-import { LibraryBooksOutlined } from '@mui/icons-material';
+import { LibraryBooksOutlined, Inbox } from '@mui/icons-material';
 
 import asyncComponentLoader from '@/utils/loader';
 
@@ -31,6 +31,12 @@ const routes: Routes = {
     path: '/discography',
     title: 'Discography',
     icon: AlbumIcon,
+  },
+  [Pages.Blog]: {
+    component: asyncComponentLoader(() => import('@/pages/Blog')),
+    path: '/blog',
+    title: 'Blog',
+    icon: Inbox,
   },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),

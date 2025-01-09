@@ -8,6 +8,7 @@ enum Pages {
   Discography,
   Library,
   Activity,
+  Blog,
   NotFound,
 }
 
