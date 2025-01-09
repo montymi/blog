@@ -1,5 +1,5 @@
-import ThemeIcon from '@mui/icons-material/InvertColors';
-import InboxIcon from '@mui/icons-material/Inbox';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { HotKeysButton } from './styled';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
@@ -14,14 +14,14 @@ import { repository, title, email, spotify } from '@/config';
 import useNotifications from '@/store/notifications';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
+import useHotKeysDialog from '@/store/hotkeys';
 
 import { getRandomJoke } from './utils';
-import useBlog from '@/store/blog';
 
 function Header() {
+  const [, hotKeysDialogActions] = useHotKeysDialog();
   const [, sidebarActions] = useSidebar();
-  const [, blogActions] = useBlog();
-  const [theme, themeActions] = useTheme();
+  const [theme] = useTheme();
   const [, notificationsActions] = useNotifications();
 
   function showNotification() {
@@ -104,35 +104,36 @@ function Header() {
                   <Phone />
                 </IconButton>
               </Tooltip> */}
-              {!isMobile ? (
-                <div className="right-btns" style={{ display: 'flex' }}>
-                  <Divider orientation="vertical" flexItem />
-                  <Tooltip title="Open Blog" arrow>
-                    <IconButton
-                      color="secondary"
-                      edge="end"
-                      size="large"
-                      onClick={blogActions.toggle}
-                      data-pw="blog-toggle"
-                    >
-                      <InboxIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="Switch theme" arrow>
-                    <IconButton
-                      color="secondary"
-                      edge="end"
-                      size="large"
-                      onClick={themeActions.toggle}
-                      data-pw="theme-toggle"
-                    >
-                      <ThemeIcon />
-                    </IconButton>
-                  </Tooltip>
-                </div>
-              ) : (
-                <div></div>
-              )}
+              <Divider orientation="vertical" flexItem />
+              <FlexBox>
+                {!isMobile ? (
+                  <FlexBox sx={{ paddingLeft: '1em', display: 'flex' }}>
+                    <Tooltip title="Hot keys" arrow>
+                      <HotKeysButton
+                        size="small"
+                        variant="outlined"
+                        aria-label="open hotkeys dialog"
+                        onClick={hotKeysDialogActions.open}
+                      >
+                        alt + k
+                      </HotKeysButton>
+                    </Tooltip>
+                  </FlexBox>
+                ) : (
+                  <FlexBox sx={{ display: 'flex' }}>
+                    <Tooltip title="Settings" arrow>
+                      <IconButton
+                        color="warning"
+                        size="small"
+                        aria-label="open menu dialog"
+                        onClick={hotKeysDialogActions.open}
+                      >
+                        <SettingsIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </FlexBox>
+                )}
+              </FlexBox>
             </FlexBox>
           </Toolbar>
         </AppBar>
