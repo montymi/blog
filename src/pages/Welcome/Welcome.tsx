@@ -4,15 +4,13 @@ import useOrientation from '@/hooks/useOrientation';
 import { useTheme } from '@mui/material/styles';
 import { Typography, Tooltip, IconButton } from '@mui/material';
 import Spotlight from './Spotlight';
-import { Person, HelpOutline, Place, Schedule, Lightbulb, Build, Inbox } from '@mui/icons-material';
+import { Person, HelpOutline, Place, Schedule, Lightbulb, Build } from '@mui/icons-material';
 import Icon from '@mui/material/Icon';
-import useBlog from '@/store/blog';
 
 function Welcome() {
   const isPortrait = useOrientation();
   const flexDirection = isPortrait ? 'column' : 'row';
   // const { commit, loading } = useLatestCommit('montymi');
-  const [isBlogOpen, blogActions] = useBlog();
   const theme = useTheme();
 
   return (
@@ -185,30 +183,6 @@ function Welcome() {
                 that spark my curiosity.
               </Typography>
             </div>
-          </div>
-          <div className="blog-action">
-            <Tooltip title="Read More" arrow>
-              <IconButton
-                color="secondary"
-                edge="end"
-                size="large"
-                onClick={blogActions.toggle}
-                data-pw="blog-toggle"
-                sx={{
-                  border: '1px solid',
-                  borderColor: 'secondary.main', // Matches the secondary color
-                  backgroundColor: isBlogOpen ? 'secondary.main' : 'transparent', // Dynamic bg color
-                  color: isBlogOpen ? 'white' : 'secondary.main', // Adjust text/icon color
-                  transition: 'all 0.3s ease',
-                  marginBottom: '1em',
-                  '&:hover': {
-                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.7)',
-                  },
-                }}
-              >
-                <Inbox />
-              </IconButton>
-            </Tooltip>
           </div>
         </div>
       </div>
