@@ -14,10 +14,9 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "https-preview": "serve dist",
@@ -45,7 +44,6 @@
     "@vercel/analytics": "^1.4.1",
     "howler": "^2.2.4",
     "is-mobile": "^4.0.0",
-    "next": "^13.1.0",
     "notistack": "^3.0.1",
     "pdfjs-dist": "^3.11.174",
     "react": "^18.2.0",
@@ -94,7 +92,7 @@
   "author": {
     "name": "Michael Montanaro",
     "email": "mcmontanaro01@gmail.com",
-    "url": "https://blog-michael-montanaros-projects.vercel.app"
+    "url": "https://montymi.com"
   },
   "keywords": [
     "react",
