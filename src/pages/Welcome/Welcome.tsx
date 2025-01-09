@@ -1,5 +1,6 @@
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
+// import useLatestCommit from '@/hooks/useLatestCommit';
 import { useTheme } from '@mui/material/styles';
 import { Typography, Tooltip, IconButton } from '@mui/material';
 import Spotlight from './Spotlight';
@@ -10,6 +11,7 @@ import useBlog from '@/store/blog';
 function Welcome() {
   const isPortrait = useOrientation();
   const flexDirection = isPortrait ? 'column' : 'row';
+  // const { commit, loading } = useLatestCommit('montymi');
   const [isBlogOpen, blogActions] = useBlog();
   const theme = useTheme();
 
@@ -137,24 +139,23 @@ function Welcome() {
             {`
               @keyframes spinClockwise {
                 0% {
-                  transform: translate(-50%, -50%) rotate(0deg);
+                transform: translate(-50%, -50%) rotate(0deg);
                 }
                 100% {
-                  transform: translate(-50%, -50%) rotate(360deg);
+                transform: translate(-50%, -50%) rotate(360deg);
                 }
               }
-
+              
               @keyframes spinCounterClockwise {
                 0% {
-                  transform: translate(-50%, -50%) rotate(0deg);
+                transform: translate(-50%, -50%) rotate(0deg);
                 }
                 100% {
-                  transform: translate(-50%, -50%) rotate(-360deg);
+                transform: translate(-50%, -50%) rotate(-360deg);
                 }
               }
-            `}
+              `}
           </style>
-
           {/* Bio */}
           <div style={{ textAlign: 'left', maxWidth: '600px', margin: '2em' }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5em' }}>
