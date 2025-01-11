@@ -30,7 +30,7 @@ export interface Commit {
  * @param {string} username - The GitHub username.
  * @returns {Object} - An object containing the latest commit, loading state, and a refetch function.
  */
-const useLatestCommit = (
+const useLatestCommits = (
   username: string,
 ): { commits: Commit[]; loading: boolean; refetch: () => void } => {
   const [commits, setCommits] = useState<Commit[]>([]);
@@ -112,4 +112,4 @@ const useLatestCommit = (
   return { commits, loading, refetch: fetchLatestCommits };
 };
 
-export default useLatestCommit;
+export default useLatestCommits;
