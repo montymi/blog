@@ -6,6 +6,17 @@ import { getRepoNameFromUrl } from '@/utils/getRepoName';
 const LatestCommit: React.FC = () => {
   const { commits, loading } = useLatestCommit('montymi');
   const theme = useTheme();
+  const [showFallback, setShowFallback] = React.useState(false);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (loading) {
+        setShowFallback(true);
+      }
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [loading]);
 
   return (
     <div
@@ -16,10 +27,13 @@ const LatestCommit: React.FC = () => {
         paddingBottom: loading ? '2em' : '0',
       }}
     >
-      {loading ? (
+      {loading && showFallback ? (
+        <Typography variant="caption" color="textSecondary">
+          Loading is taking longer than expected...
+        </Typography>
+      ) : loading ? (
         <React.Fragment>
           <CircularProgress size={48} />
-          <img src="https://example.com/funny-image.jpg" alt="Funny" style={{ marginTop: '1em' }} />
         </React.Fragment>
       ) : commits && commits.length > 0 ? (
         commits.map((commit, index) => (

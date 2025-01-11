@@ -97,7 +97,7 @@ function Welcome() {
               display: 'flex',
               flexDirection: isMobile() ? 'column' : 'row',
               alignItems: 'center',
-              width: '70%',
+              width: '90%',
               padding: '4em', // Doubled the padding
               marginTop: '2em',
               borderRadius: '8px',
@@ -202,14 +202,34 @@ function Welcome() {
             </div>
           </div>
 
+          {/* Commit and Blog Section */}
+          <div
+            style={{
+              width: '90%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              margin: '0',
+              textAlign: 'left',
+            }}
+          >
+            <Typography variant="h4" sx={{ textAlign: 'left', padding: '1em 1em 0 1em' }}>
+              Latest Updates
+            </Typography>
+            {/* Latest Commit Section */}
+            <div style={{ textAlign: 'left', width: '100%' }}>
+              <LatestCommit />
+            </div>
+          </div>
+
           {/* Read More Section */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              width: '70%',
-              marginTop: '2em',
+              width: '90%',
               padding: '1em',
               backgroundColor: theme.palette?.background?.default,
               borderRadius: '8px',
@@ -279,27 +299,6 @@ function Welcome() {
                   <Typography variant="button">Activity</Typography>
                 </IconButton>
               </Tooltip>
-            </div>
-          </div>
-
-          {/* Commit and Blog Section */}
-          <div
-            style={{
-              width: '70%',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'flex-start',
-              alignItems: 'flex-start',
-              margin: '0',
-              textAlign: 'left',
-            }}
-          >
-            <Typography variant="h4" sx={{ textAlign: 'left', padding: '1em 1em 0 1em' }}>
-              Latest Updates
-            </Typography>
-            {/* Latest Commit Section */}
-            <div style={{ textAlign: 'left', width: '100%' }}>
-              <LatestCommit />
             </div>
           </div>
 
