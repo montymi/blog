@@ -1,16 +1,18 @@
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
-// import useLatestCommit from '@/hooks/useLatestCommit';
 import { useTheme } from '@mui/material/styles';
 import { Typography, Tooltip, IconButton } from '@mui/material';
 import Spotlight from './Spotlight';
-import { Person, HelpOutline, Place, Schedule, Lightbulb, Build } from '@mui/icons-material';
+import { Schedule, Lightbulb, Build } from '@mui/icons-material';
 import Icon from '@mui/material/Icon';
+import { isMobile } from 'is-mobile';
+import { LibraryBooksOutlined, Inbox, Terrain } from '@mui/icons-material';
+
+import LatestCommit from './LatestCommit';
 
 function Welcome() {
   const isPortrait = useOrientation();
   const flexDirection = isPortrait ? 'column' : 'row';
-  // const { commit, loading } = useLatestCommit('montymi');
   const theme = useTheme();
 
   return (
@@ -38,151 +40,278 @@ function Welcome() {
           }}
         >
           {/* Header */}
-          <div style={{ textAlign: 'left', maxWidth: '600px', margin: '2em' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.5em' }}>
-              <Icon sx={{ marginRight: 1, color: 'grey' }}>
-                <Person />
-              </Icon>
-              <Typography variant="h4" sx={{ fontWeight: 600 }}>
+          <div
+            style={{
+              width: '90%',
+              marginTop: '2em',
+              textAlign: 'center',
+              backgroundImage: 'url(/profile-banner.jpeg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              padding: '2em',
+              borderRadius: '8px',
+              color: 'white',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1em',
+              }}
+            >
+              <Typography variant={isMobile() ? 'h2' : 'h1'} sx={{ fontWeight: 600 }}>
                 Michael Montanaro
               </Typography>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1em' }}>
-              <Icon sx={{ marginRight: 1, color: 'grey' }}>
-                <HelpOutline />
-              </Icon>
-              <Typography variant="body1" sx={{ fontWeight: 150 }}>
-                Full-Stack Developer, Computer Engineer
-              </Typography>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Icon sx={{ marginRight: 1, color: 'grey' }}>
-                <Place />
-              </Icon>
-              <Typography variant="body1" sx={{ fontWeight: 150 }}>
-                Boston, MA • Northeastern University College of Engineering and Varsity Soccer
-                Alumnus
-              </Typography>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '1em',
+              }}
+            >
+              {isMobile() ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '1em',
+                  }}
+                >
+                  <Typography variant="h5">Fullstack and Embedded Developer</Typography>
+                </div>
+              ) : (
+                <Typography variant="h5">
+                  Full-Stack Developer, Computer Engineer from Boston, MA
+                </Typography>
+              )}
             </div>
           </div>
-
-          {/* Spotlight Section */}
-          <div style={{ position: 'relative', display: 'inline-block' }}>
-            {/* Asymmetric Border Layer 1 */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '45%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '100px',
-                height: '70px',
-                border: '1px solid red',
-                borderRadius: '50% 45%',
-                animation: 'spinClockwise 2s linear infinite',
-              }}
-            ></div>
-
-            {/* Asymmetric Border Layer 2 */}
-            <div
-              style={{
-                position: 'absolute',
-                transform: 'translate(-50%, -50%)',
-                top: '45%',
-                left: '50%',
-                width: '90px',
-                height: '80px',
-                border: '2px solid grey',
-                borderRadius: '40% 60%',
-                animation: 'spinCounterClockwise 2s linear infinite',
-              }}
-            ></div>
-
-            {/* Tooltip and IconButton */}
-            <Tooltip title="Click Vinyl for latest coding projects and tools" arrow>
-              <div
-                style={{
-                  margin: '1em',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  flexDirection: 'column',
-                }}
-              >
-                <IconButton
-                  sx={{
-                    backgroundColor: 'transparent',
-                    width: '100px',
-                    height: '100px',
-                    borderRadius: '50%',
-                    cursor: 'grab',
-                    margin: '1em',
-                    '&:focus': {
-                      boxShadow: '1px 4px 4px rgba(0, 0, 0, 0.5)',
-                    },
-                  }}
-                  onClick={() => (window.location.href = '/discography')}
-                  aria-label="visit-discography-call-to-action"
-                >
-                  <Spotlight />
-                </IconButton>
-                <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
-                  Explore the Discography!
+          {/* Bio and Spotlight Section */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: isMobile() ? 'column' : 'row',
+              alignItems: 'center',
+              width: '70%',
+              padding: '4em', // Doubled the padding
+              marginTop: '2em',
+              borderRadius: '8px',
+              backgroundColor: theme.palette?.background?.paper,
+              paddingLeft: '2em', // Added padding to the left
+            }}
+          >
+            {/* Bio */}
+            <div style={{ textAlign: 'left', maxWidth: '80%', marginBottom: '2em' }}>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
+                {' '}
+                {/* Doubled the marginBottom */}
+                <Icon sx={{ marginRight: 2, color: 'grey' }}>
+                  {' '}
+                  {/* Doubled the marginRight */}
+                  <Schedule />
+                </Icon>
+                <Typography variant="body1" sx={{ fontWeight: 150, fontSize: '1.1rem' }}>
+                  {' '}
+                  {/* Increased font size */}
+                  Began programming in March of 2019.
                 </Typography>
               </div>
-            </Tooltip>
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
+                {' '}
+                {/* Doubled the marginBottom */}
+                <Icon sx={{ marginRight: 2, color: 'grey' }}>
+                  {' '}
+                  {/* Doubled the marginRight */}
+                  <Lightbulb />
+                </Icon>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                >
+                  {' '}
+                  {/* Increased font size */}
+                  Wanted to solve problems that simplify tasks, facilitate creativity, and leverage
+                  data, ultimately leaving more time for life.
+                </Typography>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Icon sx={{ marginRight: 2, color: 'grey' }}>
+                  {' '}
+                  {/* Doubled the marginRight */}
+                  <Build />
+                </Icon>
+                <Typography
+                  variant="body2"
+                  sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                >
+                  {' '}
+                  {/* Increased font size */}
+                  Analytical thinking has always been a cornerstone of my approach to life, whether
+                  assessing fútbol strategies, curating the perfect music queue, or diving into
+                  topics that spark my curiosity.
+                </Typography>
+              </div>
+            </div>
+            {/* Spotlight Section */}
+            <div
+              style={{
+                position: 'relative',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                width: '100%',
+              }}
+            >
+              {/* Tooltip and IconButton */}
+              <Tooltip title="Click Vinyl for latest coding projects and tools" arrow>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <IconButton
+                    sx={{
+                      backgroundColor: 'transparent',
+                      width: '200px', // Doubled the width
+                      height: '200px', // Doubled the height
+                      borderRadius: '50%',
+                      cursor: 'grab',
+                      '&:focus': {
+                        boxShadow: '1px 4px 4px rgba(0, 0, 0, 0.5)',
+                      },
+                    }}
+                    onClick={() => (window.location.href = '/discography')}
+                    aria-label="visit-discography-call-to-action"
+                  >
+                    <Spotlight />
+                  </IconButton>
+                  <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
+                    Explore my work!
+                  </Typography>
+                </div>
+              </Tooltip>
+            </div>
           </div>
 
-          <style>
-            {`
-              @keyframes spinClockwise {
-                0% {
-                transform: translate(-50%, -50%) rotate(0deg);
-                }
-                100% {
-                transform: translate(-50%, -50%) rotate(360deg);
-                }
-              }
-              
-              @keyframes spinCounterClockwise {
-                0% {
-                transform: translate(-50%, -50%) rotate(0deg);
-                }
-                100% {
-                transform: translate(-50%, -50%) rotate(-360deg);
-                }
-              }
-              `}
-          </style>
-          {/* Bio */}
-          <div style={{ textAlign: 'left', maxWidth: '600px', margin: '2em' }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5em' }}>
-              <Icon sx={{ marginRight: 1, color: 'grey' }}>
-                <Schedule />
-              </Icon>
-              <Typography variant="body1" sx={{ fontWeight: 150 }}>
-                Began programming in March of 2019.
-              </Typography>
+          {/* Read More Section */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '70%',
+              marginTop: '2em',
+              padding: '1em',
+              backgroundColor: theme.palette?.background?.default,
+              borderRadius: '8px',
+            }}
+          >
+            <Typography variant="h6" sx={{ marginBottom: '1em', textAlign: 'center' }}>
+              Check out below to read more!
+            </Typography>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                width: '100%',
+              }}
+            >
+              <Tooltip title="Browse my library" arrow>
+                <IconButton
+                  color="secondary"
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '1em',
+                    margin: '0.5em',
+                  }}
+                  onClick={() => (window.location.href = '/library')}
+                >
+                  <Icon>
+                    <LibraryBooksOutlined />
+                  </Icon>
+                  <Typography variant="button">Library</Typography>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Read my blog" arrow>
+                <IconButton
+                  color="secondary"
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '1em',
+                    margin: '0.5em',
+                  }}
+                  onClick={() => (window.location.href = '/blog')}
+                >
+                  <Icon>
+                    <Inbox />
+                  </Icon>
+                  <Typography variant="button">Blog</Typography>
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Check out my latest activities" arrow>
+                <IconButton
+                  color="secondary"
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    padding: '1em',
+                    margin: '0.5em',
+                  }}
+                  onClick={() => (window.location.href = '/activity')}
+                >
+                  <Icon>
+                    <Terrain />
+                  </Icon>
+                  <Typography variant="button">Activity</Typography>
+                </IconButton>
+              </Tooltip>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '1.5em' }}>
-              <Icon sx={{ marginRight: 1, color: 'grey' }}>
-                <Lightbulb />
-              </Icon>
-              <Typography variant="body2" sx={{ lineHeight: 1.5, fontWeight: 150 }}>
-                Wanted to solve problems that simplify tasks, facilitate creativity, and leverage
-                data, ultimately leaving more time for life.
-              </Typography>
+          </div>
+
+          {/* Commit and Blog Section */}
+          <div
+            style={{
+              width: '70%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              margin: '0',
+              textAlign: 'left',
+            }}
+          >
+            <Typography variant="h4" sx={{ textAlign: 'left', padding: '1em 1em 0 1em' }}>
+              Latest Updates
+            </Typography>
+            {/* Latest Commit Section */}
+            <div style={{ textAlign: 'left', width: '100%' }}>
+              <LatestCommit />
             </div>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <Icon sx={{ marginRight: 1, color: 'grey' }}>
-                <Build />
-              </Icon>
-              <Typography variant="body2" sx={{ lineHeight: 1.5, fontWeight: 150 }}>
-                Analytical thinking has always been a cornerstone of my approach to life, whether
-                assessing fútbol strategies, curating the perfect music queue, or diving into topics
-                that spark my curiosity.
-              </Typography>
-            </div>
+          </div>
+
+          {/* Footer */}
+          <div style={{ width: '100%', textAlign: 'center', padding: '1em' }}>
+            <Typography variant="caption" sx={{ color: 'grey' }}>
+              Made with ❤️ in Boston, MA. © 2025 Michael Montanaro
+            </Typography>
+            <br />
+            <Typography variant="caption" sx={{ color: 'grey' }}>
+              Feel free to contact me with any questions or opportunities.
+            </Typography>
           </div>
         </div>
       </div>
