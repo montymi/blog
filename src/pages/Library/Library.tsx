@@ -7,12 +7,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   CircularProgress,
 } from '@mui/material';
-import { Visibility } from '@mui/icons-material';
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 
 import Meta from '@/components/Meta';
@@ -117,6 +113,15 @@ const Library: React.FC = () => {
     setSelectedPdf(null);
   };
 
+  const handleDownload = () => {
+    if (selectedPdf) {
+      const link = document.createElement('a');
+      link.href = selectedPdf;
+      link.download = selectedPdf.split('/').pop() || 'document.pdf';
+      link.click();
+    }
+  };
+
   return (
     <>
       <Meta title="Library" />
@@ -180,67 +185,12 @@ const Library: React.FC = () => {
           </Table>
         </TableContainer>
       </div>
-
-      <Dialog
-        open={openDialog}
-        onClose={handleCloseViewer}
-        fullWidth
-        maxWidth="md"
-        aria-labelledby="pdf-viewer-title"
-      >
-        <DialogTitle
-          id="pdf-viewer-title"
-          sx={{ textAlign: 'center', alignItems: 'center', justifyContent: 'center' }}
-        >
-          <Visibility sx={{ marginRight: '8px', fontSize: '1rem' }} />{' '}
-          {selectedPdf?.split('/').pop()}
-        </DialogTitle>
-        <DialogContent>
-          {selectedPdf && (
-            <>
-              <div
-                className="pdf-content-container"
-                style={{
-                  position: 'relative',
-                  height: '70%', // Adjustable based on your needs
-                }}
-              >
-                <PDFViewer fileUrl={selectedPdf} />
-              </div>
-              <style>
-                {`
-              /* Webkit browsers */
-              ::-webkit-scrollbar {
-                width: 5px; /* Adjust width */
-                height: 5px; /* Adjust height */
-              }
-              ::-webkit-scrollbar-thumb {
-                background-color: rgba(0, 0, 0, 0.5); /* Scrollbar thumb color */
-                border-radius: 10px; /* Rounded edges */
-              }
-              ::-webkit-scrollbar-track {
-                background: transparent; /* Track background color */
-              }
-              /* For Firefox */
-              * {
-                scrollbar-width: thin;
-                scrollbar-color: rgba(0, 0, 0, 0.5) transparent;
-              }
-
-              @media (max-width: 600px) {
-                .pdf-content-container {
-                  width: 100% !important; /* Full width on small screens */
-                  max-width: 100% !important;
-		  height: 100% !important;
-		  max-height: 100% !important;
-                }
-               }
-              `}
-              </style>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+      <PDFViewer
+        selectedPdf={selectedPdf || ''}
+        handleCloseViewer={handleCloseViewer}
+        handleDownload={handleDownload}
+        openDialog={openDialog}
+      />
     </>
   );
 };
