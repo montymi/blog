@@ -1,10 +1,11 @@
 import React from 'react';
-import { Typography, CircularProgress, useTheme } from '@mui/material';
-import useLatestCommit from '@/hooks/useLatestCommit';
+import { Typography, CircularProgress, Button, useTheme } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { getRepoNameFromUrl } from '@/utils/getRepoName';
+import useLatestCommits from '@/hooks/useLatestCommit';
 
 const LatestCommit: React.FC = () => {
-  const { commits, loading } = useLatestCommit('montymi');
+  const { commits, loading, refetch } = useLatestCommits('montymi');
   const theme = useTheme();
   const [showFallback, setShowFallback] = React.useState(false);
 
@@ -18,6 +19,11 @@ const LatestCommit: React.FC = () => {
     return () => clearTimeout(timer);
   }, [loading]);
 
+  const handleReload = () => {
+    setShowFallback(false);
+    refetch();
+  };
+
   return (
     <div
       style={{
@@ -27,9 +33,33 @@ const LatestCommit: React.FC = () => {
         paddingBottom: loading ? '2em' : '0',
       }}
     >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        <Typography variant="h4" sx={{ textAlign: 'left', padding: '1em' }}>
+          Random Commits
+        </Typography>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleReload}
+          style={{ marginBottom: '1em' }}
+        >
+          <RefreshIcon />
+        </Button>
+      </div>
       {loading && showFallback ? (
-        <Typography variant="caption" color="textSecondary">
-          Loading is taking longer than expected...
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          sx={{ padding: '1em', fontSize: '1.2rem' }}
+        >
+          Loading is taking longer than expected... I probably reached the GitHub API rate limit.
         </Typography>
       ) : loading ? (
         <React.Fragment>
@@ -45,13 +75,17 @@ const LatestCommit: React.FC = () => {
                 borderRadius: '8px',
                 backgroundColor: theme.palette.background.paper,
                 cursor: 'pointer',
-                transition: 'box-shadow 0.3s ease-in-out',
+                transition: 'box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out',
               }}
               onClick={() => window.open(commit.html_url, '_blank')}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)')
-              }
-              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = 'none')}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
+                e.currentTarget.style.backgroundColor = theme.palette.action.hover;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.backgroundColor = theme.palette.background.paper;
+              }}
             >
               <div
                 style={{
@@ -88,8 +122,8 @@ const LatestCommit: React.FC = () => {
           </React.Fragment>
         ))
       ) : (
-        <Typography variant="caption" color="textSecondary">
-          No commits found.
+        <Typography variant="caption" color="textSecondary" sx={{ fontSize: '1.1rem' }}>
+          No commits found. I definitely reached the GitHub API rate limit.
         </Typography>
       )}
     </div>

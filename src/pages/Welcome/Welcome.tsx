@@ -34,7 +34,7 @@ function Welcome() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding: '1em',
+            padding: '0.5em',
             backgroundColor: theme.palette?.background?.default,
             justifyContent: 'flex-start', // Align to the top
           }}
@@ -42,7 +42,7 @@ function Welcome() {
           {/* Header */}
           <div
             style={{
-              width: '90%',
+              width: isMobile() ? '100%' : '90%',
               marginTop: '2em',
               textAlign: 'center',
               backgroundImage: 'url(/profile-banner.jpeg)',
@@ -97,63 +97,47 @@ function Welcome() {
               display: 'flex',
               flexDirection: isMobile() ? 'column' : 'row',
               alignItems: 'center',
-              width: '90%',
+              width: isMobile() ? '100%' : '90%',
+              justifyContent: 'space-between',
               padding: '4em', // Doubled the padding
               marginTop: '2em',
               borderRadius: '8px',
               backgroundColor: theme.palette?.background?.paper,
-              paddingLeft: '2em', // Added padding to the left
+              paddingLeft: '4em', // Added padding to the left
             }}
           >
             {/* Bio */}
             <div style={{ textAlign: 'left', maxWidth: '80%', marginBottom: '2em' }}>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
-                {' '}
-                {/* Doubled the marginBottom */}
                 <Icon sx={{ marginRight: 2, color: 'grey' }}>
-                  {' '}
-                  {/* Doubled the marginRight */}
                   <Schedule />
                 </Icon>
                 <Typography variant="body1" sx={{ fontWeight: 150, fontSize: '1.1rem' }}>
-                  {' '}
-                  {/* Increased font size */}
                   Began programming in March of 2019.
                 </Typography>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
-                {' '}
-                {/* Doubled the marginBottom */}
                 <Icon sx={{ marginRight: 2, color: 'grey' }}>
-                  {' '}
-                  {/* Doubled the marginRight */}
                   <Lightbulb />
                 </Icon>
                 <Typography
                   variant="body2"
                   sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
                 >
-                  {' '}
-                  {/* Increased font size */}
-                  Wanted to solve problems that simplify tasks, facilitate creativity, and leverage
-                  data, ultimately leaving more time for life.
+                  Building user-friendly solutions that let people work smarter, spark creativity,
+                  and enjoy more life offline.
                 </Typography>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Icon sx={{ marginRight: 2, color: 'grey' }}>
-                  {' '}
-                  {/* Doubled the marginRight */}
                   <Build />
                 </Icon>
                 <Typography
                   variant="body2"
                   sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
                 >
-                  {' '}
-                  {/* Increased font size */}
-                  Analytical thinking has always been a cornerstone of my approach to life, whether
-                  assessing fútbol strategies, curating the perfect music queue, or diving into
-                  topics that spark my curiosity.
+                  I enjoy problem-solving, whether it’s in programming, playing fútbol, or exploring
+                  new topics.
                 </Typography>
               </div>
             </div>
@@ -165,7 +149,7 @@ function Welcome() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flexDirection: 'column',
-                width: '100%',
+                width: '30%',
               }}
             >
               {/* Tooltip and IconButton */}
@@ -214,11 +198,8 @@ function Welcome() {
               textAlign: 'left',
             }}
           >
-            <Typography variant="h4" sx={{ textAlign: 'left', padding: '1em 1em 0 1em' }}>
-              Latest Updates
-            </Typography>
             {/* Latest Commit Section */}
-            <div style={{ textAlign: 'left', width: '100%' }}>
+            <div style={{ textAlign: 'left', width: '100%', marginBottom: '2em' }}>
               <LatestCommit />
             </div>
           </div>
@@ -229,7 +210,7 @@ function Welcome() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              width: '90%',
+              width: '100%',
               padding: '1em',
               backgroundColor: theme.palette?.background?.default,
               borderRadius: '8px',
