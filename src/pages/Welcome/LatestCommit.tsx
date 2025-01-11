@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography, CircularProgress, Button, useTheme } from '@mui/material';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import { getRepoNameFromUrl } from '@/utils/getRepoName';
 import useLatestCommits from '@/hooks/useLatestCommit';
 
@@ -45,15 +46,19 @@ const LatestCommit: React.FC = () => {
         </Typography>
         <Button
           variant="contained"
-          color="primary"
+          color="secondary"
           onClick={handleReload}
           style={{ marginBottom: '1em' }}
         >
-          Reload
+          <RefreshIcon />
         </Button>
       </div>
       {loading && showFallback ? (
-        <Typography variant="caption" color="textSecondary" sx={{ padding: '1em' }}>
+        <Typography
+          variant="caption"
+          color="textSecondary"
+          sx={{ padding: '1em', fontSize: '1.2rem' }}
+        >
           Loading is taking longer than expected... I probably reached the GitHub API rate limit.
         </Typography>
       ) : loading ? (
@@ -113,8 +118,8 @@ const LatestCommit: React.FC = () => {
           </React.Fragment>
         ))
       ) : (
-        <Typography variant="caption" color="textSecondary">
-          No commits found.
+        <Typography variant="caption" color="textSecondary" sx={{ fontSize: '1.1rem' }}>
+          No commits found. I definitely reached the GitHub API rate limit.
         </Typography>
       )}
     </div>

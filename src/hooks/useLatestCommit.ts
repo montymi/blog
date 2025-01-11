@@ -59,14 +59,41 @@ const useLatestCommit = (
       const response = await fetchWithRetry(`https://api.github.com/users/${username}/events`);
       const data = await response.json();
       const randomStart = Math.floor(Math.random() * (data.length - 5));
-      const commitPromises = data
+      interface GitHubEvent {
+        payload: {
+          commits: {
+            url: string;
+          }[];
+        };
+      }
+
+      const commitPromises: Promise<Commit | null>[] = data
         .slice(randomStart, randomStart + 5)
-        .map((event: { payload: { commits: { url: string }[] } }) =>
-          fetchWithRetry(event.payload.commits[0].url).then((res) => res.json()),
-        );
+        .map((event: GitHubEvent) => {
+          if (event.payload.commits && event.payload.commits.length > 0) {
+            return fetchWithRetry(event.payload.commits[0].url).then((res) => res.json());
+          }
+          return null;
+        })
+        .filter((commit: Promise<Commit> | null): commit is Promise<Commit> => commit !== null);
+
+      // If less than 5 commits are found, fetch more to ensure we always return 5
+      if (commitPromises.length < 5) {
+        const additionalCommits = data
+          .slice(0, 5 - commitPromises.length)
+          .map((event: GitHubEvent) => {
+            if (event.payload.commits && event.payload.commits.length > 0) {
+              return fetchWithRetry(event.payload.commits[0].url).then((res) => res.json());
+            }
+            return null;
+          })
+          .filter((commit: Promise<Commit> | null): commit is Promise<Commit> => commit !== null);
+
+        commitPromises.push(...additionalCommits);
+      }
       const commitsData = await Promise.all(commitPromises);
       console.log('commitsData:', commitsData);
-      setCommits(commitsData);
+      setCommits(commitsData.filter((commit): commit is Commit => commit !== null));
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error fetching latest commits:', error.message);
