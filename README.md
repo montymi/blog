@@ -71,6 +71,7 @@ Let me know if you'd like any further tweaks!
 [![React Router][rrLogo]][rrLogo-url]
 [![MUI][muiLogo]][muiLogo-url]
 [![Vercel][vercelLogo]][vercelLogo-url]
+[![Three.js][threejsLogo]][threejsLogo-url]
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -280,6 +281,8 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 [viteLogo-url]: https://vitejs.dev/
 [vercelLogo]: https://img.shields.io/badge/-Vercel-black.svg?style=for-the-badge&logo=vercel&logoColor=natural
 [vercelLogo-url]: https://vercel.com/
+[threejsLogo]: https://img.shields.io/badge/-Threejs-black.svg?style=for-the-badge&logo=three.js&logoColor=natural
+[threejsLogo-url]: https://threejs.org/
 [email-shield]: https://img.shields.io/badge/-Email-black.svg?style=for-the-badge&logo=gmail&logoColor=natural
 [email-url]: mailto:mcmontanaro01@gmail.com
 [website-shield]: https://img.shields.io/badge/-Portfolio-black.svg?style=for-the-badge&logo=react&logoColor=natural
