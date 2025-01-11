@@ -15,7 +15,6 @@ import useNotifications from '@/store/notifications';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
 import useHotKeysDialog from '@/store/hotkeys';
-
 import { getRandomJoke } from './utils';
 
 function Header() {
@@ -27,12 +26,6 @@ function Header() {
   function showNotification() {
     notificationsActions.push({
       options: {
-        // Show fully customized notification
-        // Usually, to show a notification, you'll use something like this:
-        // notificationsActions.push({ message: ... })
-        // `message` accepts string as well as ReactNode
-        // If you want to show a fully customized notification, you can define
-        // your own `variant`s, see @/sections/Notifications/Notifications.tsx
         variant: 'customNotification',
       },
       message: getRandomJoke(),

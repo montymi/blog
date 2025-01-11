@@ -2,7 +2,7 @@ import isMobile from '@/utils/is-mobile';
 
 import type { Notifications } from './types';
 
-const title = 'Blog de Miguel';
+const title = 'montymi';
 
 const email = 'mcmontanaro01@gmail.com';
 const phone = '+16175999973';
