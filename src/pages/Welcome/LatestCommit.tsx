@@ -1,10 +1,10 @@
 import React from 'react';
-import { Typography, CircularProgress, useTheme } from '@mui/material';
-import useLatestCommit from '@/hooks/useLatestCommit';
+import { Typography, CircularProgress, Button, useTheme } from '@mui/material';
 import { getRepoNameFromUrl } from '@/utils/getRepoName';
+import useLatestCommits from '@/hooks/useLatestCommit';
 
 const LatestCommit: React.FC = () => {
-  const { commits, loading } = useLatestCommit('montymi');
+  const { commits, loading, refetch } = useLatestCommits('montymi');
   const theme = useTheme();
   const [showFallback, setShowFallback] = React.useState(false);
 
@@ -18,6 +18,11 @@ const LatestCommit: React.FC = () => {
     return () => clearTimeout(timer);
   }, [loading]);
 
+  const handleReload = () => {
+    setShowFallback(false);
+    refetch();
+  };
+
   return (
     <div
       style={{
@@ -27,9 +32,29 @@ const LatestCommit: React.FC = () => {
         paddingBottom: loading ? '2em' : '0',
       }}
     >
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+        }}
+      >
+        <Typography variant="h4" sx={{ textAlign: 'left', padding: '1em' }}>
+          Random Commits
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleReload}
+          style={{ marginBottom: '1em' }}
+        >
+          Reload
+        </Button>
+      </div>
       {loading && showFallback ? (
-        <Typography variant="caption" color="textSecondary">
-          Loading is taking longer than expected...
+        <Typography variant="caption" color="textSecondary" sx={{ padding: '1em' }}>
+          Loading is taking longer than expected... I probably reached the GitHub API rate limit.
         </Typography>
       ) : loading ? (
         <React.Fragment>

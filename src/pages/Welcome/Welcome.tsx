@@ -133,10 +133,8 @@ function Welcome() {
                   variant="body2"
                   sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
                 >
-                  {' '}
-                  {/* Increased font size */}
-                  Wanted to solve problems that simplify tasks, facilitate creativity, and leverage
-                  data, ultimately leaving more time for life.
+                  Building user-friendly solutions that let people work smarter, spark creativity,
+                  and enjoy more life offline.
                 </Typography>
               </div>
               <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -149,11 +147,8 @@ function Welcome() {
                   variant="body2"
                   sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
                 >
-                  {' '}
-                  {/* Increased font size */}
-                  Analytical thinking has always been a cornerstone of my approach to life, whether
-                  assessing fútbol strategies, curating the perfect music queue, or diving into
-                  topics that spark my curiosity.
+                  I enjoy problem-solving, whether it’s in programming, playing fútbol, or exploring
+                  new topics.
                 </Typography>
               </div>
             </div>
@@ -214,9 +209,6 @@ function Welcome() {
               textAlign: 'left',
             }}
           >
-            <Typography variant="h4" sx={{ textAlign: 'left', padding: '1em 1em 0 1em' }}>
-              Latest Updates
-            </Typography>
             {/* Latest Commit Section */}
             <div style={{ textAlign: 'left', width: '100%' }}>
               <LatestCommit />
