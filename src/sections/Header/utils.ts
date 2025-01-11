@@ -1,8 +1,8 @@
-import jokes from '@/config/it-jokes';
+import mix from '@/config/it-jokes';
 
 function getRandomJoke() {
-  const randomIndex = Math.round(Math.random() * (jokes.length - 1));
-  const randomJoke = jokes[randomIndex];
+  const randomIndex = Math.round(Math.random() * (mix.length - 1));
+  const randomJoke = mix[randomIndex];
 
   return randomJoke;
 }

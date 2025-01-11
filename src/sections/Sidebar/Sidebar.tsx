@@ -1,27 +1,18 @@
 import { Link } from 'react-router-dom';
 
 import DefaultIcon from '@mui/icons-material/Deblur';
-import SettingsIcon from '@mui/icons-material/Settings';
 import List from '@mui/material/List';
-import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Tooltip from '@mui/material/Tooltip';
-import { FlexBox } from '@/components/styled';
-import isMobile from '@/utils/is-mobile';
-
-import { HotKeysButton } from './styled';
 
 import routes from '@/routes';
 import useSidebar from '@/store/sidebar';
-import useHotKeysDialog from '@/store/hotkeys';
 
 function Sidebar() {
   const [isSidebarOpen, sidebarActions] = useSidebar();
-  const [, hotKeysDialogActions] = useHotKeysDialog();
 
   return (
     <SwipeableDrawer
@@ -46,34 +37,6 @@ function Sidebar() {
             </ListItem>
           ))}
       </List>
-      <FlexBox sx={{ padding: '1em' }}>
-        {!isMobile ? (
-          <Tooltip title="Hot keys" arrow>
-            <HotKeysButton
-              size="small"
-              variant="outlined"
-              aria-label="open hotkeys dialog"
-              onClick={hotKeysDialogActions.open}
-            >
-              alt + k
-            </HotKeysButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Settings" arrow>
-            <HotKeysButton
-              size="small"
-              color="inherit"
-              variant="contained"
-              aria-label="open menu dialog"
-              onClick={hotKeysDialogActions.open}
-            >
-              <IconButton color="warning" size="small">
-                <SettingsIcon />
-              </IconButton>
-            </HotKeysButton>
-          </Tooltip>
-        )}
-      </FlexBox>
     </SwipeableDrawer>
   );
 }

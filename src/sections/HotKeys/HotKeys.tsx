@@ -12,10 +12,9 @@ import { FlexBox } from '@/components/styled';
 import useHotKeysDialog from '@/store/hotkeys';
 import useSidebar from '@/store/sidebar';
 import useTheme from '@/store/theme';
-import useBlog from '@/store/blog';
 import isMobile from '@/utils/is-mobile';
 import { Divider, IconButton, Tooltip } from '@mui/material';
-import { Close, Inbox } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import muiLogo from './logos/mui.svg';
 import pwaLogo from './logos/pwa.svg';
 import reactLogo from './logos/react_ed.svg';
@@ -39,7 +38,6 @@ const logos = [
 function HotKeys() {
   const [, themeActions] = useTheme();
   const [, sidebarActions] = useSidebar();
-  const [, blogActions] = useBlog();
   const [isHotKeysDialogOpen, hotKeysDialogActions] = useHotKeysDialog();
 
   // I would love to define all hotkeys in the config and loop it here and avoid this repetitive code.
@@ -49,7 +47,6 @@ function HotKeys() {
   useHotkeys('alt+s', sidebarActions.toggle);
   useHotkeys('alt+t', themeActions.toggle);
   useHotkeys('alt+k', hotKeysDialogActions.toggle);
-  useHotkeys('alt+b', blogActions.toggle);
 
   return (
     <Dialog
@@ -69,18 +66,6 @@ function HotKeys() {
           ) : (
             <IconButton color="warning" onClick={hotKeysDialogActions.toggle}>
               <Close />
-            </IconButton>
-          )}
-        </FlexBox>
-        <FlexBox alignItems="center" height={50} justifyContent="space-between">
-          <Typography>View Blog</Typography>
-          {!isMobile ? (
-            <Button color="warning" variant="outlined" onClick={blogActions.toggle}>
-              alt + b
-            </Button>
-          ) : (
-            <IconButton color="secondary" onClick={blogActions.toggle}>
-              <Inbox />
             </IconButton>
           )}
         </FlexBox>

@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,28 +11,8 @@ import HotKeys from '@/sections/HotKeys';
 import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
 import Sidebar from '@/sections/Sidebar';
-import Blog from './sections/Blog';
 
 function App() {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const response = await fetch('/posts.json');
-        if (!response.ok) {
-          throw new Error(`Error fetching posts: ${response.statusText}`);
-        }
-        const data = await response.json();
-        setPosts(data);
-      } catch (error) {
-        console.error(error);
-        // Optionally, display a notification to the user
-      }
-    }
-    fetchPosts();
-  }, [setPosts]);
-
   return (
     <div>
       <Fragment>
@@ -43,7 +23,6 @@ function App() {
         <BrowserRouter>
           <Header />
           <Sidebar />
-          <Blog posts={posts} />
           <Pages />
         </BrowserRouter>
       </Fragment>
