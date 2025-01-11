@@ -75,13 +75,17 @@ const LatestCommit: React.FC = () => {
                 borderRadius: '8px',
                 backgroundColor: theme.palette.background.paper,
                 cursor: 'pointer',
-                transition: 'box-shadow 0.3s ease-in-out',
+                transition: 'box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out',
               }}
               onClick={() => window.open(commit.html_url, '_blank')}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)')
-              }
-              onMouseLeave={(e) => (e.currentTarget.style.boxShadow = 'none')}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
+                e.currentTarget.style.backgroundColor = theme.palette.action.hover;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.backgroundColor = theme.palette.background.paper;
+              }}
             >
               <div
                 style={{
