@@ -6,13 +6,19 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![GPL License][license-shield]][license-url]
-[![Analyses](https://github.com/montymi/blog/actions/workflows/analyses.yml/badge.svg)](https://github.com/montymi/blog/actions/workflows/analyses.yml)
-[![E2E Tests](https://github.com/montymi/blog/actions/workflows/e2e.yml/badge.svg)](https://github.com/montymi/blog/actions/workflows/e2e.yml)
+
 
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <h2 align="center">My Personal Sandbox on the Web</h2>
+
+<p align="center">
+
+[![Analyses](https://github.com/montymi/blog/actions/workflows/analyses.yml/badge.svg)](https://github.com/montymi/blog/actions/workflows/analyses.yml)
+[![E2E Tests](https://github.com/montymi/blog/actions/workflows/e2e.yml/badge.svg)](https://github.com/montymi/blog/actions/workflows/e2e.yml)
+
+</p>
 
   <p align="center">
     Created by: <span><a href="https://github.com/montymi">Michael Montanaro</a></span>
