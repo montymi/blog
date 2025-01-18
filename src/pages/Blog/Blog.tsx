@@ -66,9 +66,6 @@ const Blog = () => {
                 }}
                 onClick={() => toggleExpanded(post.id)}
               >
-                <Typography variant="h6" sx={{ fontWeight: 500 }}>
-                  {post.title}
-                </Typography>
                 <Typography variant="body2" sx={{ marginBottom: '0.5em' }}>
                   {new Date(post.date).toLocaleDateString()}
                 </Typography>
