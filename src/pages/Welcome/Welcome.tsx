@@ -1,19 +1,38 @@
+import React from 'react';
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
 import { useTheme } from '@mui/material/styles';
 import { Typography, Tooltip, IconButton } from '@mui/material';
 import Spotlight from './Spotlight';
-import { Schedule, Lightbulb, Build } from '@mui/icons-material';
+import { Lightbulb, Build, CalendarMonth } from '@mui/icons-material';
 import Icon from '@mui/material/Icon';
 import { isMobile } from 'is-mobile';
 import { LibraryBooksOutlined, Inbox, Terrain } from '@mui/icons-material';
+import { Select, MenuItem } from '@mui/material';
+import useHistoryEvents from '../../hooks/useHistoryEvents';
 
 import LatestCommit from './LatestCommit';
+
+type HistoryEvent = {
+  year: number;
+  content: string;
+  // Add other properties if needed
+};
 
 function Welcome() {
   const isPortrait = useOrientation();
   const flexDirection = isPortrait ? 'column' : 'row';
   const theme = useTheme();
+
+  const { events, loading, error } = useHistoryEvents(new Date().getMonth(), new Date().getDate());
+
+  const [selectedYear, setSelectedYear] = React.useState<number | string>('');
+
+  React.useEffect(() => {
+    if (events && events.length > 0 && !selectedYear) {
+      setSelectedYear(events[0].year);
+    }
+  }, [events, selectedYear]);
 
   return (
     <>
@@ -107,40 +126,63 @@ function Welcome() {
             }}
           >
             {/* Bio */}
-            <div style={{ textAlign: 'left', maxWidth: '80%', marginBottom: '2em' }}>
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
-                <Icon sx={{ marginRight: 2, color: 'grey' }}>
-                  <Schedule />
-                </Icon>
-                <Typography variant="body1" sx={{ fontWeight: 150, fontSize: '1.1rem' }}>
-                  Began programming in March of 2019.
-                </Typography>
+            {loading ? (
+              <div>Loading...</div>
+            ) : error ? (
+              <div>Error occurred. Please try again later.</div>
+            ) : events && events.length > 0 ? (
+              <div style={{ textAlign: 'left', maxWidth: '80%', marginBottom: '2em' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
+                  <Icon sx={{ marginRight: 2, color: 'grey' }}>
+                    <CalendarMonth />
+                  </Icon>
+                  <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1.2rem' }}>
+                    On This Date:{' '}
+                    {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                  </Typography>
+                  <Select
+                    value={selectedYear}
+                    onChange={(e) => setSelectedYear(e.target.value)}
+                    displayEmpty
+                    sx={{ marginLeft: '1em' }}
+                  >
+                    {Array.isArray(events)
+                      ? events.map((event: HistoryEvent, index) => (
+                          <MenuItem key={`${event.year}-${index}`} value={event.year}>
+                            {event.year}
+                          </MenuItem>
+                        ))
+                      : null}
+                  </Select>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
+                  <Icon sx={{ marginRight: 2, color: 'grey' }}>
+                    <Lightbulb />
+                  </Icon>
+                  <Typography
+                    variant="body2"
+                    sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                  >
+                    {(Array.isArray(events) ? events : []).find(
+                      (event: HistoryEvent) => event.year === selectedYear,
+                    )?.content || 'Have a great day!'}
+                  </Typography>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Icon sx={{ marginRight: 2, color: 'grey' }}>
+                    <Build />
+                  </Icon>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                  >
+                    For more projects, click the vinyl or see my recent commits.
+                  </Typography>
+                </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
-                <Icon sx={{ marginRight: 2, color: 'grey' }}>
-                  <Lightbulb />
-                </Icon>
-                <Typography
-                  variant="body2"
-                  sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
-                >
-                  Building user-friendly solutions that let people work smarter, spark creativity,
-                  and enjoy more life offline.
-                </Typography>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Icon sx={{ marginRight: 2, color: 'grey' }}>
-                  <Build />
-                </Icon>
-                <Typography
-                  variant="body2"
-                  sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
-                >
-                  I enjoy problem-solving, whether it’s in programming, playing fútbol, or exploring
-                  new topics.
-                </Typography>
-              </div>
-            </div>
+            ) : (
+              <div>No events available.</div>
+            )}
             {/* Spotlight Section */}
             <div
               style={{
