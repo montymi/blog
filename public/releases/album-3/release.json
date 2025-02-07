@@ -1,41 +1,11 @@
 {
     "title": "Capstone",
     "description": "This repository contains Group M2's capstone project, featuring a cross-platform application, microcontroller scripts, and system simulations to accompany the Solar Charging Station.",
+    "audio": "./1.1.0/audio.mp3",
+    "transcript": "./1.1.0/transcript.md",
     "releaseDate": "2023-12-05",
     "lastUpdate": "2023-12-04",
-    "files": [
-      {
-        "name": "SevenSegment",
-        "length": "02:30",
-        "link": "/releases/album-3/SevenSegment.mp3"
-      },
-      {
-        "name": "MQTT",
-        "length": "03:00",
-        "link": "/releases/single-1/MQTT.mp3"
-      },
-      {
-        "name": "main.dart",
-        "length": "00:45",
-        "link": "/releases/single-1/main.mp3"
-      },
-      {
-        "name": "pages",
-        "length": "00:45",
-        "link": "/releases/album-4/pages.mp3"
-      },
-      {
-        "name": "blocs",
-        "length": "01:15",
-        "link": "/releases/album-4/blocs.mp3"
-      },
-      {
-        "name": "models",
-        "length": "00:45",
-        "link": "/releases/album-4/models.mp3"
-      }
-    ],
     "githubLink": "https://www.github.com/montymi/Capstone",
-    "readmeLink": "https://github.com/montymi/Capstone/blob/main/README.md"
+    "readmeLink": "https://raw.githubusercontent.com/montymi/Capstone/main/README.md"
   }
   

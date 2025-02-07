@@ -1,73 +1,10 @@
 {
     "title": "blog",
-    "description": "'My Sandbox on the Web' is a personal portfolio that brings together my work as a software developer and academic. It serves as a central hub for showcasing my projects, research, and other contributions throughout my career.",
+    "description": "Personal portfolio, blog, and virtual sandbox of @montymi 🛠️. Brings together work as a software developer and academic. It serves as a central hub for showcasing projects, research, and other contributions.",
+    "audio": "./1.0.6/audio.mp3",
+    "transcript": "./1.0.6/transcript.md",
     "releaseDate": "2024-11-27",
-    "lastUpdate": "2024-11-27",
-    "files": [
-      {
-        "name": "components",
-        "link": "https://github.com/montymi/blog/tree/main/src/components"
-      },
-      {
-        "name": "config",
-        "link": "/releases/album-1/config.mp3"
-      },
-      {
-        "name": "error-handling",
-        "length": "01:15",
-        "link": "/releases/album-1/error-handling.mp3"
-      },
-      {
-        "name": "hooks -- interlude",
-        "length": "00:45",
-        "link": "/releases/album-1/hooks.mp3"
-      },
-      {
-        "name": "pages",
-        "length": "00:45",
-        "link": "/releases/album-1/pages.mp3"
-      },
-      {
-	"name": "routes",
-	"length": "5:30",
-	"link": "/releases/album-1/routes.mp3"
-      },
-      {
-	"name": "sections",
-	"length": "5:30",
-	"link": "/releases/album-1/sections.mp3"
-      },
-      {
-	"name": "store",
-	"length": "5:30",
-	"link": "/releases/album-1/store.mp3"
-      },
-      {
-	"name": "theme",
-	"length": "5:30",
-	"link": "/releases/album-1/theme.mp3"
-      },
-      {
-	"name": "utils",
-	"length": "5:30",
-	"link": "/releases/album-1/utils.mp3"
-      },
-      {
-	"name": "App.tsx",
-	"length": "5:30",
-	"link": "/releases/album-1/App.mp3"
-      },
-      {
-	"name": "Root.tsx",
-	"length": "5:30",
-	"link": "/releases/album-1/Root.mp3"
-      },
-      {
-	"name": "main.tsx",
-	"length": "5:30",
-	"link": "/releases/album-1/main.mp3"
-      }
-    ],
+    "lastUpdate": "2025-02-07",
     "githubLink": "https://www.github.com/montymi/blog",
     "readmeLink": "https://raw.githubusercontent.com/montymi/blog/refs/heads/main/README.md"
   }

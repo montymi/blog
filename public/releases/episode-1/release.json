@@ -1,22 +1,11 @@
 {
-    "title": "Sound of the Future",
-    "description": "An initial exploration of the Coqui TTS library.",
+    "title": "linguist",
+    "description": "A python library to easily implement the STT & TTS pipeline locally in a project. The Speech-To-Text portion responsibilities fall to OpenAI's Whisper, and the Text-To-Speech capabilities are from Coqui-AI, the audio synthesis library.",
+    "audio": "./1.0.3/audio.mp3",
+    "transcript": "./1.0.3/transcript.md",
     "releaseDate": "2024-11-01",
-    "lastUpdate": "2024-11-02",
-    "totalPlayTime": "45:30",
-    "files": [
-      {
-        "name": "Linguist.py",
-        "length": "08:00",
-        "link": "/releases/episode-1/Linguist.mp3"
-      },
-      {
-        "name": "Translator.py",
-        "length": "03:15",
-        "link": "/releases/episode-1/Translator.mp3"
-      }
-    ],
-    "githubLink": "https://www.github.com/montymi/SoF",
-    "readmeLink": "https://github.com/montymi/SoF/blob/main/README.md"
+    "lastUpdate": "2025-01-14",
+    "githubLink": "https://www.github.com/montymi/linguist",
+    "readmeLink": "https://raw.githubusercontent.com/montymi/linguist/main/README.md"
   }
   

@@ -21,21 +21,27 @@
   ],
   "episodes": [
     {
-      "title": "Sound of the Future",
+      "title": "linguist",
       "folder": "episode-1",
-      "version": "0.9.0",
-      "status": "Draft"
+      "version": "1.0.3",
+      "status": "Published"
     },
     {
       "title": "LazyGrocer",
       "folder": "episode-2",
-      "version": "1.0.2",
-      "status": "Archived"
+      "version": "1.1.1",
+      "status": "Published"
+    },
+    {
+      "title": "sesh-cli",
+      "folder": "episode-3",
+      "version": "1.0.0",
+      "status": "Published"
     }
   ],
   "singles": [
     {
-      "title": "Schema API Validation",
+      "title": "Schema API Testing",
       "folder": "single-1",
       "version": "1.3.0",
       "status": "Published"
@@ -55,7 +61,7 @@
     {
       "title": "ClearDocs",
       "folder": "single-4",
-      "version": "1.3.5",
+      "version": "1.4.0",
       "status": "Published"
     }
   ]
