@@ -30,4 +30,13 @@ export default defineConfig({
   test: {
     root: path.resolve(__dirname, './src'),
   },
+  server: {
+      proxy: {
+        '/api': {
+          target: "https://events.historylabs.io",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        }
+      }
+    }
 });
