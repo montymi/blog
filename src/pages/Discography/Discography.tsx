@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tabs,
   Tab,
   List,
@@ -47,6 +41,7 @@ type Release = {
 };
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import isMobile from '@/utils/is-mobile';
 
 type Releases = {
   [key: string]: Release[];
@@ -64,6 +59,7 @@ const ReleasePage: React.FC<Release> = ({
 }) => {
   const theme = useTheme();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [audio] = useState(new Audio('/path/to/your/audio/file.mp3')); // Single audio file
 
   const playAudio = useCallback(() => {
@@ -86,7 +82,6 @@ const ReleasePage: React.FC<Release> = ({
   }, [audio]);
 
   const readmeContent = useReadMe(readmeLink);
-  console.log(readmeContent);
 
   return (
     <div
@@ -100,10 +95,10 @@ const ReleasePage: React.FC<Release> = ({
       <header
         style={{
           textAlign: 'left',
-          marginBottom: '2em',
+          marginBottom: isMobile ? '1.5em' : '2em',
           padding: '2em',
           background: theme.palette.background.default,
-          borderRadius: '15px',
+          borderRadius: theme.shape.borderRadius,
           boxShadow: theme.shadows[4],
         }}
       >
@@ -147,7 +142,7 @@ const ReleasePage: React.FC<Release> = ({
                   style={{
                     height: '70px',
                     width: '70px',
-                    backgroundColor: 'secondary',
+                    backgroundColor: isPlaying ? theme.palette.action.selected : 'secondary',
                     borderRadius: '50%',
                     boxShadow: theme.shadows[4],
                   }}
@@ -159,24 +154,27 @@ const ReleasePage: React.FC<Release> = ({
           )}
           {status === 'Published' && (
             <div>
-              <Tooltip title="GitHub Repository" placement="top" arrow>
+              <Tooltip title="Read more" placement="top" arrow>
+                <IconButton
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  color="secondary"
+                  style={{
+                    margin: '0 0.5em',
+                    backgroundColor: isExpanded ? theme.palette.action.selected : 'transparent',
+                  }}
+                >
+                  <DescriptionIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="See the source" placement="top" arrow>
                 <IconButton
                   href={githubLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
+                  color="warning"
+                  style={{ margin: '0 0.5em' }}
                 >
                   <GitHubIcon fontSize="large" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="View README" placement="top" arrow>
-                <IconButton
-                  href={readmeLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
-                >
-                  <DescriptionIcon fontSize="large" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -184,76 +182,20 @@ const ReleasePage: React.FC<Release> = ({
         </div>
       </header>
 
-      {status === 'Published' && (
-        <TableContainer
-          sx={{
-            borderRadius: '15px',
-          }}
-        >
-          <Table
-            sx={{
-              width: '100%',
-            }}
-          >
-            <TableHead>
-              <TableRow
-                sx={{
-                  opacity: 0.2,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    opacity: 0.9,
-                  },
-                }}
-              >
-                <TableCell>#</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Length</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {files.map((file, index) => (
-                <TableRow
-                  key={index}
-                  sx={{
-                    textTransform: 'none',
-                    justifyContent: 'spaceBetween',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      bgcolor: 'background.default',
-                    },
-                  }}
-                >
-                  <TableCell className="index-row" sx={{ color: theme.palette.text.secondary }}>
-                    {index + 1}
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{file.name}</Typography>
-                  </TableCell>
-                  <TableCell color="textSecondary" sx={{ color: theme.palette.text.secondary }}>
-                    {file.length}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
-
-      {readmeContent && (
+      {isExpanded && readmeContent && (
         <div
           style={{
-            marginTop: '2em',
             padding: '2em',
             background: theme.palette.background.default,
-            borderRadius: '15px',
+            borderRadius: theme.shape.borderRadius,
             boxShadow: theme.shadows[4],
+            width: isMobile ? '100%' : 'auto',
+            height: isMobile ? '100%' : 'auto',
           }}
         >
-          <Typography variant="h6" gutterBottom />
-          README
-          <ReactMarkdown rehypePlugins={[rehypeRaw]}>{readmeContent.content}</ReactMarkdown>
-          <ReactMarkdown>{readmeContent.content}</ReactMarkdown>
+          <div style={{}}>
+            <ReactMarkdown rehypePlugins={[rehypeRaw]}>{readmeContent.content}</ReactMarkdown>
+          </div>
         </div>
       )}
 
@@ -464,16 +406,16 @@ function Discography(): JSX.Element {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '80%',
-            height: '80%',
             backgroundColor: theme.palette.background.paper,
-            boxShadow: '24',
-            padding: 4,
+            boxShadow: theme.shadows[5],
+            padding: isMobile ? '0' : '1em', // Remove padding if isMobile is true
             display: 'flex',
             flexDirection: 'column',
             overflowY: 'auto',
-            scrollbarWidth: undefined /* For Firefox */,
             borderRadius: theme.shape.borderRadius,
+            maxHeight: '90vh', // Set max height
+            width: '90vw', // Set width to 90% of viewport width
+            maxWidth: '600px', // Set max width
           }}
         >
           {/* Back Arrow */}
