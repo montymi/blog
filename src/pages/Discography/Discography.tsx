@@ -1,12 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Tabs,
   Tab,
   List,
@@ -29,6 +23,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PauseIcon from '@mui/icons-material/Pause';
 import { repository } from '@/config';
 import useNotifications from '@/store/notifications';
+import useReadMe from '@/hooks/useReadMe';
 
 type Release = {
   title: string;
@@ -44,6 +39,9 @@ type Release = {
   githubLink: string;
   readmeLink: string;
 };
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
+import isMobile from '@/utils/is-mobile';
 
 type Releases = {
   [key: string]: Release[];
@@ -61,70 +59,29 @@ const ReleasePage: React.FC<Release> = ({
 }) => {
   const theme = useTheme();
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentFileIndex, setCurrentFileIndex] = useState<number | null>(null);
-  const [audio] = useState(new Audio());
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [audio] = useState(new Audio('/path/to/your/audio/file.mp3')); // Single audio file
 
-  const playAudio = useCallback(
-    (fileIndex: number) => {
-      if (audio.src !== files[fileIndex].link) {
-        audio.src = files[fileIndex].link;
-        audio.load();
-      }
-      audio
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-          setCurrentFileIndex(fileIndex);
-        })
-        .catch((error) => console.error('Error playing audio', error));
-    },
-    [audio, files],
-  );
-
-  const addTime = (timeStrings: string[]): string => {
-    let totalSeconds = 0;
-
-    // Convert each time string into total seconds and accumulate them
-    timeStrings.forEach((time) => {
-      const [minutes, seconds] = time.split(':').map(Number); // Split by ':' and convert to numbers
-      totalSeconds += minutes * 60 + seconds; // Add minutes converted to seconds and the seconds
-    });
-
-    // Convert total seconds to hours, minutes, and seconds
-    const hours = Math.floor(totalSeconds / 3600); // 1 hour = 3600 seconds
-    const minutes = Math.floor((totalSeconds % 3600) / 60); // Remaining minutes after extracting hours
-    const seconds = totalSeconds % 60; // Remaining seconds after extracting minutes
-
-    // Format output based on total time
-    if (hours > 0) {
-      return `${hours} hour${hours > 1 ? 's' : ''} ${minutes} minute${minutes !== 1 ? 's' : ''}`;
-    } else if (minutes > 0) {
-      return `${minutes} minute${minutes !== 1 ? 's' : ''}`;
-    } else {
-      return `${seconds} second${seconds !== 1 ? 's' : ''}`;
-    }
-  };
-
-  const totalTime = (files: { length: string }[]): string => {
-    const timeStrings = files.map((file) => file.length);
-    return addTime(timeStrings);
-  };
+  const playAudio = useCallback(() => {
+    audio
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch((error) => console.error('Error playing audio', error));
+  }, [audio]);
 
   const stopAudio = () => {
     audio.pause();
     setIsPlaying(false);
-    setCurrentFileIndex(null);
   };
 
-  const handleNextTrack = useCallback(() => {
-    if (currentFileIndex === null || currentFileIndex === files.length - 1) return;
-    playAudio(currentFileIndex + 1);
-  }, [playAudio, files.length, currentFileIndex]);
-
   useEffect(() => {
-    audio.addEventListener('ended', handleNextTrack);
-    return () => audio.removeEventListener('ended', handleNextTrack);
-  }, [handleNextTrack, audio]);
+    audio.addEventListener('ended', () => setIsPlaying(false));
+    return () => audio.removeEventListener('ended', () => setIsPlaying(false));
+  }, [audio]);
+
+  const readmeContent = useReadMe(readmeLink);
 
   return (
     <div
@@ -135,14 +92,13 @@ const ReleasePage: React.FC<Release> = ({
         color: theme.palette.text.primary,
       }}
     >
-      {/* Header Section with Cover */}
       <header
         style={{
           textAlign: 'left',
-          marginBottom: '2em',
+          marginBottom: isMobile ? '1.5em' : '2em',
           padding: '2em',
           background: theme.palette.background.default,
-          borderRadius: '15px',
+          borderRadius: theme.shape.borderRadius,
           boxShadow: theme.shadows[4],
         }}
       >
@@ -164,7 +120,7 @@ const ReleasePage: React.FC<Release> = ({
               >
                 @montymi
               </a>{' '}
-              • {new Date(lastUpdate).getFullYear()} • {files.length} segments, {totalTime(files)}
+              • {new Date(lastUpdate).getFullYear()} • {files.length} segments
             </Typography>
           </div>
         </div>
@@ -177,17 +133,16 @@ const ReleasePage: React.FC<Release> = ({
             width: '100%',
           }}
         >
-          {/* Conditionally render Play button and links */}
           {status === 'Published' && (
             <div>
               <Tooltip title="Play Audio Walkthrough" placement="top" arrow>
                 <IconButton
-                  onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
+                  onClick={() => (isPlaying ? stopAudio() : playAudio())}
                   color="secondary"
                   style={{
                     height: '70px',
                     width: '70px',
-                    backgroundColor: 'secondary',
+                    backgroundColor: isPlaying ? theme.palette.action.selected : 'secondary',
                     borderRadius: '50%',
                     boxShadow: theme.shadows[4],
                   }}
@@ -197,28 +152,29 @@ const ReleasePage: React.FC<Release> = ({
               </Tooltip>
             </div>
           )}
-
-          {/* Conditionally render project links */}
           {status === 'Published' && (
             <div>
-              <Tooltip title="GitHub Repository" placement="top" arrow>
+              <Tooltip title="Read more" placement="top" arrow>
+                <IconButton
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  color="secondary"
+                  style={{
+                    margin: '0 0.5em',
+                    backgroundColor: isExpanded ? theme.palette.action.selected : 'transparent',
+                  }}
+                >
+                  <DescriptionIcon fontSize="large" />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="See the source" placement="top" arrow>
                 <IconButton
                   href={githubLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
+                  color="warning"
+                  style={{ margin: '0 0.5em' }}
                 >
                   <GitHubIcon fontSize="large" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="View README" placement="top" arrow>
-                <IconButton
-                  href={readmeLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: theme.palette.text.primary, margin: '0 0.5em' }}
-                >
-                  <DescriptionIcon fontSize="large" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -226,85 +182,23 @@ const ReleasePage: React.FC<Release> = ({
         </div>
       </header>
 
-      {status === 'Published' && (
-        <TableContainer
-          sx={{
-            borderRadius: '15px',
+      {isExpanded && readmeContent && (
+        <div
+          style={{
+            padding: '2em',
+            background: theme.palette.background.default,
+            borderRadius: theme.shape.borderRadius,
+            boxShadow: theme.shadows[4],
+            width: isMobile ? '100%' : 'auto',
+            height: isMobile ? '100%' : 'auto',
           }}
         >
-          <Table
-            sx={{
-              width: '100%',
-            }}
-          >
-            <TableHead>
-              <TableRow
-                sx={{
-                  opacity: 0.2,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    opacity: 0.9,
-                  },
-                }}
-              >
-                <TableCell>#</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Length</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {files.map((file, index) => (
-                <TableRow
-                  key={index}
-                  onClick={() => playAudio(index)}
-                  sx={{
-                    textTransform: 'none',
-                    justifyContent: 'spaceBetween',
-                    cursor: 'pointer',
-                    '&:hover': {
-                      bgcolor: 'background.default',
-                    },
-                    '&:hover .play-row': {
-                      opacity: 1,
-                    },
-                  }}
-                >
-                  <TableCell className="index-row" sx={{ color: theme.palette.text.secondary }}>
-                    {index + 1}
-                  </TableCell>
-                  <TableCell>
-                    <Typography>{file.name}</Typography>
-                  </TableCell>
-                  <TableCell color="textSecondary" sx={{ color: theme.palette.text.secondary }}>
-                    {file.length}
-                  </TableCell>
-                  <TableCell
-                    className="play-row"
-                    color="textSecondary"
-                    sx={{
-                      opacity: 0,
-                      transition: 'all 0.3s ease',
-                    }}
-                  >
-                    <IconButton
-                      onClick={() => (currentFileIndex === null ? playAudio(0) : stopAudio())}
-                      color="secondary"
-                      style={{
-                        background: 'transparent',
-                      }}
-                    >
-                      <PlayArrowIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+          <div style={{}}>
+            <ReactMarkdown rehypePlugins={[rehypeRaw]}>{readmeContent.content}</ReactMarkdown>
+          </div>
+        </div>
       )}
-      {/* Footer */}
+
       <footer
         style={{
           display: 'flex',
@@ -512,16 +406,16 @@ function Discography(): JSX.Element {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: '80%',
-            height: '80%',
             backgroundColor: theme.palette.background.paper,
-            boxShadow: '24',
-            padding: 4,
+            boxShadow: theme.shadows[5],
+            padding: isMobile ? '0' : '1em', // Remove padding if isMobile is true
             display: 'flex',
             flexDirection: 'column',
             overflowY: 'auto',
-            scrollbarWidth: undefined /* For Firefox */,
             borderRadius: theme.shape.borderRadius,
+            maxHeight: '90vh', // Set max height
+            width: '90vw', // Set width to 90% of viewport width
+            maxWidth: '600px', // Set max width
           }}
         >
           {/* Back Arrow */}

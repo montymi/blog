@@ -6,12 +6,10 @@
     "files": [
       {
         "name": "components",
-        "length": "02:30",
-        "link": "/releases/album-1/components.mp3"
+        "link": "https://github.com/montymi/blog/tree/main/src/components"
       },
       {
         "name": "config",
-        "length": "03:00",
         "link": "/releases/album-1/config.mp3"
       },
       {
@@ -71,6 +69,6 @@
       }
     ],
     "githubLink": "https://www.github.com/montymi/blog",
-    "readmeLink": "https://github.com/montymi/blog/blob/main/README.md"
+    "readmeLink": "https://raw.githubusercontent.com/montymi/blog/refs/heads/main/README.md"
   }
   
