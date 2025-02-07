@@ -1,8 +1,6 @@
 {
     "title": "ClearDocs",
     "description": "Open-source software has a high barrier of entry due to source code disorganization, caused mainly by a lack of structured documentation. For this project, I will create a brief GitHub README file to depict an ideal version of the file and argue that the current state of OSS's documentation is not acceptable. OSS documentation must find a method of tracking and portraying project information that is universally accepted within the open-source community.",
-    "audio": "./1.4.0/audio.mp3",
-    "transcript": "./1.4.0/transcript.md",
     "releaseDate": "2022-08-01",
     "lastUpdate": "2024-10-25",
     "githubLink": "https://www.github.com/montymi/ClearDocs",

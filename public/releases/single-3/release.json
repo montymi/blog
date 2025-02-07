@@ -1,8 +1,6 @@
 {
     "title": "Coding From Zero",
     "description": "A beginner-friendly Python learning resource designed to guide users through coding fundamentals. The repository contains practical exercises, examples, and walkthroughs aimed at building problem-solving skills in Python. With a structured progression from basic to intermediate concepts, this project provides an immersive learning experience for those starting their programming journey.",
-    "audio": "./1.4.6/audio.mp3",
-    "transcript": "./1.4.6/transcript.md",
     "releaseDate": "2023-03-09",
     "lastUpdate": "2023-03-27",
     "githubLink": "https://www.github.com/montymi/CodingFromZero",
