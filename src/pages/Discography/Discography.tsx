@@ -31,11 +31,10 @@ type Release = {
   status: string; // Example: "Draft", "Published", "Archived"
   author: string; // The creator's name, default to '@montymi'
   coauthors: string[]; // Array of coauthors
-  version: string; // Example: "v1.0.0"
+  version: string; // Example: "1.0.0"
   description: string;
   releaseDate: string;
   lastUpdate: string;
-  files: { name: string; length: string; link: string }[];
   githubLink: string;
   readmeLink: string;
 };
@@ -49,10 +48,11 @@ type Releases = {
 
 const ReleasePage: React.FC<Release> = ({
   title,
+  folder,
+  version,
   description,
   releaseDate,
   lastUpdate,
-  files,
   githubLink,
   readmeLink,
   status,
@@ -60,7 +60,7 @@ const ReleasePage: React.FC<Release> = ({
   const theme = useTheme();
   const [isPlaying, setIsPlaying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [audio] = useState(new Audio('/path/to/your/audio/file.mp3')); // Single audio file
+  const [audio] = useState(new Audio(`/${folder}/${version}/audio.mp3`)); // Single audio file
 
   const playAudio = useCallback(() => {
     audio
@@ -120,7 +120,7 @@ const ReleasePage: React.FC<Release> = ({
               >
                 @montymi
               </a>{' '}
-              • {new Date(lastUpdate).getFullYear()} • {files.length} segments
+              • {new Date(lastUpdate).getFullYear()} • {version}
             </Typography>
           </div>
         </div>
@@ -274,6 +274,8 @@ function Discography(): JSX.Element {
         const updatedData = {
           ...data,
           status: release.status, // Add the status from the release
+          version: release.version, // Add the version from the release
+          Folder: release.folder, // Add the folder name from the release
         };
         setSelectedRelease(updatedData); // Set the selected release data
         setLoading(false); // Stop loading once data is fetched
