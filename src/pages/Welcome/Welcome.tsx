@@ -9,7 +9,7 @@ import Icon from '@mui/material/Icon';
 import { isMobile } from 'is-mobile';
 import { LibraryBooksOutlined, Inbox, Terrain } from '@mui/icons-material';
 import { Select, MenuItem } from '@mui/material';
-import useHistoryEvents from '../../hooks/useHistoryEvents';
+import { useHistoryEvents } from '@/hooks/useHistory';
 
 import LatestCommit from './LatestCommit';
 
@@ -23,16 +23,10 @@ function Welcome() {
   const isPortrait = useOrientation();
   const flexDirection = isPortrait ? 'column' : 'row';
   const theme = useTheme();
-
-  const { events, loading, error } = useHistoryEvents(new Date().getMonth(), new Date().getDate());
-
   const [selectedYear, setSelectedYear] = React.useState<number | string>('');
+  const today = new Date();
 
-  React.useEffect(() => {
-    if (events && events.length > 0 && !selectedYear) {
-      setSelectedYear(events[0].year);
-    }
-  }, [events, selectedYear]);
+  const { events, loading, error } = useHistoryEvents(today.getMonth() + 1, today.getDate());
 
   return (
     <>
@@ -141,10 +135,34 @@ function Welcome() {
                     {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                   </Typography>
                   <Select
-                    value={selectedYear}
+                    value={selectedYear || (events?.[0]?.year ?? today.getFullYear())}
                     onChange={(e) => setSelectedYear(e.target.value)}
                     displayEmpty
-                    sx={{ marginLeft: '1em' }}
+                    sx={{
+                      marginLeft: '1em',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                      },
+                      '& .MuiSelect-select': {
+                        padding: '4px 32px 4px 8px',
+                        fontWeight: 'bold',
+                      },
+                    }}
+                    MenuProps={{
+                      PaperProps: {
+                        sx: {
+                          maxHeight: 300,
+                          '& .MuiMenuItem-root': {
+                            padding: '4px 16px',
+                            minHeight: '32px',
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                            },
+                          },
+                        },
+                      },
+                    }}
                   >
                     {Array.isArray(events)
                       ? events.map((event: HistoryEvent, index) => (
@@ -165,7 +183,9 @@ function Welcome() {
                   >
                     {(Array.isArray(events) ? events : []).find(
                       (event: HistoryEvent) => event.year === selectedYear,
-                    )?.content || 'Have a great day!'}
+                    )?.content ||
+                      events?.[0]?.content ||
+                      'Have a great day!'}
                   </Typography>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
