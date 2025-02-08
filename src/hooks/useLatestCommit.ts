@@ -92,7 +92,6 @@ const useLatestCommits = (
         commitPromises.push(...additionalCommits);
       }
       const commitsData = await Promise.all(commitPromises);
-      console.log('commitsData:', commitsData);
       setCommits(commitsData.filter((commit): commit is Commit => commit !== null));
     } catch (error: unknown) {
       if (error instanceof Error) {
