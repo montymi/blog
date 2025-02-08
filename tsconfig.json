@@ -21,6 +21,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "api/day-in-history.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
