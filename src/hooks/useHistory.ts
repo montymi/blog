@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchHistoryEvents, HistoryEvent } from '@/api/day-in-history';
+import { fetchHistoryEvents, HistoryEvent } from '../../api/day-in-history';
 
 export const useHistoryEvents = (month: number, day: number) => {
   const [events, setEvents] = useState<HistoryEvent[]>([]);
