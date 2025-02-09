@@ -15,7 +15,6 @@ const useHistory = (): { events: HistoryEvent[]; loading: boolean; refetch: () =
   const fetchHistoryEvents = useCallback(async () => {
     try {
       const fetchWithRetry = async (
-        url: string,
         retries: number = 3,
         delay: number = 1000,
       ): Promise<Response> => {
@@ -40,7 +39,7 @@ const useHistory = (): { events: HistoryEvent[]; loading: boolean; refetch: () =
               continue;
             }
 
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error ! status: ${response.status}`);
           } catch (err) {
             if (i === retries - 1) throw err;
             await new Promise((resolve) => setTimeout(resolve, delay * Math.pow(2, i))); // Exponential backoff
@@ -49,7 +48,7 @@ const useHistory = (): { events: HistoryEvent[]; loading: boolean; refetch: () =
         throw new Error('Maximum retries reached');
       };
 
-      const response = await fetchWithRetry('/api/date');
+      const response = await fetchWithRetry();
       const data = await response.json();
 
       if (!data?.events) {
