@@ -5,67 +5,53 @@ interface HistoryEvent {
   content: string;
 }
 
-const useHistory = (): { events: HistoryEvent[]; loading: boolean; refetch: () => void } => {
+const useHistory = () => {
   const [events, setEvents] = useState<HistoryEvent[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const today = new Date();
   const month = today.getMonth() + 1;
   const day = today.getDate();
 
   const fetchHistoryEvents = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+
     try {
-      const fetchWithRetry = async (
-        retries: number = 3,
-        delay: number = 1000,
-      ): Promise<Response> => {
-        for (let i = 0; i < retries; i++) {
-          try {
-            // Use relative URL to leverage Vite's proxy
-            const response = await fetch(`/api/date?month=${month}&day=${day}`, {
-              headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-            });
+      const response = await fetch(`/api/date?month=${month}&day=${day}`, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
 
-            if (response.ok) {
-              return response;
-            }
-
-            if (response.status === 403 && response.headers.get('X-RateLimit-Remaining') === '0') {
-              const resetTime = response.headers.get('X-RateLimit-Reset');
-              const waitTime = resetTime ? parseInt(resetTime) * 1000 - Date.now() : delay;
-              await new Promise<void>((resolve) => setTimeout(resolve, waitTime));
-              continue;
-            }
-
-            throw new Error(`HTTP error ! status: ${response.status}`);
-          } catch (err) {
-            if (i === retries - 1) throw err;
-            await new Promise((resolve) => setTimeout(resolve, delay * Math.pow(2, i))); // Exponential backoff
-          }
-        }
-        throw new Error('Maximum retries reached');
-      };
-
-      const response = await fetchWithRetry();
-      const data = await response.json();
-
-      if (!data?.events) {
-        throw new Error('Invalid response format');
+      if (response.status === 404) {
+        // Handle 404 gracefully - no events for this date
+        setEvents([]);
+        return;
       }
 
-      const formattedEvents = data.events.map((event: HistoryEvent) => ({
-        year: event.year,
-        content: event.content,
-      }));
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
 
-      setEvents(formattedEvents);
-    } catch (error: unknown) {
-      console.error(
-        'Error fetching latest events:',
-        error instanceof Error ? error.message : 'Unknown error',
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        setEvents([]);
+        return;
+      }
+
+      setEvents(
+        data.map((event: HistoryEvent) => ({
+          year: event.year,
+          content: event.content,
+        })),
       );
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to fetch events');
+      setEvents([]);
     } finally {
       setLoading(false);
     }
@@ -75,7 +61,7 @@ const useHistory = (): { events: HistoryEvent[]; loading: boolean; refetch: () =
     fetchHistoryEvents();
   }, [fetchHistoryEvents]);
 
-  return { events, loading, refetch: fetchHistoryEvents };
+  return { events, loading, error, refetch: fetchHistoryEvents };
 };
 
 export default useHistory;
