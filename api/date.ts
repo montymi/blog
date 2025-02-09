@@ -10,7 +10,7 @@ export default async function handler(req: Request) {
     });
   }
 
-  const API_URL = `https://events.historylabs.io/api/date?month=${month}&day=${day}`;
+  const API_URL = `https://events.historylabs.io/date?month=${month}&day=${day}`;
 
   try {
     const response = await fetch(API_URL, {
