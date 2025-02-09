@@ -33,9 +33,6 @@ export default defineConfig({
             proxyRes.headers['Access-Control-Allow-Headers'] = 'Content-Type';
           });
         },
-        options: {
-          cors: true,
-        }
       }
     }
   },

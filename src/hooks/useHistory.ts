@@ -50,7 +50,7 @@ const useHistory = (): { events: HistoryEvent[]; loading: boolean; refetch: () =
         throw new Error('Rate limit exceeded');
       };
 
-      const response = await fetchWithRetry(`/api/date?month=${month}&day=${day}`);
+      const response = await fetchWithRetry(`/api/history?month=${month}&day=${day}`);
       const data = await response.json();
 
       const eventPromises: Promise<HistoryEvent>[] = data?.events.map(
