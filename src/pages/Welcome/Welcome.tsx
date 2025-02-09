@@ -9,7 +9,7 @@ import Icon from '@mui/material/Icon';
 import { isMobile } from 'is-mobile';
 import { LibraryBooksOutlined, Inbox, Terrain } from '@mui/icons-material';
 import { Select, MenuItem } from '@mui/material';
-import { useHistoryEvents } from '@/hooks/useHistory';
+import useHistory from '@/hooks/useHistory';
 
 import LatestCommit from './LatestCommit';
 
@@ -26,7 +26,7 @@ function Welcome() {
   const [selectedYear, setSelectedYear] = React.useState<number | string>('');
   const today = new Date();
 
-  const { events, loading, error } = useHistoryEvents(today.getMonth() + 1, today.getDate());
+  const { events, loading, error } = useHistory(today.getMonth() + 1, today.getDate());
 
   return (
     <>
