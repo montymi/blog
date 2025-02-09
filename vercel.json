@@ -1,5 +1,5 @@
 {
-    "buildCommand": "next build",
+    "buildCommand": "vite build",
     "rewrites": [
         {
             "source": "/api/(.*)",
