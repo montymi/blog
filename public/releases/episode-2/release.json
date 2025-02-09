@@ -2,60 +2,8 @@
     "title": "LazyGrocer",
     "description": "Automatically generate your shopping list for a selected number of recipes.Import or manually add recipes to a locally stored database.",
     "releaseDate": "2024-04-17",
-    "lastUpdate": "2024-04-17",
-    "files": [
-      {
-        "name": "main.py",
-        "length": "02:30",
-        "link": "/releases/episode-2/main.mp3"
-      },
-      {
-        "name": "test_main.py",
-        "length": "03:00",
-        "link": "/releases/episode-2/test_main.mp3"
-      },
-      {
-        "name": "test_data_inserts.py",
-        "length": "01:15",
-        "link": "/releases/episode-2/test_data_inserts.mp3"
-      },
-      {
-        "name": "test_data_selects.py",
-        "length": "00:45",
-        "link": "/releases/episode-2/test_data_selects.mp3"
-      },
-      {
-        "name": "dataController.py",
-        "length": "00:45",
-        "link": "/releases/episode-2/dataController.mp3"
-      },
-      {
-        "name": "dataControllerv2.py",
-        "length": "00:45",
-        "link": "/releases/episode-2/dataControllerv2.mp3"
-      },
-      {
-        "name": "init.sql",
-        "length": "15:45",
-        "link": "/releases/episode-2/init.mp3"
-      },
-      {
-        "name": "tables.py",
-        "length": "00:45",
-        "link": "/releases/episode-2/tables.mp3"
-      },
-      {
-        "name": "scripts.py",
-        "length": "00:45",
-        "link": "/releases/episode-2/dataController.mp3"
-      },
-      {
-        "name": "chef.py",
-        "length": "00:45",
-        "link": "/releases/episode-2/chef.mp3"
-      }
-    ],
+    "lastUpdate": "2024-12-23",
     "githubLink": "https://www.github.com/montymi/LazyGrocer",
-    "readmeLink": "https://github.com/montymi/LazyGrocer/blob/main/README.md"
+    "readmeLink": "https://raw.githubusercontent.com/montymi/LazyGrocer/main/README.md"
   }
   

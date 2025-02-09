@@ -4,12 +4,12 @@ import useOrientation from '@/hooks/useOrientation';
 import { useTheme } from '@mui/material/styles';
 import { Typography, Tooltip, IconButton } from '@mui/material';
 import Spotlight from './Spotlight';
-import { Lightbulb, Build, CalendarMonth } from '@mui/icons-material';
+import { Schedule, Lightbulb, Build, CalendarMonth } from '@mui/icons-material';
 import Icon from '@mui/material/Icon';
 import { isMobile } from 'is-mobile';
 import { LibraryBooksOutlined, Inbox, Terrain } from '@mui/icons-material';
 import { Select, MenuItem } from '@mui/material';
-import useHistoryEvents from '../../hooks/useHistoryEvents';
+import useHistory from '@/hooks/useHistory';
 
 import LatestCommit from './LatestCommit';
 
@@ -23,16 +23,10 @@ function Welcome() {
   const isPortrait = useOrientation();
   const flexDirection = isPortrait ? 'column' : 'row';
   const theme = useTheme();
-
-  const { events, loading, error } = useHistoryEvents(new Date().getMonth(), new Date().getDate());
-
   const [selectedYear, setSelectedYear] = React.useState<number | string>('');
+  const today = new Date();
 
-  React.useEffect(() => {
-    if (events && events.length > 0 && !selectedYear) {
-      setSelectedYear(events[0].year);
-    }
-  }, [events, selectedYear]);
+  const { events, loading } = useHistory();
 
   return (
     <>
@@ -128,8 +122,6 @@ function Welcome() {
             {/* Bio */}
             {loading ? (
               <div>Loading...</div>
-            ) : error ? (
-              <div>Error occurred. Please try again later.</div>
             ) : events && events.length > 0 ? (
               <div style={{ textAlign: 'left', maxWidth: '80%', marginBottom: '2em' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
@@ -141,10 +133,34 @@ function Welcome() {
                     {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                   </Typography>
                   <Select
-                    value={selectedYear}
+                    value={selectedYear || (events?.[0]?.year ?? today.getFullYear())}
                     onChange={(e) => setSelectedYear(e.target.value)}
                     displayEmpty
-                    sx={{ marginLeft: '1em' }}
+                    sx={{
+                      marginLeft: '1em',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                      },
+                      '& .MuiSelect-select': {
+                        padding: '4px 32px 4px 8px',
+                        fontWeight: 'bold',
+                      },
+                    }}
+                    MenuProps={{
+                      PaperProps: {
+                        sx: {
+                          maxHeight: 300,
+                          '& .MuiMenuItem-root': {
+                            padding: '4px 16px',
+                            minHeight: '32px',
+                            '&:hover': {
+                              backgroundColor: 'rgba(0, 0, 0, 0.08)',
+                            },
+                          },
+                        },
+                      },
+                    }}
                   >
                     {Array.isArray(events)
                       ? events.map((event: HistoryEvent, index) => (
@@ -165,7 +181,9 @@ function Welcome() {
                   >
                     {(Array.isArray(events) ? events : []).find(
                       (event: HistoryEvent) => event.year === selectedYear,
-                    )?.content || 'Have a great day!'}
+                    )?.content ||
+                      events?.[0]?.content ||
+                      'Have a great day!'}
                   </Typography>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -181,7 +199,40 @@ function Welcome() {
                 </div>
               </div>
             ) : (
-              <div>No events available.</div>
+              <div style={{ textAlign: 'left', maxWidth: '80%', marginBottom: '2em' }}>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
+                  <Icon sx={{ marginRight: 2, color: 'grey' }}>
+                    <Schedule />
+                  </Icon>
+                  <Typography variant="body1" sx={{ fontWeight: 150, fontSize: '1.1rem' }}>
+                    Began programming in March of 2019.
+                  </Typography>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
+                  <Icon sx={{ marginRight: 2, color: 'grey' }}>
+                    <Lightbulb />
+                  </Icon>
+                  <Typography
+                    variant="body2"
+                    sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                  >
+                    Building user-friendly solutions that let people work smarter, spark creativity,
+                    and enjoy more life offline.
+                  </Typography>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Icon sx={{ marginRight: 2, color: 'grey' }}>
+                    <Build />
+                  </Icon>
+                  <Typography
+                    variant="body2"
+                    sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                  >
+                    I enjoy problem-solving, whether it’s in programming, playing fútbol, or
+                    exploring new topics.
+                  </Typography>
+                </div>
+              </div>
             )}
             {/* Spotlight Section */}
             <div
