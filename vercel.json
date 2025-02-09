@@ -1,15 +1,9 @@
 {
-    "build": {
-        "src": "vite build",
-        "outputDirectory": "dist"
-    },
-    "routes": [
-        {
-            "src": "/api/(.*)",
-            "dest": "/api/$1"
-        }
-    ],
+    "buildCommand": "vite build",
     "rewrites": [
-        { "source": "/api/history", "destination": "/api/proxy" }
+        {
+            "source": "/api/(.*)",
+            "destination": "/api/$1"
+        }
     ]
 }

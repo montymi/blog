@@ -122,7 +122,7 @@ function Welcome() {
             {/* Bio */}
             {loading ? (
               <div>Loading...</div>
-            ) : events && events.length > 0 ? (
+            ) : events ? (
               <div style={{ textAlign: 'left', maxWidth: '80%', marginBottom: '2em' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
                   <Icon sx={{ marginRight: 2, color: 'grey' }}>
