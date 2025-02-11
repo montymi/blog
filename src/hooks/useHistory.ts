@@ -38,13 +38,13 @@ const useHistory = () => {
 
       const data = await response.json();
 
-      if (!Array.isArray(data)) {
+      if (!Array.isArray(data.events)) {
         setEvents([]);
         return;
       }
 
       setEvents(
-        data.map((event: HistoryEvent) => ({
+        data.events.map((event: { year: number; content: string }) => ({
           year: event.year,
           content: event.content,
         })),

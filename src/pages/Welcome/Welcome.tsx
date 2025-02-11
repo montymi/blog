@@ -128,7 +128,10 @@ function Welcome() {
                   <Icon sx={{ marginRight: 2, color: 'grey' }}>
                     <CalendarMonth />
                   </Icon>
-                  <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1.2rem' }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: 600, fontSize: isMobile() ? '1rem' : '1.2rem' }}
+                  >
                     On This Date:{' '}
                     {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                   </Typography>
@@ -177,7 +180,11 @@ function Welcome() {
                   </Icon>
                   <Typography
                     variant="body2"
-                    sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                    sx={{
+                      lineHeight: 1.5,
+                      fontWeight: 150,
+                      fontSize: isMobile() ? '1rem' : '1.1rem',
+                    }}
                   >
                     {(Array.isArray(events) ? events : []).find(
                       (event: HistoryEvent) => event.year === selectedYear,
@@ -192,7 +199,11 @@ function Welcome() {
                   </Icon>
                   <Typography
                     variant="subtitle1"
-                    sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                    sx={{
+                      lineHeight: 1.5,
+                      fontWeight: 150,
+                      fontSize: isMobile() ? '1rem' : '1.1rem',
+                    }}
                   >
                     For more projects, click the vinyl or see my recent commits.
                   </Typography>
@@ -204,7 +215,10 @@ function Welcome() {
                   <Icon sx={{ marginRight: 2, color: 'grey' }}>
                     <Schedule />
                   </Icon>
-                  <Typography variant="body1" sx={{ fontWeight: 150, fontSize: '1.1rem' }}>
+                  <Typography
+                    variant="body1"
+                    sx={{ fontWeight: 150, fontSize: isMobile() ? '1rem' : '1.1rem' }}
+                  >
                     Began programming in March of 2019.
                   </Typography>
                 </div>
@@ -214,7 +228,11 @@ function Welcome() {
                   </Icon>
                   <Typography
                     variant="body2"
-                    sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                    sx={{
+                      lineHeight: 1.5,
+                      fontWeight: 150,
+                      fontSize: isMobile() ? '1rem' : '1.1rem',
+                    }}
                   >
                     Building user-friendly solutions that let people work smarter, spark creativity,
                     and enjoy more life offline.
@@ -226,7 +244,11 @@ function Welcome() {
                   </Icon>
                   <Typography
                     variant="body2"
-                    sx={{ lineHeight: 1.5, fontWeight: 150, fontSize: '1.1rem' }}
+                    sx={{
+                      lineHeight: 1.5,
+                      fontWeight: 150,
+                      fontSize: isMobile() ? '1rem' : '1.1rem',
+                    }}
                   >
                     I enjoy problem-solving, whether it’s in programming, playing fútbol, or
                     exploring new topics.

@@ -42,6 +42,7 @@
     "@react-three/drei": "^9.117.3",
     "@react-three/fiber": "^8.17.10",
     "@vercel/analytics": "^1.4.1",
+    "@vercel/node": "^5.1.2",
     "express": "^4.21.2",
     "gray-matter": "^4.0.3",
     "howler": "^2.2.4",
@@ -59,7 +60,8 @@
     "recoil": "^0.7.7",
     "rehype-raw": "^7.0.0",
     "swiper": "^11.1.15",
-    "three": "^0.170.0"
+    "three": "^0.170.0",
+    "vite-plugin-vercel": "^9.0.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.1",
