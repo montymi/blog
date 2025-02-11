@@ -27,7 +27,7 @@ export default defineConfig({
         },
       },
     },
-    chunkSizeWarningLimit: 600, // Adjust if necessary
+    chunkSizeWarningLimit: 900, // Adjust if necessary
   },
   plugins: [
     react(),
