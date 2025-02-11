@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, Suspense, lazy } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,6 +15,8 @@ import { injectSpeedInsights } from '@vercel/speed-insights';
 
 injectSpeedInsights();
 
+const Pages = lazy(() => import('@/routes/Pages'));
+
 function App() {
   return (
     <div>
@@ -26,7 +28,9 @@ function App() {
         <BrowserRouter>
           <Header />
           <Sidebar />
-          <Pages />
+          <Suspense fallback={<div>Loading...</div>}>
+            <Pages />
+          </Suspense>{' '}
         </BrowserRouter>
       </Fragment>
       {process.env.NODE_ENV === 'production' && <Analytics />}

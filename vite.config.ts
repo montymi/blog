@@ -17,6 +17,18 @@ export default defineConfig({
   test: {
     root: path.resolve(__dirname, './src'),
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'mui-vendor': ['@mui/material', '@mui/icons-material'],
+          'vercel-vendor': ['@vercel/analytics/react', '@vercel/speed-insights'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600, // Adjust if necessary
+  },
   plugins: [
     react(),
     vercel(),
