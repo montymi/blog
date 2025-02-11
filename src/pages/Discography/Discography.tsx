@@ -275,7 +275,7 @@ function Discography(): JSX.Element {
           ...data,
           status: release.status, // Add the status from the release
           version: release.version, // Add the version from the release
-          Folder: release.folder, // Add the folder name from the release
+          folder: release.folder, // Add the folder name from the release
         };
         setSelectedRelease(updatedData); // Set the selected release data
         setLoading(false); // Stop loading once data is fetched
