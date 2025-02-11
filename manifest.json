@@ -4,10 +4,8 @@
   "description": "Personal portfolio, blog, and virtual sandbox of Michael Montanaro",
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
-  "display": "standalone",
   "scope": "/",
   "start_url": "/",
-  "orientation": "any",
   "icons": [
     {
       "src": "pwa-192x192.png",
@@ -30,6 +28,5 @@
     "portfolio",
     "blog"
   ],
-  "lang": "en-US",
-  "dir": "ltr"
+  "lang": "en-US"
 }

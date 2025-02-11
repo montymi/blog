@@ -33,7 +33,12 @@ export default defineConfig({
     react(),
     vercel(),
     VitePWA({
-      manifest,
+      manifest: {
+        ...manifest,
+        display: 'standalone',
+        orientation: 'any',
+        dir: 'ltr',
+      },
       includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       // switch to "true" to enable sw on development
       devOptions: {
