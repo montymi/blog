@@ -6,7 +6,7 @@ const __filename = VPV_fileURLToPath(import.meta.url);
 const __dirname = VPV_dirname(__filename);
 
 
-// api/date.ts
+// _api/date.ts
 async function handler(req, res) {
   const { month, day } = req.query;
   if (!month || !day) {
