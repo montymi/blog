@@ -73,7 +73,7 @@ const VinylScene = () => {
         <ambientLight intensity={0.5} />
         <directionalLight intensity={1} position={[5, 5, 5]} />
 
-        {model && (
+        {model && textures && (
           <SpinningVinyl
             model={model}
             textures={textures}
