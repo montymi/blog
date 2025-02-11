@@ -34,9 +34,9 @@ const VinylScene = () => {
       const textureLoader = new THREE.TextureLoader();
 
       setTextures({
-        aoTexture: textureLoader.load('/vinyl-object/textures/internal_ground_ao_texture.jpeg'),
-        normalTexture: textureLoader.load('/vinyl-object/textures/vinyl_normal.png'),
-        roughnessTexture: textureLoader.load('/vinyl-object/textures/vinyl_roughness.png'),
+        aoTexture: textureLoader.load('/vinyl-object/source/internal_ground_ao_texture.jpeg'),
+        normalTexture: textureLoader.load('/vinyl-object/source/vinyl_normal.png'),
+        roughnessTexture: textureLoader.load('/vinyl-object/source/vinyl_roughness.png'),
       });
     };
 
