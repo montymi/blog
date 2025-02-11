@@ -43,6 +43,7 @@
     "@react-three/fiber": "^8.17.10",
     "@vercel/analytics": "^1.4.1",
     "@vercel/node": "^5.1.2",
+    "@vercel/speed-insights": "^1.2.0",
     "express": "^4.21.2",
     "gray-matter": "^4.0.3",
     "howler": "^2.2.4",
