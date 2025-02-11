@@ -11,17 +11,16 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <h2 align="center">My Personal Sandbox on the Web</h2>
+  <h2 align="center">📰 blog</h2>
+
+  Personal portfolio and sandbox on the web.
 
 <p align="center">
-
-[![Analyses](https://github.com/montymi/blog/actions/workflows/analyses.yml/badge.svg)](https://github.com/montymi/blog/actions/workflows/analyses.yml)
-[![E2E Tests](https://github.com/montymi/blog/actions/workflows/e2e.yml/badge.svg)](https://github.com/montymi/blog/actions/workflows/e2e.yml)
 
 </p>
 
   <p align="center">
-    Created by: <span><a href="https://github.com/montymi">Michael Montanaro</a></span>
+    Created by <span><a href="https://github.com/montymi">@montymi</a></span>
     <br />
     <br />
     <a href="https://montymi.com">View Demo</a>
@@ -58,13 +57,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-"My Sandbox on the Web" is a personal portfolio that brings together my work as a software developer and academic. It serves as a central hub for showcasing my projects, research, and other contributions throughout my career.
-
-This repository includes highlights of my software development journey, from personal projects to larger initiatives, as well as academic papers and research that have informed my approach to problem-solving and technology.
+This personal portfolio brings together my work as a software developer and academic. It serves as a central hub for showcasing projects, research, and other contributions; specifically, the repository includes highlights of my software development journey, from personal projects to larger initiatives, as well as academic papers and research that have informed my approach to problem-solving and technology.
 
 The goal is simple: to document and share my progress while providing a snapshot of my skills and experiences in one place. Whether you're here to explore my software projects or academic work, I hope you find something of interest.
-
-Let me know if you'd like any further tweaks!
 
 <br />
 
@@ -87,13 +82,15 @@ Let me know if you'd like any further tweaks!
 <!-- GETTING STARTED -->
 ## Getting Started
 
-For interacting with the demo: <a href="https://montymi.com" target="_blank">Check out the website!</a>
+For interacting with the demo:
+
+<a href="https://montymi.com" target="_blank">Check out the website!</a>
 
 For interacting with the code:
+
 1. Clone and navigate into the repo with:
   ```bash
-  git clone https://github.com/montymi/blog.git
-  cd blog
+  git clone https://github.com/montymi/blog.git && cd blog
   ```
 2. Install dependencies
   ```bash
@@ -107,6 +104,10 @@ For interacting with the code:
   ```bash
   npm run build
   ```
+5. Run production server locally
+  ```bash
+  npm run start
+  ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -115,7 +116,7 @@ For interacting with the code:
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-"My Sandbox on the Web" is divided into three main sections: Discography, Library, and Activity, each offering a unique way to explore my journey as a developer and academic.
+The portfolio is divided into three main sections: Discography, Library, and Activity, each offering a unique way to explore my journey as a developer and academic.
 
 ### Discography 🎙️
 The Discography takes you on an audio-driven walkthrough of my projects, styled like a musical catalog. Each entry is crafted to give you deeper insights into the story behind the work:
@@ -124,7 +125,7 @@ The Discography takes you on an audio-driven walkthrough of my projects, styled 
 - Episodes: Medium-scale projects, often part of a series, reflecting a deeper dive into specific topics.
 - Albums: Comprehensive, larger-scale projects that represent significant milestones in my career.
 
-### Library 📚
+### Library 🗂️ 
 The Library serves as a repository of my academic work and technical writing, including:
 
 - Research papers and publications, complete with summaries and external links.
@@ -133,12 +134,21 @@ The Library serves as a repository of my academic work and technical writing, in
 - It’s the ideal place for a more in-depth look at my technical expertise and academic contributions.
 
 ### Activity 🔍
-The Activity section is a live feed of what I’m currently working on, experimenting with, or learning about. Here, you’ll find:
+The Activity section is a set of cards that highlight what I’m currently working on, experimenting with, or learning about. Here, you’ll find:
 
 - Updates on ongoing projects and experiments.
 - Prototypes and beta versions of ideas in progress.
 - Personal insights and reflections about my process and challenges.
 - This section keeps things fresh and offers a behind-the-scenes look at my development as a creator and researcher.
+
+### Blog 🌍
+The blog section is where whatever’s on my mind, tech, life, and everything in between. can be found Expect a mix of:
+
+- Deep dives into code & tech when I’m in full-on nerd mode.
+- Lessons learned (sometimes painfully) from projects, experiments, and life in general.
+- Random musings & stories—anything from a high school vignette to a weird realization at 2 AM.
+- Hot takes on trends (tech or otherwise) that I can’t keep to myself.
+- Guides & tutorials for things I finally figured out and want to spare someone else the headache.
 
 ### What's Next?
 - Listen: Start with the Discography for an engaging overview of my work, guided by audio storytelling.
@@ -163,10 +173,15 @@ src
 │   ├── fallbacks
 │   └── index.tsx
 ├── hooks
+│   ├── useHistory.ts
+│   ├── useLatestCommit.ts
 │   ├── useOrientation.ts
+│   ├── usePosts.ts
+│   ├── useReadMe.ts
 │   └── useServiceWorkerNotifications.tsx
 ├── pages
 │   ├── Activity
+│   ├── Blog
 │   ├── Discography
 │   ├── Library
 │   ├── NotFound
@@ -176,7 +191,6 @@ src
 │   ├── index.ts
 │   └── types.ts
 ├── sections
-│   ├── Blog
 │   ├── Header
 │   ├── HotKeys
 │   ├── Notifications
@@ -201,6 +215,8 @@ src
 ├── App.tsx
 ├── main.tsx
 └── Root.tsx
+api
+└── date.ts # for running with vercel serverless functions
 
 ```
 
@@ -209,12 +225,12 @@ src
 <!-- TASKS -->
 ## Tasks
 
-- [ ] Add a FastAPI for sending new blog posts
+- [X] Use vercel serverless functions for handling API calls
 - [X] Continue adding projects to the Discography
 - [X] Continue various paper and presentation transfer to the Library
 - [X] Allow scrolling in the Welcome Page
 - [X] Design and upload the Activity Page
-- [ ] Optimize PDF view on phone (using isMobile to show PDF as full-screen perhaps)
+- [X] Optimize PDF view on phone (using isMobile to show PDF as full-screen perhaps)
 - [ ] Create a more interactive 3D environment for the Vinyl object
 - [ ] Add audio files for all Published projects in the Discography
 
@@ -251,8 +267,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 ## Acknowledgments
 
 * [react-pwa](https://github.com/suren-atoyan/react-pwa) by @suren-atoyan for the amazing PWA template
+* [historylabs](https://events.historylabs.io/) for the fun and free API for seeing historical events
 * [ClearDocs](https://github.com/montymi/ClearDocs) for the high quality README template
-* [Vercel][vercelLogo-url] for fast deployment and hosting
+* [Vercel][vercelLogo-url] for fast and free deployment, hosting, and serverless functions
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
