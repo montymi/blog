@@ -17,6 +17,18 @@ export default defineConfig({
   test: {
     root: path.resolve(__dirname, './src'),
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom'],
+          'mui-vendor': ['@mui/material', '@mui/icons-material'],
+          'vercel-vendor': ['@vercel/analytics/react', '@vercel/speed-insights'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 900, // Adjust if necessary
+  },
   plugins: [
     react(),
     vercel(),
@@ -29,6 +41,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html}', '**/*.{svg,png,jpg,gif}'],
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024, // 6 MB
       },
     }),
   ],
