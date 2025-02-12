@@ -30,3 +30,6 @@ dist-ssr
 /playwright/.cache/
 
 .vercel
+
+# Redis dump file
+dump.rdb

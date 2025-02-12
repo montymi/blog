@@ -21,6 +21,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "src/api"],
+  "include": ["src", "_api"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
