@@ -106,7 +106,7 @@ For interacting with the code:
   ```
 5. Run production server locally
   ```bash
-  npm run start
+  npm run preview
   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
