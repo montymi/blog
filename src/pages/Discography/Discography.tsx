@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Typography,
   Tabs,
@@ -18,9 +18,7 @@ import { useTheme } from '@mui/material/styles';
 import Meta from '@/components/Meta';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import DescriptionIcon from '@mui/icons-material/Description';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import PauseIcon from '@mui/icons-material/Pause';
 import { repository } from '@/config';
 import useNotifications from '@/store/notifications';
 import useReadMe from '@/hooks/useReadMe';
@@ -48,7 +46,7 @@ type Releases = {
 
 const ReleasePage: React.FC<Release> = ({
   title,
-  folder,
+  // folder,
   version,
   description,
   releaseDate,
@@ -58,28 +56,28 @@ const ReleasePage: React.FC<Release> = ({
   status,
 }) => {
   const theme = useTheme();
-  const [isPlaying, setIsPlaying] = useState(false);
+  // const [isPlaying, setIsPlaying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [audio] = useState(new Audio(`/${folder}/${version}/audio.mp3`)); // Single audio file
+  // const [audio] = useState(new Audio(`/${folder}/${version}/audio.mp3`)); // Single audio file
 
-  const playAudio = useCallback(() => {
-    audio
-      .play()
-      .then(() => {
-        setIsPlaying(true);
-      })
-      .catch((error) => console.error('Error playing audio', error));
-  }, [audio]);
+  // const playAudio = useCallback(() => {
+  //   audio
+  //     .play()
+  //     .then(() => {
+  //       setIsPlaying(true);
+  //     })
+  //     .catch((error) => console.error('Error playing audio', error));
+  // }, [audio]);
 
-  const stopAudio = () => {
-    audio.pause();
-    setIsPlaying(false);
-  };
+  // const stopAudio = () => {
+  //   audio.pause();
+  //   setIsPlaying(false);
+  // };
 
-  useEffect(() => {
-    audio.addEventListener('ended', () => setIsPlaying(false));
-    return () => audio.removeEventListener('ended', () => setIsPlaying(false));
-  }, [audio]);
+  // useEffect(() => {
+  //   audio.addEventListener('ended', () => setIsPlaying(false));
+  //   return () => audio.removeEventListener('ended', () => setIsPlaying(false));
+  // }, [audio]);
 
   const readmeContent = useReadMe(readmeLink);
 
@@ -133,7 +131,7 @@ const ReleasePage: React.FC<Release> = ({
             width: '100%',
           }}
         >
-          {status === 'Published' && (
+          {/* {status === 'Published' && (
             <div>
               <Tooltip title="Play Audio Walkthrough" placement="top" arrow>
                 <IconButton
@@ -151,7 +149,7 @@ const ReleasePage: React.FC<Release> = ({
                 </IconButton>
               </Tooltip>
             </div>
-          )}
+          )} */}
           {status === 'Published' && (
             <div>
               <Tooltip title="Read more" placement="top" arrow>

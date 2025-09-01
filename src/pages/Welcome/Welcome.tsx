@@ -2,7 +2,7 @@ import React from 'react';
 import Meta from '@/components/Meta';
 import useOrientation from '@/hooks/useOrientation';
 import { useTheme } from '@mui/material/styles';
-import { Typography, Tooltip, IconButton } from '@mui/material';
+import { Typography, Tooltip, IconButton, CircularProgress } from '@mui/material';
 import Spotlight from './Spotlight';
 import { Schedule, Lightbulb, Build, CalendarMonth } from '@mui/icons-material';
 import Icon from '@mui/material/Icon';
@@ -12,6 +12,7 @@ import { Select, MenuItem } from '@mui/material';
 import useHistory from '@/hooks/useHistory';
 
 import LatestCommit from './LatestCommit';
+import { useNavigate } from 'react-router-dom';
 
 type HistoryEvent = {
   year: number;
@@ -25,6 +26,7 @@ function Welcome() {
   const theme = useTheme();
   const [selectedYear, setSelectedYear] = React.useState<number | string>('');
   const today = new Date();
+  const navigate = useNavigate();
 
   const { events, loading } = useHistory();
 
@@ -121,7 +123,17 @@ function Welcome() {
           >
             {/* Bio */}
             {loading ? (
-              <div>Loading...</div>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '100%',
+                  height: '200px',
+                }}
+              >
+                <CircularProgress />
+              </div>
             ) : events && events.length > 0 ? (
               <div style={{ textAlign: 'left', maxWidth: '80%', marginBottom: '2em' }}>
                 <div style={{ display: 'flex', alignItems: 'center', marginBottom: '3em' }}>
@@ -280,15 +292,15 @@ function Welcome() {
                   <IconButton
                     sx={{
                       backgroundColor: 'transparent',
-                      width: '200px', // Doubled the width
-                      height: '200px', // Doubled the height
+                      width: '200px',
+                      height: '200px',
                       borderRadius: '50%',
                       cursor: 'grab',
                       '&:focus': {
                         boxShadow: '1px 4px 4px rgba(0, 0, 0, 0.5)',
                       },
                     }}
-                    onClick={() => (window.location.href = '/discography')}
+                    onClick={() => navigate('/discography')}
                     aria-label="visit-discography-call-to-action"
                   >
                     <Spotlight />
@@ -351,7 +363,7 @@ function Welcome() {
                     padding: '1em',
                     margin: '0.5em',
                   }}
-                  onClick={() => (window.location.href = '/library')}
+                  onClick={() => navigate('/library')}
                 >
                   <Icon>
                     <LibraryBooksOutlined />
@@ -369,7 +381,7 @@ function Welcome() {
                     padding: '1em',
                     margin: '0.5em',
                   }}
-                  onClick={() => (window.location.href = '/blog')}
+                  onClick={() => navigate('/blog')}
                 >
                   <Icon>
                     <Inbox />
@@ -387,7 +399,7 @@ function Welcome() {
                     padding: '1em',
                     margin: '0.5em',
                   }}
-                  onClick={() => (window.location.href = '/activity')}
+                  onClick={() => navigate('/activity')}
                 >
                   <Icon>
                     <Terrain />
