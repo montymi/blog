@@ -1,4 +1,6 @@
+// filepath: /Users/michaelmontanaro/Private/Projects/blog/src/hooks/useLatestCommit.ts
 import { useState, useEffect, useCallback } from 'react';
+import client from '@/utils/redis-client';
 
 export interface Commit {
   sha: string;
@@ -24,12 +26,6 @@ export interface Commit {
   };
 }
 
-/**
- * Custom hook to fetch the latest commit from any GitHub repository of a user.
- *
- * @param {string} username - The GitHub username.
- * @returns {Object} - An object containing the latest commit, loading state, and a refetch function.
- */
 const useLatestCommits = (
   username: string,
 ): { commits: Commit[]; loading: boolean; refetch: () => void } => {
@@ -38,6 +34,15 @@ const useLatestCommits = (
 
   const fetchLatestCommits = useCallback(async () => {
     try {
+      const cacheKey = `github:commits:${username}`;
+      const cachedData = await client.get(cacheKey);
+
+      if (cachedData) {
+        setCommits(JSON.parse(cachedData));
+        setLoading(false);
+        return;
+      }
+
       const fetchWithRetry = async (
         url: string,
         retries: number = 3,
@@ -77,7 +82,6 @@ const useLatestCommits = (
         })
         .filter((commit: Promise<Commit> | null): commit is Promise<Commit> => commit !== null);
 
-      // If less than 5 commits are found, fetch more to ensure we always return 5
       if (commitPromises.length < 5) {
         const additionalCommits = data
           .slice(0, 5 - commitPromises.length)
@@ -91,8 +95,15 @@ const useLatestCommits = (
 
         commitPromises.push(...additionalCommits);
       }
+
       const commitsData = await Promise.all(commitPromises);
-      setCommits(commitsData.filter((commit): commit is Commit => commit !== null));
+      const filteredCommits = commitsData.filter((commit): commit is Commit => commit !== null);
+
+      await client.set(cacheKey, JSON.stringify(filteredCommits), {
+        EX: 3600, // Cache for 1 hour
+      });
+
+      setCommits(filteredCommits);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error fetching latest commits:', error.message);

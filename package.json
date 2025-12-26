@@ -59,6 +59,7 @@
     "react-router-dom": "^6.21.0",
     "react-spring": "^9.7.4",
     "recoil": "^0.7.7",
+    "redis": "^4.7.0",
     "rehype-raw": "^7.0.0",
     "swiper": "^11.1.15",
     "three": "^0.170.0",
