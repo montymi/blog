@@ -45,12 +45,15 @@ export function Board() {
         {ranks.flat().map((square, i) => {
           const dark = (Math.floor(i / 8) + (i % 8)) % 2 === 1;
           const shade = dark ? 'bg-inset' : 'bg-raised';
+          // Fall brown under the cursor, on at once and fading slowly: a trail across the board.
+          const fall =
+            'hover:bg-fall motion-safe:transition-colors motion-safe:duration-700 motion-safe:hover:duration-75';
           const label = square.item
             ? `${square.name}: ${square.item.title}, ${KIND[square.item.kind].toLowerCase()}`
             : '';
           const inside = square.item && <Mark kind={square.item.kind} />;
           const props = {
-            className: `focus-ring relative block ${shade} hover:bg-line focus-visible:z-10`,
+            className: `focus-ring relative block ${shade} ${fall} focus-visible:z-10`,
             'aria-label': label,
             onMouseEnter: () => setShown(square),
             onMouseLeave: () => setShown(null),
@@ -58,7 +61,11 @@ export function Board() {
             onBlur: () => setShown(null),
           };
           return (
-            <span key={square.name} role="listitem" className={square.item ? '' : shade}>
+            <span
+              key={square.name}
+              role="listitem"
+              className={square.item ? '' : `${shade} ${fall}`}
+            >
               {!square.item ? null : square.item.away ? (
                 <a href={square.item.href} {...props} style={{ height: '100%' }}>
                   {inside}
