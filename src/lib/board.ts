@@ -50,3 +50,38 @@ export function board(projects: Project[], posts: Post[], apps: Manifest[]): Squ
   ].slice(0, SIZE);
   return Array.from({ length: SIZE }, (_, n) => ({ name: squareName(n), item: all[n] ?? null }));
 }
+
+const KNIGHT = [
+  [1, 2],
+  [2, 1],
+  [2, -1],
+  [1, -2],
+  [-1, -2],
+  [-2, -1],
+  [-2, 1],
+  [-1, 2],
+];
+
+/**
+ * A knight's tour: all sixty-four squares, each visited once, every step a knight's move. Found
+ * by Warnsdorff's rule (go where the fewest onward moves remain), ties broken by move order, so
+ * the same start always gives the same tour. Square n is file n % 8, rank n / 8, as squareName.
+ */
+export function knightsTour(start = 0): number[] {
+  const seen = new Set([start]);
+  const tour = [start];
+  const onward = (n: number) =>
+    KNIGHT.map(([df, dr]) => [(n % 8) + df, Math.floor(n / 8) + dr])
+      .filter(([f, r]) => f >= 0 && f < 8 && r >= 0 && r < 8)
+      .map(([f, r]) => r * 8 + f)
+      .filter((m) => !seen.has(m));
+  while (tour.length < SIZE) {
+    const next = onward(tour[tour.length - 1]).sort(
+      (a, b) => onward(a).length - onward(b).length,
+    )[0];
+    if (next === undefined) break;
+    seen.add(next);
+    tour.push(next);
+  }
+  return tour;
+}
