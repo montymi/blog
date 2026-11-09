@@ -1,9 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 
-interface HistoryEvent {
-  year: number;
-  content: string;
-}
+import { normalizeHistoryEvents, type HistoryEvent } from '@/lib/history';
 
 const useHistory = () => {
   const [events, setEvents] = useState<HistoryEvent[]>([]);
@@ -37,18 +34,7 @@ const useHistory = () => {
       }
 
       const data = await response.json();
-
-      if (!Array.isArray(data.events)) {
-        setEvents([]);
-        return;
-      }
-
-      setEvents(
-        data.events.map((event: { year: number; content: string }) => ({
-          year: event.year,
-          content: event.content,
-        })),
-      );
+      setEvents(normalizeHistoryEvents(data));
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to fetch events');
       setEvents([]);

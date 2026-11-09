@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
-import matter from 'gray-matter';
-import { Buffer } from 'buffer';
 
-if (typeof window !== 'undefined' && !window.Buffer) {
-  window.Buffer = Buffer;
-}
+import { parseMarkdown } from '@/lib/markdown';
 
 interface ReadMe {
   content: string;
@@ -24,8 +20,7 @@ const useReadMe = (link: string) => {
           throw new Error(`Error fetching README: ${response.statusText}`);
         }
         const text = await response.text();
-        const { data, content } = matter(text);
-        setReadMe({ data, content });
+        setReadMe(parseMarkdown(text));
       } catch (error) {
         console.error(error);
       }

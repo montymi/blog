@@ -2,8 +2,8 @@
   "name": "montymi",
   "short_name": "blog",
   "description": "Personal portfolio, blog, and virtual sandbox of Michael Montanaro",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#0a0d12",
+  "background_color": "#0a0d12",
   "scope": "/",
   "start_url": "/",
   "icons": [
@@ -24,9 +24,6 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": [
-    "portfolio",
-    "blog"
-  ],
+  "categories": ["portfolio", "blog"],
   "lang": "en-US"
 }

@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { RecoilRoot } from 'recoil';
 
 import ThemeProvider from '@/theme/Provider';
+import '@/theme/tokens.css';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);

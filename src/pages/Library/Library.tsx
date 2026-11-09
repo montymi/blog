@@ -12,6 +12,7 @@ import {
 import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 
 import Meta from '@/components/Meta';
+import { retryWithBackoff } from '@/lib/retry';
 import PDFViewer from './PDFViewer'; // Import your PDFViewer component
 
 interface Paper {
@@ -26,23 +27,17 @@ const Library: React.FC = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
   // Function to get page count from a PDF
-  const getPDFPageCount = useCallback(
-    async (file: string, retries: number = 3): Promise<number | JSX.Element> => {
-      try {
-        const pdf = await getDocument(file).promise;
-        return pdf.numPages; // Return the number of pages
-      } catch (error) {
-        console.error('Error loading PDF:', error);
-        if (retries > 0) {
-          console.log(`Retrying... (${4 - retries} attempts left)`);
-          await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second before retry
-          return getPDFPageCount(file, retries - 1); // Retry
-        }
-        return -1; // Return a loading spinner if all retries fail
-      }
-    },
-    [],
-  );
+  const getPDFPageCount = useCallback(async (file: string): Promise<number> => {
+    try {
+      return await retryWithBackoff(() => getDocument(file).promise.then((pdf) => pdf.numPages), {
+        retries: 3,
+        delayMs: 1000,
+      });
+    } catch (error) {
+      console.error('Error loading PDF:', error);
+      return -1;
+    }
+  }, []);
 
   useEffect(() => {
     GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;

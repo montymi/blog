@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
-import matter from 'gray-matter';
-import { Buffer } from 'buffer';
 
-if (typeof window !== 'undefined') {
-  window.Buffer = Buffer;
-}
+import { parseMarkdown } from '@/lib/markdown';
 
 interface Post {
   id: string;
@@ -34,11 +30,11 @@ const usePosts = () => {
               throw new Error(`Error fetching post file: ${res.statusText}`);
             }
             const text = await res.text();
-            const { data, content } = matter(text);
+            const { data, content } = parseMarkdown(text);
             return {
-              id: data.id,
-              title: data.title,
-              date: data.date,
+              id: data.id as string,
+              title: data.title as string,
+              date: data.date as string,
               content,
             };
           }),

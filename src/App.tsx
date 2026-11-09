@@ -3,14 +3,18 @@ import { BrowserRouter } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import CssBaseline from '@mui/material/CssBaseline';
 
+import Loading from '@/components/Loading';
 import { withErrorHandler } from '@/error-handling';
 import AppErrorBoundaryFallback from '@/error-handling/fallbacks/App';
-import Header from '@/sections/Header';
-import HotKeys from '@/sections/HotKeys';
+import NavOverlay from '@/sections/NavOverlay';
 import Notifications from '@/sections/Notifications';
 import SW from '@/sections/SW';
-import Sidebar from '@/sections/Sidebar';
 import { injectSpeedInsights } from '@vercel/speed-insights';
+
+/* eslint-disable react-refresh/only-export-components -- SPA root: the
+   module-level injectSpeedInsights() call and the error-boundary-HOC-wrapped
+   default export already mean Fast Refresh can't preserve state here, so the
+   rule's warning has nothing to protect. */
 
 injectSpeedInsights();
 
@@ -22,14 +26,12 @@ function App() {
       <Fragment>
         <CssBaseline />
         <Notifications />
-        <HotKeys />
         <SW />
         <BrowserRouter>
-          <Header />
-          <Sidebar />
-          <Suspense fallback={<div>Loading...</div>}>
+          <NavOverlay />
+          <Suspense fallback={<Loading />}>
             <Pages />
-          </Suspense>{' '}
+          </Suspense>
         </BrowserRouter>
       </Fragment>
       {process.env.NODE_ENV === 'production' && <Analytics />}

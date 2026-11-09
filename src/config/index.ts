@@ -9,6 +9,7 @@ const phone = '+16175999973';
 
 const repository = 'https://www.github.com/montymi';
 const spotify = 'https://open.spotify.com/user/mumugoalie';
+const linkedin = 'https://www.linkedin.com/in/michael-montanaro';
 
 const messages = {
   app: {
@@ -63,6 +64,7 @@ export {
   email,
   phone,
   spotify,
+  linkedin,
   title,
   defaultMetaTags,
   giphy404,

@@ -6,6 +6,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import vercel from 'vite-plugin-vercel';
 
 import manifest from './manifest.json';
+import devApiPlugin from './vite-dev-api-plugin';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,6 +17,9 @@ export default defineConfig({
   },
   test: {
     root: path.resolve(__dirname, './src'),
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./tests/setup.ts'],
   },
   build: {
     rollupOptions: {
@@ -32,6 +36,7 @@ export default defineConfig({
   plugins: [
     react(),
     vercel(),
+    devApiPlugin(),
     VitePWA({
       manifest: {
         ...manifest,

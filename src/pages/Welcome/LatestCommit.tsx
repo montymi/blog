@@ -1,7 +1,8 @@
 import React from 'react';
 import { Typography, CircularProgress, Button, useTheme } from '@mui/material';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { getRepoNameFromUrl } from '@/utils/getRepoName';
+import { getRepoLinkFromUrl, getRepoNameFromUrl } from '@/lib/getRepoName';
+import { splitCommitMessage } from '@/lib/github';
 import useLatestCommits from '@/hooks/useLatestCommit';
 
 const LatestCommit: React.FC = () => {
@@ -66,61 +67,76 @@ const LatestCommit: React.FC = () => {
           <CircularProgress size={48} />
         </React.Fragment>
       ) : commits && commits.length > 0 ? (
-        commits.map((commit, index) => (
-          <React.Fragment key={index}>
-            <div
-              style={{
-                marginBottom: '2em',
-                padding: '1em',
-                borderRadius: '8px',
-                backgroundColor: theme.palette.background.paper,
-                cursor: 'pointer',
-                transition: 'box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out',
-              }}
-              onClick={() => window.open(commit.html_url, '_blank')}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 0, 0.2)';
-                e.currentTarget.style.backgroundColor = theme.palette.action.hover;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = 'none';
-                e.currentTarget.style.backgroundColor = theme.palette.background.paper;
-              }}
-            >
+        commits.map((commit, index) => {
+          const { summary, body } = splitCommitMessage(commit.commit.message);
+
+          return (
+            <React.Fragment key={index}>
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  borderBottom: `1px solid ${theme.palette.divider}`,
-                  textAlign: 'left',
+                  marginBottom: '2em',
+                  padding: '1em',
+                  borderRadius: '8px',
+                  backgroundColor: theme.palette.background.paper,
                 }}
               >
-                <div>
-                  <Typography
-                    variant="subtitle2"
-                    align="left"
-                    style={{ fontSize: '1rem', fontWeight: 'bold' }}
-                  ></Typography>
-                  <span style={{ color: 'green' }}>+{commit.stats.additions}</span>,{' '}
-                  <span style={{ color: 'red' }}>-{commit.stats.deletions}</span> to{' '}
-                  {getRepoNameFromUrl(commit.url).toUpperCase() || 'GITHUB'}
-                </div>
-                <div style={{ fontSize: '0.875rem', color: theme.palette.text.secondary }}>
-                  {new Date(commit.commit.author.date).toLocaleString()}
-                </div>
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <Typography
-                  variant="caption"
-                  style={{ marginBottom: '0.25em', wordWrap: 'break-word', fontSize: '1.25rem' }}
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    borderBottom: `1px solid ${theme.palette.divider}`,
+                    textAlign: 'left',
+                  }}
                 >
-                  {commit.commit.message}
-                </Typography>
+                  <div>
+                    <span style={{ color: theme.palette.secondary.main }}>
+                      +{commit.stats.additions}
+                    </span>
+                    , <span style={{ color: 'red' }}>-{commit.stats.deletions}</span> to{' '}
+                    <a
+                      href={getRepoLinkFromUrl(commit.url)}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: theme.palette.primary.main }}
+                    >
+                      {getRepoNameFromUrl(commit.url).toUpperCase() || 'GITHUB'}
+                    </a>
+                  </div>
+                  <div style={{ fontSize: '0.875rem', color: theme.palette.text.secondary }}>
+                    {new Date(commit.commit.author.date).toLocaleString()}
+                  </div>
+                </div>
+                <div style={{ textAlign: 'left' }}>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontFamily: '"IBM Plex Mono", monospace',
+                      fontWeight: 500,
+                      wordWrap: 'break-word',
+                    }}
+                  >
+                    {summary}
+                  </Typography>
+                  {body && (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        mt: 0.5,
+                        fontFamily: '"IBM Plex Mono", monospace',
+                        whiteSpace: 'pre-wrap',
+                        wordWrap: 'break-word',
+                      }}
+                    >
+                      {body}
+                    </Typography>
+                  )}
+                </div>
               </div>
-            </div>
-          </React.Fragment>
-        ))
+            </React.Fragment>
+          );
+        })
       ) : (
         <Typography variant="caption" color="textSecondary" sx={{ fontSize: '1.1rem' }}>
           No commits found. I definitely reached the GitHub API rate limit.

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { Tooltip, Typography, Container } from '@mui/material';
 import ReactMarkdown from 'react-markdown';

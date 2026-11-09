@@ -1,29 +1,14 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+// Relative import, not the `@/*` alias: this file is built by Vercel's own
+// Node function bundler, not Vite, and isn't guaranteed to resolve
+// tsconfig path aliases the way the Vite-built src/ tree does.
+import { fetchHistoryEvents } from '../src/lib/historyApi';
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const { month, day } = req.query;
+  const month = Array.isArray(req.query.month) ? req.query.month[0] : req.query.month ?? '';
+  const day = Array.isArray(req.query.day) ? req.query.day[0] : req.query.day ?? '';
 
-  if (!month || !day) {
-    return res.status(400).json({ error: 'Missing month or day parameters' });
-  }
-
-  const API_URL = `https://events.historylabs.io/date?month=${month}&day=${day}`;
-
-  try {
-    const response = await fetch(API_URL, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return res.status(200).json(data);
-  } catch (error) {
-    return res.status(500).json({ error: 'Failed to fetch history events' });
-  }
+  const { status, body } = await fetchHistoryEvents(month, day);
+  return res.status(status).json(body);
 }

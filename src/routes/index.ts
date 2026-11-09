@@ -1,7 +1,7 @@
-import AlbumIcon from '@mui/icons-material/Album';
-import HomeIcon from '@mui/icons-material/Home';
-import TerrainIcon from '@mui/icons-material/Terrain';
-import { LibraryBooksOutlined, Inbox } from '@mui/icons-material';
+import AlbumOutlinedIcon from '@mui/icons-material/AlbumOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import TerrainOutlinedIcon from '@mui/icons-material/TerrainOutlined';
+import { LibraryBooksOutlined, InboxOutlined } from '@mui/icons-material';
 
 import asyncComponentLoader from '@/utils/loader';
 
@@ -12,7 +12,7 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/Welcome')),
     path: '/',
     title: 'Welcome',
-    icon: HomeIcon,
+    icon: HomeOutlinedIcon,
   },
   [Pages.Library]: {
     component: asyncComponentLoader(() => import('@/pages/Library')),
@@ -24,19 +24,19 @@ const routes: Routes = {
     component: asyncComponentLoader(() => import('@/pages/Activity')),
     path: '/activity',
     title: 'Activity',
-    icon: TerrainIcon,
+    icon: TerrainOutlinedIcon,
   },
   [Pages.Discography]: {
     component: asyncComponentLoader(() => import('@/pages/Discography')),
     path: '/discography',
     title: 'Discography',
-    icon: AlbumIcon,
+    icon: AlbumOutlinedIcon,
   },
   [Pages.Blog]: {
     component: asyncComponentLoader(() => import('@/pages/Blog')),
     path: '/blog',
     title: 'Blog',
-    icon: Inbox,
+    icon: InboxOutlined,
   },
   [Pages.NotFound]: {
     component: asyncComponentLoader(() => import('@/pages/NotFound')),

@@ -35,7 +35,7 @@ function Notifier() {
       if (message) {
         enqueueSnackbar(message, {
           ...options,
-          onExited(event, key) {
+          onExited(_event, key) {
             // removen this snackbar from the store
             actions.remove(key);
             removeDisplayed(key);
@@ -44,7 +44,7 @@ function Notifier() {
       }
 
       // keep track of snackbars that we've displayed
-      options.key && storeDisplayed(options.key);
+      if (options.key) storeDisplayed(options.key);
     });
   });
 

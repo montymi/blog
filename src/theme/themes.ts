@@ -1,14 +1,39 @@
 import { ThemeOptions } from '@mui/material/styles';
-import { deepmerge } from '@mui/utils';
 
-import { Themes } from './types';
-
-const sharedTheme = {
+// Color literals below must be kept in sync by hand with the canonical
+// values declared in ./tokens.css — createTheme() needs plain JS values, so
+// that file can't be imported as this module's source of truth directly.
+const theme: ThemeOptions = {
   palette: {
+    mode: 'dark',
     background: {
-      default: '#fafafa',
-      paper: '#fff',
+      default: '#0a0d12', // --ink
+      paper: '#12161d', // --panel
     },
+    text: {
+      primary: '#e7eaef', // --fg
+      secondary: '#8991a0', // --fg-muted
+    },
+    divider: '#232933', // --line
+    primary: {
+      main: '#2b8fd4', // --accent-blue — ocean blue, the fleet accent
+      contrastText: '#0a0d12',
+    },
+    secondary: {
+      main: '#3f8f5f', // --accent-green — forest green, diff additions only
+      contrastText: '#0a0d12',
+    },
+  },
+  typography: {
+    fontFamily: '"IBM Plex Sans", sans-serif',
+    h1: { fontFamily: '"Nunito", sans-serif', fontWeight: 800 },
+    h2: { fontFamily: '"Nunito", sans-serif', fontWeight: 800 },
+    h3: { fontFamily: '"Nunito", sans-serif', fontWeight: 700 },
+    h4: { fontFamily: '"Nunito", sans-serif', fontWeight: 700 },
+    h5: { fontFamily: '"Nunito", sans-serif', fontWeight: 600 },
+  },
+  shape: {
+    borderRadius: 10,
   },
   components: {
     MuiButtonBase: {
@@ -16,8 +41,29 @@ const sharedTheme = {
         disableRipple: true,
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+          border: '1px solid #232933',
+          boxShadow: 'none',
+        },
+      },
+    },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundImage: 'none',
+          border: '1px solid #232933',
+          boxShadow: 'none',
+        },
+      },
+    },
     MuiDivider: {
       styleOverrides: {
+        root: {
+          borderColor: '#232933',
+        },
         vertical: {
           marginRight: 10,
           marginLeft: 10,
@@ -31,36 +77,25 @@ const sharedTheme = {
         },
       },
     },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: '#8991a0',
+          '&:hover': {
+            color: '#2b8fd4',
+            backgroundColor: 'rgba(43, 143, 212, 0.08)',
+          },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderColor: '#232933',
+        },
+      },
+    },
   },
-} as ThemeOptions; // the reason for this casting is deepmerge return type
-// TODO (Suren): replace mui-utils-deepmerge with lodash or ramda deepmerge
-
-const themes: Record<Themes, ThemeOptions> = {
-  light: deepmerge(sharedTheme, {
-    palette: {
-      mode: 'light',
-      background: {
-        default: '#fafafa',
-        paper: '#fff',
-      },
-      primary: {
-        main: '#3f51b5',
-      },
-    },
-  }),
-
-  dark: deepmerge(sharedTheme, {
-    palette: {
-      mode: 'dark',
-      background: {
-        default: '#111',
-        paper: '#171717',
-      },
-      primary: {
-        main: '#333',
-      },
-    },
-  }),
 };
 
-export default themes;
+export default theme;
