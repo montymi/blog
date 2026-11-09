@@ -36,10 +36,7 @@ function Home() {
               {site.line}
             </h1>
             <p className="max-w-[32rem] text-[1.0625rem]">
-              Michael Montanaro builds small apps that turn everyday questions into something
-              useful: a week of meals into one grocery list, or a chess game into a clearer picture
-              of what happened. Try a request below; each app shows how it read it before you open
-              it.
+             Every request takes a unique shape. I build apps that adapt to yours and show you what they found. Try one below.
             </p>
           </div>
           <Command />
