@@ -5,9 +5,9 @@ export const site = {
   name: 'montymi',
   url: 'https://montymi.com',
   owner: 'Michael Montanaro',
-  line: 'I build things, then explain them.',
+  line: 'Tools that make the next step clearer.',
   description:
-    'Michael Montanaro builds things, then explains them. LazyGrocer, Chess, and the writing behind them.',
+    'Michael Montanaro builds small apps that turn everyday questions into useful next steps. Try LazyGrocer or Chess.',
   github: 'montymi',
 };
 

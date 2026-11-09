@@ -2,7 +2,7 @@
   "montymi": 1,
   "id": "chess",
   "name": "Chess",
-  "about": "Play chess against a hand-built AI or a friend online.",
+  "about": "Play a game, then ask what happened: review moves, mistakes, and openings.",
   "url": "https://chess.montymi.com",
   "health": "https://chess.montymi.com/health",
   "repo": "montymi/chess",

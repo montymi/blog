@@ -36,8 +36,7 @@ function Home() {
               {site.line}
             </h1>
             <p className="max-w-[32rem] text-[1.0625rem]">
-              I’m Michael Montanaro. Each app below speaks a small language of its own. Write a
-              sentence in one, and the app shows you how it read it before you go.
+             Every request takes a unique shape. I build apps that adapt to yours and show you what they found. Try one below.
             </p>
           </div>
           <Command />

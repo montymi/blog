@@ -2,7 +2,7 @@
   "montymi": 1,
   "id": "chef",
   "name": "LazyGrocer",
-  "about": "Plan a week of cooking and get the one grocery list for it.",
+  "about": "Plan a week of meals and get recipes plus one grocery list.",
   "url": "https://chef.montymi.com",
   "health": "https://chef.montymi.com/",
   "repo": "montymi/LazyGrocer",
