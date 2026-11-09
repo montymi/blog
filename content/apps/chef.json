@@ -1,0 +1,21 @@
+{
+  "montymi": 1,
+  "id": "chef",
+  "name": "LazyGrocer",
+  "about": "Plan a week of cooking and get the one grocery list for it.",
+  "url": "https://chef.montymi.com",
+  "health": "https://chef.montymi.com/",
+  "repo": "montymi/LazyGrocer",
+  "language": {
+    "name": "the planning language",
+    "verbs": ["plan"],
+    "examples": ["plan 4 dinners for 2 under $40", "plan 5 lunches for 1 without meat prep"],
+    "check": "https://chef.montymi.com/api/v1/planner/check?q={query}",
+    "open": "https://chef.montymi.com/week?q={query}",
+    "grammar": "https://chef.montymi.com/api/v1/planner/grammar"
+  },
+  "assistant": {
+    "connect": "https://chef.montymi.com/connect",
+    "mcp": "https://mcp.montymi.com/chef"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Capstone",
+  "kind": "album",
+  "version": "1.1.0",
+  "status": "archived",
+  "description": "This repository contains Group M2's capstone project, featuring a cross-platform application, microcontroller scripts, and system simulations to accompany the Solar Charging Station.",
+  "released": "2023-12-05",
+  "updated": "2023-12-04",
+  "github": "https://www.github.com/montymi/Capstone",
+  "readme": "https://raw.githubusercontent.com/montymi/Capstone/main/README.md"
+}

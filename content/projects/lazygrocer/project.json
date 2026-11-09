@@ -1,0 +1,12 @@
+{
+  "title": "LazyGrocer",
+  "kind": "episode",
+  "version": "1.1.1",
+  "status": "published",
+  "description": "Automatically generate your shopping list for a selected number of recipes. Import or manually add recipes to a locally stored database.",
+  "released": "2024-04-17",
+  "updated": "2024-12-23",
+  "github": "https://www.github.com/montymi/LazyGrocer",
+  "readme": "https://raw.githubusercontent.com/montymi/LazyGrocer/main/README.md",
+  "live": "https://chef.montymi.com"
+}

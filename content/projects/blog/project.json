@@ -1,0 +1,11 @@
+{
+  "title": "blog",
+  "kind": "album",
+  "version": "1.0.6",
+  "status": "published",
+  "description": "Personal portfolio, blog, and virtual sandbox of @montymi \ud83d\udee0\ufe0f. Brings together work as a software developer and academic. It serves as a central hub for showcasing projects, research, and other contributions.",
+  "released": "2024-11-27",
+  "updated": "2025-02-07",
+  "github": "https://www.github.com/montymi/blog",
+  "readme": "https://raw.githubusercontent.com/montymi/blog/refs/heads/main/README.md"
+}

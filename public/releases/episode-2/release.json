@@ -1,9 +1,0 @@
-{
-    "title": "LazyGrocer",
-    "description": "Automatically generate your shopping list for a selected number of recipes.Import or manually add recipes to a locally stored database.",
-    "releaseDate": "2024-04-17",
-    "lastUpdate": "2024-12-23",
-    "githubLink": "https://www.github.com/montymi/LazyGrocer",
-    "readmeLink": "https://raw.githubusercontent.com/montymi/LazyGrocer/main/README.md"
-  }
-  

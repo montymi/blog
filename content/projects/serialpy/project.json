@@ -1,0 +1,11 @@
+{
+  "title": "SerialPy",
+  "kind": "single",
+  "version": "1.1.0",
+  "status": "published",
+  "description": "SerialPy is a Python package designed to streamline search and replace operations on data formats: yaml, toml, and json. Built to use with additional shell scripting to semi-automate workflows involving OpenAPI and Swagger files, making it ideal for companies aiming to maintain consistency within their specification sheets. Features include search and replace, allowing for precise control of serial data.",
+  "released": "2022-08-01",
+  "updated": "2022-08-01",
+  "github": "https://www.github.com/montymi/SerialPy",
+  "readme": "https://raw.githubusercontent.com/montymi/SerialPy/main/README.md"
+}
