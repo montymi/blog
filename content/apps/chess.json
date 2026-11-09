@@ -15,6 +15,6 @@
     "grammar": "https://chess.montymi.com/api/history/grammar"
   },
   "assistant": {
-    "connect": "https://chess.montymi.com/connect"
+    "connect": "https://chess.montymi.com/help#claude"
   }
 }
