@@ -2,7 +2,9 @@
  * Everything the site shows, read from /content when the site is built. Adding a post is
  * adding one markdown file; there is no index to keep in step.
  *
- *   content/writing/<slug>.md          a post: title, date, optional tags in frontmatter
+ *   content/writing/<slug>.md          a post: title, date, optional tags in frontmatter; with
+ *                                      `url` (and `minutes`) it lives elsewhere, and the body is
+ *                                      its one-line summary
  *   content/projects/<slug>/project.json   a project, with transcript.md beside it if any
  *   content/papers.json                PDFs served from public/library
  *   content/activities.json            what fills my time, for About
@@ -22,6 +24,8 @@ export interface Post {
   summary: string;
   minutes: number;
   body: string;
+  /** Set when the post lives elsewhere (Substack): the list links there, not to a page here. */
+  url?: string;
 }
 
 export type ProjectStatus = 'published' | 'draft' | 'archived';
@@ -91,8 +95,9 @@ export function readPost(path: string, text: string): Post {
     date: String(data.date ?? ''),
     tags: Array.isArray(data.tags) ? data.tags : [],
     summary: summarize(content),
-    minutes: Math.max(1, Math.round(words / 220)),
+    minutes: typeof data.minutes === 'number' ? data.minutes : Math.max(1, Math.round(words / 220)),
     body: content,
+    ...(typeof data.url === 'string' && /^https:\/\//.test(data.url) ? { url: data.url } : {}),
   };
 }
 
@@ -134,5 +139,8 @@ export const projects: Project[] = Object.entries(projectFiles)
 export const papers: Paper[] = papersJson;
 export const activities: Activity[] = activitiesJson;
 
-export const postBySlug = (slug: string) => posts.find((post) => post.slug === slug);
+export const postBySlug = (slug: string) => posts.find((post) => post.slug === slug && !post.url);
+
+/** Where a post is read: its page here, or the site it was published on. */
+export const postHref = (post: Post) => post.url ?? `/writing/${post.slug}`;
 export const projectBySlug = (slug: string) => projects.find((project) => project.slug === slug);

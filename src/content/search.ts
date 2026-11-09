@@ -1,7 +1,7 @@
 import type { Searchable } from '@/lib/command';
 import { SNAPSHOTS } from '@/platform/registry';
 
-import { activities, papers, posts, projects } from '.';
+import { activities, papers, postHref, posts, projects } from '.';
 
 /** Everything the command line can find, in one list. */
 export const searchIndex: Searchable[] = [
@@ -30,7 +30,8 @@ export const searchIndex: Searchable[] = [
   ...posts.map((post) => ({
     label: post.title,
     kind: 'Post',
-    href: `/writing/${post.slug}`,
+    href: postHref(post),
+    ...(post.url ? { away: true } : {}),
     detail: post.summary,
     text: `${post.summary} ${post.tags.join(' ')} ${post.body}`,
   })),

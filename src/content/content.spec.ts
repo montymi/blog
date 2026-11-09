@@ -53,3 +53,13 @@ test('every project has a known shape', () => {
 test('every paper is a PDF in public/library', () => {
   for (const paper of papers) expect(paper.file).toMatch(/^\/library\/.+\.pdf$/);
 });
+
+test('a post that lives elsewhere links there and has no page here', () => {
+  const preseason = posts.find((post) => post.slug === 'preseason')!;
+  expect(preseason.url).toBe('https://michaelmontanaro.substack.com/p/preseason');
+  expect(preseason.minutes).toBe(8);
+  expect(preseason.summary).toBe(
+    'What a 6am turf field taught me about teams playing a faster game.',
+  );
+  expect(postBySlug('preseason')).toBeUndefined();
+});

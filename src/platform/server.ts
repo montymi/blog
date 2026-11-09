@@ -1,5 +1,5 @@
 /**
- * What montymi.com's server functions (api/) ask the apps. Each call has a short timeout and a
+ * What montymi.com's server functions (_api/) ask the apps. Each call has a short timeout and a
  * plain answer when an app is down: the hub degrades to its snapshots, never to an error page.
  */
 import { fill, readCheck, readManifest, type Check, type Manifest } from './contract';

@@ -4,7 +4,7 @@ import { lastShipped } from './src/lib/shipped';
 import { check, manifests, status } from './src/platform/server';
 
 /**
- * `vite dev` and `vite preview` never run the Vercel functions in `api/` (vite-plugin-vercel
+ * `vite dev` and `vite preview` never run the Vercel functions in `_api/` (vite-plugin-vercel
  * only bundles them at build time), so this middleware answers every `/api/*` route the same way locally.
  */
 async function shipped(_req: unknown, res: import('http').ServerResponse) {

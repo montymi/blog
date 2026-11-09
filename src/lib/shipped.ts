@@ -12,7 +12,7 @@ export interface Shipped {
 
 /**
  * The newest commit a user pushed to a public repository, or null when there is none or
- * GitHub won't say (rate limits, an outage). Runs on the server (`api/shipped.ts`), so one
+ * GitHub won't say (rate limits, an outage). Runs on the server (`_api/shipped.ts`), so one
  * cached call serves every visitor; `token` raises GitHub's limit when set.
  */
 export async function lastShipped(user: string, token?: string): Promise<Shipped | null> {

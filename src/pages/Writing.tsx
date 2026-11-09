@@ -21,9 +21,11 @@ export function Post() {
   const { slug = '' } = useParams();
   const post = postBySlug(slug);
   if (!post) return <NotFound />;
-  const index = posts.indexOf(post);
-  const newer = posts[index - 1];
-  const older = posts[index + 1];
+  // Older and newer among the posts that have a page here.
+  const here = posts.filter((p) => !p.url);
+  const index = here.indexOf(post);
+  const newer = here[index - 1];
+  const older = here[index + 1];
   return (
     <article className="flex flex-col gap-8">
       <Meta title={post.title} description={post.summary} />
