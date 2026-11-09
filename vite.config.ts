@@ -39,9 +39,5 @@ export default defineConfig({
     // Every page is the one app: a reload of /writing/talking-docs serves index.html, not a 404.
     rewrites: [{ source: '/((?!api/).*)', destination: '/index.html' }],
   },
-  plugins: [
-    react(),
-    vercel(),
-    devApiPlugin(),
-  ],
+  plugins: [react(), vercel(), devApiPlugin()],
 });
