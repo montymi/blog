@@ -2,7 +2,6 @@
 import * as path from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import { VitePWA } from 'vite-plugin-pwa';
 import vercel from 'vite-plugin-vercel';
 
 import { MOVED } from './src/moved';
@@ -44,8 +43,5 @@ export default defineConfig({
     react(),
     vercel(),
     devApiPlugin(),
-    // The site used to install a caching service worker, which kept serving old pages after a
-    // deploy. This build ships one that unregisters itself and clears its caches.
-    VitePWA({ selfDestroying: true }),
   ],
 });
