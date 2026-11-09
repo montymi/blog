@@ -61,6 +61,10 @@ function About() {
         <a href={`mailto:${contact.email}`} className="link">
           say hello
         </a>
+        . Longer essays go out on{' '}
+        <a href="https://michaelmontanaro.substack.com" className="link">
+          Substack
+        </a>
         .
       </p>
     </div>

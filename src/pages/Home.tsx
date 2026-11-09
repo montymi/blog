@@ -5,6 +5,7 @@ import { Board } from '@/components/Board';
 import { Command } from '@/components/Command';
 import { MarginList } from '@/components/MarginList';
 import { Switchboard } from '@/components/Switchboard';
+import { Themes } from '@/components/Themes';
 import { Meta } from '@/components/ui';
 import { site } from '@/config';
 import { papers, posts, projects } from '@/content';
@@ -22,9 +23,9 @@ function Part({ title, more, children }: { title: string; more?: ReactNode; chil
 }
 
 // The front page performs its one line: you write a sentence, an app explains how it read it.
-// Beside it, everything made, on sixty-four squares. Then the contents, in the line's order.
+// Beside it, everything made, on sixty-four squares. Then the apps, the writing, and everything
+// grouped by what it's about.
 function Home() {
-  const current = projects.filter((p) => p.status !== 'archived').length;
   return (
     <div className="flex flex-col gap-16">
       <Meta />
@@ -59,39 +60,20 @@ function Home() {
         <MarginList posts={posts.slice(0, 3)} />
       </Part>
 
-      <Part title="Kept">
-        <ul className="flex flex-col border-t border-ink/80">
-          {[
-            {
-              to: '/projects',
-              name: 'Projects',
-              count: `${projects.length} releases, ${current} current`,
-              about:
-                'Each one kept as a release, standing on graph paper by when it shipped and how long I kept at it.',
-            },
-            {
-              to: '/papers',
-              name: 'Papers',
-              count: `${papers.length} PDFs`,
-              about: 'My résumé, the capstone report, and other papers.',
-            },
-          ].map((row) => (
-            <li key={row.to} className="border-b border-line">
-              <Link
-                to={row.to}
-                className="focus-ring group grid gap-x-6 gap-y-1 py-4 sm:grid-cols-[9rem_1fr] sm:items-baseline"
-              >
-                <span className="font-mono text-xs text-muted">{row.count}</span>
-                <span className="flex flex-col gap-0.5">
-                  <span className="text-[1.3125rem] font-semibold leading-7 group-hover:text-accent">
-                    {row.name}
-                  </span>
-                  <span className="text-sm text-muted">{row.about}</span>
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <Part
+        title="By theme"
+        more={
+          <span className="flex gap-4">
+            <Link to="/projects" className="link">
+              All {projects.length} projects
+            </Link>
+            <Link to="/papers" className="link">
+              {papers.length} papers
+            </Link>
+          </span>
+        }
+      >
+        <Themes />
       </Part>
     </div>
   );

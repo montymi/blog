@@ -11,7 +11,13 @@ export function Writing() {
   return (
     <div className="flex flex-col gap-10">
       <Meta title="Writing" description="Posts by Michael Montanaro, newest first." />
-      <PageHeader title="Writing">Newest first.</PageHeader>
+      <PageHeader title="Writing">
+        Newest first. Essays published on{' '}
+        <a href="https://michaelmontanaro.substack.com" className="link">
+          Substack
+        </a>{' '}
+        are listed here too, and open there.
+      </PageHeader>
       <MarginList posts={posts} />
     </div>
   );

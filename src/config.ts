@@ -14,6 +14,7 @@ export const site = {
 export const contact = {
   email: 'mcmontanaro01@gmail.com',
   links: [
+    { label: 'Substack', href: 'https://michaelmontanaro.substack.com' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/michael-montanaro' },
     { label: 'GitHub', href: 'https://github.com/montymi' },
     { label: 'Spotify', href: 'https://open.spotify.com/user/mumugoalie' },
