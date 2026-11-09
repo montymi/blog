@@ -14,13 +14,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
     "jsx": "react-jsx",
     "baseUrl": "./",
-    "types": ["vite-plugin-pwa/client"],
+    "types": ["vite-plugin-pwa/client", "vitest/globals", "@testing-library/jest-dom"],
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", "src/api"],
+  "include": ["src", "_api"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

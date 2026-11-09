@@ -5,6 +5,7 @@
   "singleQuote": true,
   "printWidth": 100,
   "trailingComma": "all",
+  "endOfLine": "lf",
   "importOrder": [
     "^(^react$|@react|react|^recoil$)",
     "^@mui/(.*)$",

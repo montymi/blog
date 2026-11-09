@@ -1,0 +1,11 @@
+{
+  "title": "sesh",
+  "kind": "album",
+  "version": "0.3.9",
+  "status": "draft",
+  "description": "Secure spaces for boundless creativity",
+  "released": "TBD",
+  "updated": "2025-01-22",
+  "github": "https://www.github.com/montymi/sesh",
+  "readme": "https://raw.githubusercontent.com/montymi/sesh/refs/heads/develop/README.md"
+}

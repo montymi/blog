@@ -1,0 +1,11 @@
+{
+  "title": "sesh-cli",
+  "kind": "episode",
+  "version": "1.0.0",
+  "status": "published",
+  "description": "\ud83d\ude80 A CLI tool that uses AI to help developers organize thoughts and streamline workflows. \ud83d\udd12 Secure and fun, it integrates smoothly into your setup, managing ideas and projects efficiently with Retrieval-Augmented Generation (RAG) and LLMs. \ud83d\udca1 Boost your productivity with this local AI assistant.",
+  "released": "2025-01-05",
+  "updated": "2024-01-17",
+  "github": "https://www.github.com/montymi/sesh-cli",
+  "readme": "https://raw.githubusercontent.com/montymi/sesh-cli/main/README.md"
+}

@@ -5,7 +5,8 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import vercel from 'vite-plugin-vercel';
 
-import manifest from './manifest.json';
+import { MOVED } from './src/moved';
+import devApiPlugin from './vite-dev-api-plugin';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -16,38 +17,35 @@ export default defineConfig({
   },
   test: {
     root: path.resolve(__dirname, './src'),
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./tests/setup.ts'],
   },
   build: {
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'mui-vendor': ['@mui/material', '@mui/icons-material'],
-          'vercel-vendor': ['@vercel/analytics/react', '@vercel/speed-insights'],
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          markdown: ['react-markdown', 'rehype-raw'],
         },
       },
     },
-    chunkSizeWarningLimit: 900, // Adjust if necessary
+  },
+  vercel: {
+    redirects: Object.entries(MOVED).map(([source, destination]) => ({
+      source,
+      destination,
+      permanent: true,
+    })),
+    // Every page is the one app: a reload of /writing/talking-docs serves index.html, not a 404.
+    rewrites: [{ source: '/((?!api/).*)', destination: '/index.html' }],
   },
   plugins: [
     react(),
     vercel(),
-    VitePWA({
-      manifest: {
-        ...manifest,
-        display: 'standalone',
-        orientation: 'any',
-        dir: 'ltr',
-      },
-      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-      // switch to "true" to enable sw on development
-      devOptions: {
-        enabled: false,
-      },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html}', '**/*.{svg,png,jpg,gif}'],
-        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024, // 6 MB
-      },
-    }),
+    devApiPlugin(),
+    // The site used to install a caching service worker, which kept serving old pages after a
+    // deploy. This build ships one that unregisters itself and clears its caches.
+    VitePWA({ selfDestroying: true }),
   ],
 });

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "everyday-apps",
+    "name": "Everyday apps",
+    "about": "Software I use myself, every week.",
+    "items": ["app:chef", "app:chess", "project:lazygrocer"]
+  },
+  {
+    "id": "voice-and-ai",
+    "name": "Voice and AI",
+    "about": "Talking to software, and software that talks back.",
+    "items": ["project:linguist", "project:sesh-cli", "post:technology-beyond-the-keyboard"]
+  },
+  {
+    "id": "explaining-things",
+    "name": "Explaining things",
+    "about": "Docs, lessons, and other ways of getting someone started.",
+    "items": ["project:cleardocs", "project:coding-from-zero", "post:talking-docs"]
+  },
+  {
+    "id": "developer-tools",
+    "name": "Developer tools",
+    "about": "Small tools for the plumbing between services.",
+    "items": ["project:serialpy", "project:schema-api-testing", "project:sesh", "project:blog"]
+  },
+  {
+    "id": "engineering-and-research",
+    "name": "Engineering and research",
+    "about": "Hardware, systems, and the reports written about them.",
+    "items": [
+      "project:capstone",
+      "paper:/library/Capstone-Report.pdf",
+      "paper:/library/Capstone-Software-Ecosystem.pdf",
+      "paper:/library/Capstone-Project-Walkthrough.pdf",
+      "paper:/library/BRCA1-Gene-Mutation.pdf"
+    ]
+  },
+  {
+    "id": "teams-and-stories",
+    "name": "Teams and stories",
+    "about": "Writing about people: the field, the team, a shop window.",
+    "items": ["post:preseason", "post:window-shopping"]
+  }
+]

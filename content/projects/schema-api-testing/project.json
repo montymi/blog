@@ -1,0 +1,11 @@
+{
+  "title": "Schema API Testing",
+  "kind": "single",
+  "version": "1.3.0",
+  "status": "published",
+  "description": "A Postman testing suite focused on validating API schema compliance. This repository provides pre-built collections and scripts to automate schema validation, ensuring API responses adhere to defined specifications. Ideal for developers looking to streamline testing workflows with Postman.",
+  "released": "2024-11-25",
+  "updated": "2024-11-25",
+  "github": "https://www.github.com/montymi/SchemaAPITesting",
+  "readme": "https://raw.githubusercontent.com/montymi/SchemaAPITesting/main/README.md"
+}

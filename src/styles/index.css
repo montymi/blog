@@ -1,0 +1,199 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens: the montymi design system (Chalk light, Board dark), the same values
+ * chef.montymi.com uses. Components use the semantic names in tailwind.config.ts, never hex.
+ * RGB triplets so Tailwind opacity modifiers (`bg-ink/5`) work.
+ *   surface = paper · raised = paper-raised · inset = paper-sunken · line = rule
+ *   accent = pitch (the one green) · bad = markup (the red pen) · highlight */
+/* prettier-ignore */
+:root {
+  --c-surface: 242 238 229;
+  --c-raised: 250 248 243;
+  --c-inset: 231 226 214;
+  --c-line: 207 200 184;
+  --c-line-strong: 140 135 122;
+  --c-grid: 226 220 205;
+  --c-ink: 22 24 20;
+  --c-muted: 90 92 85;
+  --c-accent: 30 74 54;
+  --c-on-accent: 242 238 229;
+  --c-bad: 184 58 34;
+  --c-on-bad: 255 247 242;
+  --c-highlight: 233 196 106;
+  --c-on-highlight: 22 24 20;
+  /* The skyline's block faces, lit from the top left: paper-raised, paper-sunken, rule. */
+  --c-face-top: 250 248 243;
+  --c-face-left: 231 226 214;
+  --c-face-right: 207 200 184;
+  color-scheme: light;
+}
+
+/* prettier-ignore */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --c-surface: 18 20 17;
+    --c-raised: 27 30 26;
+    --c-inset: 12 14 11;
+    --c-line: 46 50 44;
+    --c-line-strong: 107 111 102;
+    --c-grid: 31 35 30;
+    --c-ink: 237 233 223;
+    --c-muted: 163 163 152;
+    --c-accent: 127 196 160;
+    --c-on-accent: 12 26 19;
+    --c-bad: 240 138 108;
+    --c-on-bad: 26 11 6;
+    --c-highlight: 217 180 90;
+    --c-on-highlight: 18 20 17;
+    --c-face-top: 74 78 70;
+    --c-face-left: 40 44 38;
+    --c-face-right: 55 59 52;
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  html {
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-surface font-sans text-ink antialiased;
+    font-size: 16px;
+    line-height: 1.5;
+    accent-color: rgb(var(--c-accent));
+  }
+
+  ::selection {
+    background: rgb(var(--c-highlight));
+    color: rgb(var(--c-on-highlight));
+  }
+
+  h1,
+  h2 {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  /* h1 in the display serif; inside a view, h2/h3 in sans. */
+  .screen-title {
+    @apply font-display text-[2.375rem] font-medium leading-[2.625rem] tracking-[-0.01em] text-ink sm:text-[3.125rem] sm:leading-[3.25rem];
+  }
+  .section-title {
+    @apply font-sans text-[1.3125rem] font-semibold leading-7 text-ink;
+  }
+  /* kicker: uppercase mono label above a title or a number. */
+  .kicker {
+    @apply font-mono text-xs font-medium uppercase leading-4 tracking-[0.08em] text-muted;
+  }
+  .focus-ring {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  }
+  .link {
+    @apply focus-ring rounded-sm font-semibold text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent;
+  }
+  .btn {
+    @apply focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded border border-transparent px-4 py-2 text-sm font-semibold motion-safe:transition-colors motion-safe:duration-150;
+  }
+  .btn-primary {
+    @apply btn bg-accent text-on-accent hover:bg-accent/90;
+  }
+  .btn-secondary {
+    @apply btn border-line-strong text-ink hover:bg-inset;
+  }
+  /* A whole-card link: one door, one target. */
+  .door {
+    @apply focus-ring flex h-full min-h-11 flex-col gap-1 rounded border border-line bg-raised p-5 text-ink motion-safe:transition-colors motion-safe:duration-150 hover:border-line-strong;
+  }
+  .door:hover .door-name {
+    @apply text-accent;
+  }
+  /* The graph-paper field: 24px grid of 1px lines. Behind the hero, never body copy. */
+  .graph-paper {
+    background-color: rgb(var(--c-surface));
+    background-image: linear-gradient(rgb(var(--c-grid)) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--c-grid)) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* One alphabet for every app's language: each word set by its part (the check protocol's
+   * roles), so a grocery request and a chess question read the same way. */
+  .sentence {
+    @apply font-mono text-ink;
+  }
+  .role-verb {
+    @apply font-semibold text-accent;
+  }
+  .role-keyword {
+    @apply text-muted;
+  }
+  .role-number {
+    @apply font-semibold tabular-nums;
+  }
+  .role-value {
+    @apply underline decoration-line-strong decoration-1 underline-offset-[5px];
+  }
+  .role-operator {
+    @apply text-muted;
+  }
+  /* From where the app stopped reading: the red pen, as an underline and a tint. */
+  .unread {
+    @apply rounded-sm bg-bad/15 text-ink underline decoration-bad decoration-2 underline-offset-4;
+  }
+
+  /* Long-form text: writing, transcripts, READMEs. */
+  .prose {
+    @apply max-w-prose text-[1.0625rem] leading-7 text-ink;
+  }
+  .prose > * + * {
+    @apply mt-5;
+  }
+  .prose h1,
+  .prose h2 {
+    @apply mt-10 font-display text-[1.75rem] font-medium leading-[2.125rem];
+  }
+  .prose h3,
+  .prose h4 {
+    @apply mt-8 text-[1.3125rem] font-semibold leading-7;
+  }
+  .prose a {
+    @apply link;
+  }
+  .prose ul {
+    @apply list-disc pl-6;
+  }
+  .prose ol {
+    @apply list-decimal pl-6;
+  }
+  .prose li + li {
+    @apply mt-2;
+  }
+  .prose blockquote {
+    @apply border-l-2 border-line-strong pl-4 text-muted;
+  }
+  .prose code {
+    @apply rounded-sm bg-inset px-1 py-0.5 font-mono text-[0.875em];
+  }
+  .prose pre {
+    @apply overflow-x-auto rounded bg-inset p-4 font-mono text-sm leading-6;
+  }
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+  .prose img {
+    @apply max-w-full rounded border border-line;
+  }
+  .prose hr {
+    @apply border-line;
+  }
+  .prose table {
+    @apply block overflow-x-auto text-sm;
+  }
+  .prose th,
+  .prose td {
+    @apply border border-line px-3 py-2 text-left;
+  }
+}
