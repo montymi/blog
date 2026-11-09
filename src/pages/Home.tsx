@@ -36,8 +36,10 @@ function Home() {
               {site.line}
             </h1>
             <p className="max-w-[32rem] text-[1.0625rem]">
-              I’m Michael Montanaro. Each app below speaks a small language of its own. Write a
-              sentence in one, and the app shows you how it read it before you go.
+              Michael Montanaro builds small apps that turn everyday questions into something
+              useful: a week of meals into one grocery list, or a chess game into a clearer picture
+              of what happened. Try a request below; each app shows how it read it before you open
+              it.
             </p>
           </div>
           <Command />

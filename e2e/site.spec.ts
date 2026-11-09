@@ -19,7 +19,7 @@ test.beforeEach(async ({ page }) => {
 test('the front page offers every app and a command line', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'I build things, then explain them.',
+    'Tools that make the next step clearer.',
   );
   await expect(page.getByRole('link', { name: /LazyGrocer/ }).first()).toBeVisible();
   await expect(page.getByRole('combobox')).toBeVisible();
