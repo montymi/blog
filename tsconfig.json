@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": true,
     "jsx": "react-jsx",
     "baseUrl": "./",
-    "types": ["vite-plugin-pwa/client", "vitest/globals", "@testing-library/jest-dom"],
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
     "paths": {
       "@/*": ["src/*"]
     }
