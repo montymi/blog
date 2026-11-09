@@ -20,8 +20,8 @@
   {
     "id": "developer-tools",
     "name": "Developer tools",
-    "about": "Small tools for the plumbing between services.",
-    "items": ["project:serialpy", "project:schema-api-testing", "project:sesh", "project:blog"]
+    "about": "Small tools that help software projects fit together.",
+    "items": ["project:serialpy", "project:schema-api-testing", "project:sesh"]
   },
   {
     "id": "engineering-and-research",
