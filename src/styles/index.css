@@ -27,6 +27,8 @@
   --c-face-top: 250 248 243;
   --c-face-left: 231 226 214;
   --c-face-right: 207 200 184;
+  /* A fall brown: the board square under the cursor. */
+  --c-fall: 184 124 72;
   color-scheme: light;
 }
 
@@ -50,6 +52,7 @@
     --c-face-top: 74 78 70;
     --c-face-left: 40 44 38;
     --c-face-right: 55 59 52;
+    --c-fall: 139 90 50;
     color-scheme: dark;
   }
 }
