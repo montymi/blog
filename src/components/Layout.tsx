@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
 import { contact, site } from '@/config';
 
 import { CommandDialog } from './Command';
+import { Logo } from './Mark';
 import { LastShipped } from './ui';
 
 const SECTIONS = [
@@ -48,9 +49,10 @@ function Layout() {
         <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-4 py-2 sm:px-6">
           <Link
             to="/"
+            aria-label={site.name}
             className="focus-ring flex min-h-11 items-center rounded-sm font-display text-2xl font-medium tracking-[-0.01em] text-ink"
           >
-            {site.name}
+            <Logo />
           </Link>
           <nav aria-label="Sections" className="flex items-center gap-2">
             <ul className="-mx-2 flex flex-wrap">
@@ -76,7 +78,7 @@ function Layout() {
               onClick={() => setAsking(true)}
               aria-label="Search or type a request"
               aria-keyshortcuts="/ Control+K Meta+K"
-              className="focus-ring flex min-h-11 items-center gap-2 rounded-sm px-2 text-sm text-muted hover:text-ink"
+              className="focus-ring ml-2 flex min-h-9 items-center gap-2 rounded border border-line-strong px-3 text-sm text-muted hover:border-ink hover:text-ink"
             >
               <span aria-hidden="true" className="font-mono text-accent">
                 ›
@@ -95,10 +97,10 @@ function Layout() {
       </main>
 
       <footer className="border-t border-line">
-        <div className="mx-auto grid max-w-3xl gap-8 px-4 py-10 sm:grid-cols-2 sm:px-6">
-          <div className="flex flex-col gap-2">
+        <div className="mx-auto grid max-w-3xl gap-8 px-4 py-10 sm:grid-cols-[1fr_18rem] sm:px-6">
+          <div className="flex flex-col gap-3">
+            <Logo className="font-display text-[2rem] font-medium tracking-[-0.01em]" />
             <p className="kicker">Say hello</p>
-            <p className="select-all font-mono text-sm">{contact.email}</p>
             <ul className="-mx-2 flex flex-wrap">
               <li>
                 <a

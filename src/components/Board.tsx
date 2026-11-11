@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { posts, projects } from '@/content';
-import { board, knightsTour, squareName, type Piece, type Square } from '@/lib/board';
+import { board, knightsTour, pieceKey, squareName, type Piece, type Square } from '@/lib/board';
 import { formatDate } from '@/lib/dates';
 import { SNAPSHOTS } from '@/platform/registry';
 
@@ -71,7 +71,7 @@ function useKnightsTour(
  * Everything made, on sixty-four squares: oldest at a1, newest toward h8, the running apps last.
  * Point at a square to read it; empty squares are room for what comes next.
  */
-export function Board() {
+export function Board({ focus = null }: { focus?: Set<string> | null }) {
   const squares = useMemo(() => board(projects, posts, SNAPSHOTS), []);
   const [shown, setShown] = useState<Square | null>(null);
   // The square lit fall brown by the knight's tour or a tap (where there is no hover to do it).
@@ -89,7 +89,7 @@ export function Board() {
   const ranks = Array.from({ length: 8 }, (_, r) => squares.slice((7 - r) * 8, (8 - r) * 8));
 
   return (
-    <figure className="flex w-full max-w-[16rem] flex-col gap-2 md:w-56">
+    <figure className="flex w-full max-w-[20rem] flex-col gap-2">
       <div
         ref={grid}
         className="grid aspect-square grid-cols-8 grid-rows-8 overflow-hidden rounded-sm border border-ink/80"
@@ -109,7 +109,17 @@ export function Board() {
           const label = square.item
             ? `${square.name}: ${square.item.title}, ${KIND[square.item.kind].toLowerCase()}`
             : '';
-          const inside = square.item && <Mark kind={square.item.kind} />;
+          // A theme picked beside the board: what's outside it steps back.
+          const away = focus && square.item && !focus.has(pieceKey(square.item));
+          const inside = square.item && (
+            <span
+              className={`absolute inset-0 motion-safe:transition-opacity ${
+                away ? 'opacity-20' : ''
+              }`}
+            >
+              <Mark kind={square.item.kind} />
+            </span>
+          );
           const props = {
             className: `focus-ring relative block ${shade} ${fall} focus-visible:z-10`,
             'aria-label': label,
@@ -138,20 +148,22 @@ export function Board() {
           );
         })}
       </div>
-      <figcaption aria-live="polite" className="min-h-10 font-mono text-xs leading-5 text-muted">
+      <figcaption
+        aria-live="polite"
+        className="flex min-h-10 justify-between gap-4 font-mono text-xs uppercase leading-5 tracking-[0.08em] text-muted"
+      >
         {shown?.item ? (
-          <>
-            <span className="text-ink">{shown.name}</span> {shown.item.title}
-            <br />
+          <span>
+            <span className="text-ink">{shown.name}</span> {shown.item.title} ·{' '}
             {KIND[shown.item.kind]}
             {shown.item.when !== 'now' && `, ${formatDate(shown.item.when)}`}
-          </>
+          </span>
         ) : (
           <>
-            {used} of 64 squares, oldest at a1.
-            <br />
-            Apps <span className="text-accent">■</span> projects <span className="text-ink">□</span>{' '}
-            writing <span className="text-bad">—</span>
+            <span>A1 = oldest</span>
+            <span>
+              {used} of 64 · {64 - used} to go
+            </span>
           </>
         )}
       </figcaption>

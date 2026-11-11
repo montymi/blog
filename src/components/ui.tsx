@@ -144,17 +144,18 @@ export function LastShipped() {
   }, []);
   if (!shipped) return null;
   return (
-    <div className="flex min-w-0 flex-col gap-1">
-      <Kicker>Last shipped</Kicker>
+    <div className="flex min-w-0 flex-col gap-2 self-start rounded border border-line bg-raised p-4">
+      <p className="kicker flex items-center gap-2">
+        <span aria-hidden="true" className="h-2 w-2 rounded-sm bg-accent" />
+        Last shipped · {formatDate(shipped.at.slice(0, 10), 'short')}
+      </p>
       <a
         href={shipped.url}
         className="focus-ring break-words rounded-sm font-mono text-sm text-ink underline decoration-line-strong underline-offset-4 hover:decoration-accent"
       >
         {shipped.summary}
       </a>
-      <p className="text-sm text-muted">
-        {shipped.repo} · {formatDate(shipped.at.slice(0, 10), 'short')}
-      </p>
+      <p className="text-sm text-muted">{shipped.repo}</p>
     </div>
   );
 }

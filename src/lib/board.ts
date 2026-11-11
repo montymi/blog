@@ -14,6 +14,9 @@ export interface Square {
   item: { kind: Piece; title: string; href: string; away?: boolean; when: string } | null;
 }
 
+/** What a piece is across the site's lists (a theme's entries use the same kinds and titles). */
+export const pieceKey = (item: { kind: string; title: string }) => `${item.kind}:${item.title}`;
+
 const FILES = 'abcdefgh';
 export const SIZE = 64;
 
