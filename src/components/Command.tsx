@@ -2,6 +2,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { searchIndex } from '@/content/search';
+import { ASK_EVENT } from '@/lib/ask';
 import { answer, examples, type Destination } from '@/lib/command';
 import { fill, permalink, type Check, type Manifest } from '@/platform/contract';
 import { SNAPSHOTS } from '@/platform/registry';
@@ -82,6 +83,16 @@ export function Command({
   useEffect(() => {
     if (autoFocus) input.current?.focus();
   }, [autoFocus]);
+  // An example offered elsewhere on the page (an app's card) can be put on this line.
+  useEffect(() => {
+    if (size !== 'large') return;
+    function onAsk(event: Event) {
+      setText((event as CustomEvent<string>).detail);
+      input.current?.focus();
+    }
+    window.addEventListener(ASK_EVENT, onAsk);
+    return () => window.removeEventListener(ASK_EVENT, onAsk);
+  }, [size]);
 
   function go(to: Destination) {
     onDone?.();
@@ -143,20 +154,28 @@ export function Command({
 
   const large = size === 'large';
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3">
+      {large && (
+        <label htmlFor={`${id}-input`} className="kicker">
+          Ask an app, or search
+        </label>
+      )}
       <div
-        className={`flex items-center gap-3 border-b-2 border-ink/80 focus-within:border-accent ${
-          large ? 'pb-2' : 'pb-1'
-        }`}
+        className={
+          large
+            ? 'flex items-center gap-3 rounded border border-line-strong bg-surface py-1 pl-3 pr-1 focus-within:border-accent'
+            : 'flex items-center gap-3 border-b-2 border-ink/80 pb-1 focus-within:border-accent'
+        }
       >
         <span
           aria-hidden="true"
-          className={`font-mono text-accent ${large ? 'text-2xl' : 'text-lg'}`}
+          className={`font-mono text-lg ${large ? 'text-muted' : 'text-accent'}`}
         >
           ›
         </span>
         <input
           ref={input}
+          id={`${id}-input`}
           type="text"
           role="combobox"
           aria-label="Ask an app, or search the site"
@@ -168,11 +187,18 @@ export function Command({
           value={text}
           onChange={(event) => setText(event.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="Ask an app, or search"
-          className={`min-h-11 w-full min-w-0 bg-transparent font-mono text-ink outline-none placeholder:text-muted/70 ${
-            large ? 'text-lg sm:text-xl' : 'text-base'
-          }`}
+          placeholder={(large && examples(SNAPSHOTS)[0]) || 'Ask an app, or search'}
+          className="min-h-11 w-full min-w-0 bg-transparent font-mono text-ink outline-none placeholder:text-muted/70"
         />
+        {large && (
+          <button
+            type="button"
+            onClick={() => (options[active] ? options[active].run() : input.current?.focus())}
+            className="btn-primary min-h-9 shrink-0 px-3 py-1"
+          >
+            Ask
+          </button>
+        )}
       </div>
 
       {result.type === 'empty' && (
@@ -186,7 +212,7 @@ export function Command({
                 setText(example);
                 input.current?.focus();
               }}
-              className="focus-ring min-h-9 rounded-sm bg-inset px-2 font-mono text-[0.8125rem] text-ink hover:bg-line"
+              className="focus-ring min-h-9 rounded-sm border border-line bg-inset px-2 font-mono text-[0.8125rem] text-ink hover:border-line-strong"
             >
               {example}
             </button>

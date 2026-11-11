@@ -37,6 +37,8 @@ const config: Config = {
         'face-left': token('face-left'),
         'face-right': token('face-right'),
         fall: token('fall'),
+        cap: token('cap'),
+        dawn: token('dawn'),
       },
       borderRadius: { sm: '2px', DEFAULT: '4px', md: '4px', lg: '4px', xl: '4px' },
       maxWidth: { prose: '65ch' },

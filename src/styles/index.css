@@ -29,6 +29,9 @@
   --c-face-right: 207 200 184;
   /* A fall brown: the board square under the cursor. */
   --c-fall: 184 124 72;
+  /* The mark's caps, and the hero sun's low orange (it mixes toward highlight as it climbs). */
+  --c-cap: 30 74 54;
+  --c-dawn: 214 112 52;
   color-scheme: light;
 }
 
@@ -53,6 +56,8 @@
     --c-face-left: 40 44 38;
     --c-face-right: 55 59 52;
     --c-fall: 139 90 50;
+    --c-cap: 58 122 82;
+    --c-dawn: 226 122 60;
     color-scheme: dark;
   }
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { askAbove } from '@/lib/ask';
 import type { Manifest } from '@/platform/contract';
 import { SNAPSHOTS } from '@/platform/registry';
 import type { Status } from '@/platform/server';
@@ -11,29 +12,53 @@ function Lamp({ status, known }: { status?: Status; known: boolean }) {
     : !status
       ? ['Status unknown', 'bg-line-strong']
       : status.up
-        ? [`Up, ${status.ms} ms`, 'bg-accent']
+        ? [`Up · ${status.ms} ms`, 'bg-accent']
         : ['Not answering', 'bg-bad'];
   return (
-    <span className="flex items-center gap-2 font-mono text-xs text-muted">
+    <span className="kicker flex items-center gap-2">
       <span aria-hidden="true" className={`h-2 w-2 rounded-full ${lamp}`} />
       {word}
     </span>
   );
 }
 
-/** What an app's language looks like, for its row: its words, and one example to try. */
-function Speaks({ app }: { app: Manifest }) {
-  if (!app.language) return null;
+/** An app's address with the mark's green square for its dot: chef▪montymi.com. */
+function Address({ url }: { url: string }) {
+  const [sub, ...rest] = url.replace('https://', '').split('.');
   return (
-    <span className="text-xs text-muted">
-      Speaks {app.language.name}:{' '}
-      <span className="font-mono text-ink">{app.language.examples[0]}</span>
+    <span className="font-mono text-xs text-muted underline decoration-line-strong underline-offset-4 group-hover:text-ink">
+      <span className="text-ink">{sub}</span>
+      <span aria-hidden="true" className="mx-px inline-block h-1 w-1 bg-accent align-middle" />
+      <span className="sr-only">.</span>
+      {rest.join('.')}
     </span>
   );
 }
 
+/** What an app's language looks like: its name, and one example to put on the line above. */
+function Speaks({ app }: { app: Manifest }) {
+  if (!app.language) return null;
+  const example = app.language.examples[0];
+  return (
+    <div className="flex flex-col items-start gap-2 border-t border-line pt-4">
+      <span className="text-xs text-muted">Speaks {app.language.name}</span>
+      <button
+        type="button"
+        onClick={() => {
+          askAbove(example);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        aria-label={`Try “${example}” on the command line`}
+        className="focus-ring rounded-sm border border-line bg-inset px-2 py-1 font-mono text-[0.8125rem] text-ink hover:border-line-strong"
+      >
+        {example}&nbsp;<span aria-hidden="true">↑</span>
+      </button>
+    </div>
+  );
+}
+
 /**
- * The apps montymi.com fronts, one row each, read from their manifests, with whether they're
+ * The apps montymi.com fronts, one card each, read from their manifests, with whether they're
  * answering right now. A new app appears here by being added to the registry.
  */
 export function Switchboard() {
@@ -53,49 +78,48 @@ export function Switchboard() {
   const assistants = SNAPSHOTS.filter((app) => app.assistant?.connect);
 
   return (
-    <ul className="flex flex-col border-t border-ink/80">
-      {SNAPSHOTS.map((app) => (
-        <li key={app.id} className="border-b border-line">
-          <a
-            href={app.url}
-            className="focus-ring group grid min-h-11 grid-cols-1 gap-x-6 gap-y-1 py-4 sm:grid-cols-[9rem_1fr_auto] sm:items-baseline"
+    <div className="flex flex-col gap-4">
+      <ul className="grid gap-4 sm:grid-cols-2">
+        {SNAPSHOTS.map((app) => (
+          <li
+            key={app.id}
+            className="flex flex-col gap-4 rounded border border-line bg-raised p-4 hover:border-line-strong"
           >
-            <Lamp status={statuses?.[app.id]} known={statuses !== null} />
-            <span className="flex flex-col gap-0.5">
-              <span className="text-[1.3125rem] font-semibold leading-7 group-hover:text-accent">
+            <a href={app.url} className="focus-ring group flex flex-1 flex-col gap-2 rounded-sm">
+              <span className="flex items-center justify-between gap-3">
+                <Lamp status={statuses?.[app.id]} known={statuses !== null} />
+                <Address url={app.url} />
+              </span>
+              <span className="text-[1.1875rem] font-semibold leading-7 group-hover:text-accent">
                 {app.name}
               </span>
               <span className="text-sm text-muted">{app.about}</span>
-              <Speaks app={app} />
-            </span>
-            <span className="font-mono text-sm text-muted group-hover:text-ink">
-              {app.url.replace('https://', '')}
-            </span>
-          </a>
-        </li>
-      ))}
+            </a>
+            <Speaks app={app} />
+          </li>
+        ))}
+      </ul>
       {assistants.length > 0 && (
-        <li className="grid gap-x-6 gap-y-1 border-b border-line py-4 sm:grid-cols-[9rem_1fr_auto] sm:items-baseline">
-          <span className="font-mono text-xs text-muted">Assistant</span>
-          <span className="flex flex-col gap-0.5">
-            <span className="text-[1.3125rem] font-semibold leading-7">Use them with Claude</span>
-            <span className="text-sm text-muted">
+        <div className="flex flex-col gap-3 rounded border border-dashed border-line-strong p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-0.5">
+            <h3 className="text-sm font-semibold">Use them with Claude</h3>
+            <p className="text-xs text-muted">
               Connect an app to Claude, and ask for a week or a question in plain words.
-            </span>
-          </span>
-          <span className="flex flex-wrap gap-x-4">
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
             {assistants.map((app) => (
               <a
                 key={app.id}
                 href={app.assistant!.connect}
-                className="link inline-flex min-h-11 items-center text-sm"
+                className="btn-secondary min-h-9 px-3 py-1 text-xs"
               >
-                {app.name}
+                Connect {app.name}
               </a>
             ))}
-          </span>
-        </li>
+          </div>
+        </div>
       )}
-    </ul>
+    </div>
   );
 }
