@@ -35,7 +35,7 @@ test('each app offers an example to try', () => {
     'mistakes where theme = fork by month',
     'capstone',
     'show foundations',
-    'what uses authkit',
+    'what do Chess and LazyGrocer share',
     'show projects where status = published',
   ]);
 });

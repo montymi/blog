@@ -18,21 +18,42 @@ export interface GraphNode {
   topics: string[];
   status?: ProjectStatus;
   app?: boolean;
+  paperKind?: 'report' | 'document';
 }
+const providerRelations = [
+  'authenticates',
+  'authorizes',
+  'exposes',
+  'supplies',
+  'standardizes',
+] as const;
 export type GraphRelation =
-  | 'enables'
+  | (typeof providerRelations)[number]
   | 'uses'
   | 'maintains'
   | 'documents'
   | 'discusses'
   | 'introduces'
-  | 'hosts';
+  | 'hosts'
+  | 'shared-theme'
+  | 'shared-topic'
+  | 'published-with';
 
 export interface GraphEdge {
   from: string;
   to: string;
   label: string;
-  relation?: GraphRelation;
+  relation: GraphRelation;
+}
+
+/** Context connects ideas; it never establishes that one item uses another. */
+export const isContextEdge = (edge: GraphEdge) =>
+  ['shared-theme', 'shared-topic', 'published-with'].includes(edge.relation);
+export function providerPair(edge: GraphEdge): [provider: string, consumer: string] | null {
+  if (edge.relation === 'uses') return [edge.to, edge.from];
+  return providerRelations.some((relation) => relation === edge.relation)
+    ? [edge.from, edge.to]
+    : null;
 }
 
 const labels: Record<string, string> = {
@@ -78,13 +99,14 @@ export const graphNodes: GraphNode[] = [
     away: Boolean(p.url),
   })),
   ...papers
-    .filter((p) => p.kind === 'report')
+    .filter((p) => p.kind === 'report' || p.kind === 'document')
     .map((p) => ({
       id: `paper:${p.file}`,
       title: p.title,
       kind: 'paper' as const,
+      paperKind: p.kind as 'report' | 'document',
       topics: [] as string[],
-      about: `Research report · ${p.pages} pages`,
+      about: `${p.kind === 'report' ? 'Research report' : 'Project document'} · ${p.pages} pages`,
       href: p.file,
       away: true,
     })),
@@ -104,7 +126,7 @@ export const graphNodes: GraphNode[] = [
 const validIds = new Set(graphNodes.map((node) => node.id));
 const edges: GraphEdge[] = [...relations] as GraphEdge[];
 // Project documents already declare what they document; never duplicate that relationship by hand.
-for (const paper of papers.filter((p) => p.kind === 'report' && p.project)) {
+for (const paper of papers.filter((p) => p.kind !== 'resume' && p.project)) {
   edges.push({
     from: `paper:${paper.file}`,
     to: `project:${paper.project}`,
@@ -122,7 +144,12 @@ for (const theme of rawThemes) {
             [edge.from, edge.to].includes(items[i]) && [edge.from, edge.to].includes(items[j]),
         )
       ) {
-        edges.push({ from: items[i], to: items[j], label: `shared theme: ${theme.name}` });
+        edges.push({
+          from: items[i],
+          to: items[j],
+          label: `shared theme: ${theme.name}`,
+          relation: 'shared-theme',
+        });
       }
     }
 }
@@ -134,6 +161,7 @@ for (const topic of topics) {
         from: topic.items[i],
         to: topic.items[j],
         label: `shared topic: ${topic.name}`,
+        relation: 'shared-topic',
       });
     }
 }
@@ -150,6 +178,7 @@ for (const [host, items] of publications) {
         from: items[i],
         to: items[j],
         label: `published on ${host === 'blitzy.com' ? 'Blitzy' : host}`,
+        relation: 'published-with',
       });
     }
 }
@@ -159,11 +188,103 @@ const links = new Map<string, GraphEdge>();
 for (const edge of edges) {
   const key = [edge.from, edge.to].sort().join('|');
   const previous = links.get(key);
-  if (!previous || (previous.label.startsWith('shared') && !edge.label.startsWith('shared')))
-    links.set(key, edge);
+  if (!previous || (isContextEdge(previous) && !isContextEdge(edge))) links.set(key, edge);
 }
 export const graphLinks = [...links.values()];
 export const graphNode = (id: string) => graphNodes.find((node) => node.id === id);
+
+export const edgeSentence = (edge: GraphEdge) =>
+  isContextEdge(edge)
+    ? `${graphNode(edge.from)!.title} and ${graphNode(edge.to)!.title} · ${edge.label}`
+    : `${graphNode(edge.from)!.title} ${edge.label} ${graphNode(edge.to)!.title}`;
+
+/** Provider direction is defined once, for search, comparisons, and item details. */
+const integrations = graphEdges.flatMap((edge) => {
+  const pair = providerPair(edge);
+  return pair ? [pair] : [];
+});
+export const providers = (id: string): string[] => [
+  ...new Set(integrations.filter(([, consumer]) => consumer === id).map(([provider]) => provider)),
+];
+export const consumers = (id: string): string[] => [
+  ...new Set(integrations.filter(([provider]) => provider === id).map(([, consumer]) => consumer)),
+];
+
+const edgeRank = (edge: GraphEdge) => (providerPair(edge) ? 0 : isContextEdge(edge) ? 2 : 1);
+
+export function edgeBetween(from: string, to: string): GraphEdge | undefined {
+  return graphEdges
+    .filter(
+      (edge) => (edge.from === from && edge.to === to) || (edge.from === to && edge.to === from),
+    )
+    .sort((a, b) => edgeRank(a) - edgeRank(b))[0];
+}
+
+export function pathEdges(ids: string[]): GraphEdge[] {
+  return ids.slice(1).flatMap((id, i) => {
+    const edge = edgeBetween(ids[i], id);
+    return edge ? [edge] : [];
+  });
+}
+
+export interface ConnectionGroup {
+  title: string;
+  items: { node: GraphNode; edges: GraphEdge[] }[];
+}
+
+/** Each neighbor appears once; documented relationships take precedence over shared subjects. */
+export function connectionGroups(id: string): ConnectionGroup[] {
+  const neighbors = new Map<string, GraphEdge[]>();
+  for (const edge of graphEdges) {
+    if (edge.from !== id && edge.to !== id) continue;
+    const other = edge.from === id ? edge.to : edge.from;
+    neighbors.set(other, [...(neighbors.get(other) ?? []), edge]);
+  }
+  const groups = new Map<string, ConnectionGroup['items']>();
+  for (const [other, all] of neighbors) {
+    const documented = all.filter((edge) => !isContextEdge(edge));
+    const evidence = (documented.length ? documented : all).sort(
+      (a, b) => edgeRank(a) - edgeRank(b),
+    );
+    const primary = evidence[0];
+    const pair = providerPair(primary);
+    const title = pair
+      ? pair[1] === id
+        ? 'Uses'
+        : 'Used by'
+      : primary.relation === 'maintains'
+        ? primary.from === id
+          ? 'Maintains'
+          : 'Maintained by'
+        : primary.relation === 'documents'
+          ? primary.to === id
+            ? 'Project documents'
+            : 'Documents'
+          : isContextEdge(primary)
+            ? 'Shared subjects'
+            : graphNode(other)!.kind === 'post'
+              ? 'Writing'
+              : 'Connected work';
+    groups.set(title, [...(groups.get(title) ?? []), { node: graphNode(other)!, edges: evidence }]);
+  }
+  const order = [
+    'Uses',
+    'Used by',
+    'Maintained by',
+    'Maintains',
+    'Project documents',
+    'Documents',
+    'Writing',
+    'Connected work',
+    'Shared subjects',
+  ];
+  return order
+    .filter((title) => groups.has(title))
+    .map((title) => ({
+      title,
+      items: groups.get(title)!.sort((a, b) => a.node.title.localeCompare(b.node.title)),
+    }));
+}
 
 export function neighborhood(id: string): string[] {
   return [
@@ -176,19 +297,29 @@ export function neighborhood(id: string): string[] {
   ];
 }
 
-/** Shortest path over explicit, explainable relationships. An absent path stays absent. */
+/** Prefer documented chains, then fewer steps. Subject-only paths remain explicitly contextual. */
 export function connectionPath(from: string, to: string): string[] {
   if (!validIds.has(from) || !validIds.has(to)) return [];
-  const queue = [[from]];
-  const seen = new Set([from]);
+  const queue = [{ ids: [from], context: 0 }];
+  const seen = new Set<string>();
   while (queue.length) {
+    queue.sort(
+      (a, b) =>
+        a.context - b.context ||
+        a.ids.length - b.ids.length ||
+        a.ids.join('|').localeCompare(b.ids.join('|')),
+    );
     const path = queue.shift()!;
-    const last = path[path.length - 1];
-    if (last === to) return path;
+    const last = path.ids.at(-1)!;
+    if (seen.has(last)) continue;
+    seen.add(last);
+    if (last === to) return path.ids;
     for (const next of neighborhood(last).slice(1)) {
       if (!seen.has(next)) {
-        seen.add(next);
-        queue.push([...path, next]);
+        queue.push({
+          ids: [...path.ids, next],
+          context: path.context + Number(isContextEdge(edgeBetween(last, next)!)),
+        });
       }
     }
   }

@@ -78,20 +78,22 @@
   },
   {
     "name": "Reusable project foundations",
-    "items": [
-      "project:authkit",
-      "project:langkit",
-      "project:cleardocs",
-      "project:next-template"
-    ]
+    "items": ["project:authkit", "project:langkit", "project:cleardocs", "project:next-template"]
   },
   {
     "name": "Web app foundations",
+    "items": ["project:next-template", "project:blog", "project:chess", "project:lazygrocer"]
+  },
+  {
+    "name": "Language interfaces",
     "items": [
-      "project:next-template",
-      "project:blog",
+      "project:linguist",
+      "project:sesh-cli",
+      "project:langkit",
       "project:chess",
-      "project:lazygrocer"
+      "project:lazygrocer",
+      "project:mcp",
+      "post:technology-beyond-the-keyboard"
     ]
   }
 ]

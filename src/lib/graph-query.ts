@@ -5,6 +5,12 @@ import {
   graphNode,
   connectionPath,
   neighborhood,
+  providers,
+  consumers,
+  edgeBetween,
+  edgeSentence,
+  pathEdges,
+  isContextEdge,
   type GraphNode,
 } from '@/content/graph';
 import { isFoundation, projectRoleLabel } from '@/content';
@@ -25,12 +31,14 @@ export function findGraphNode(text: string): GraphNode | undefined {
 }
 
 export interface GraphQuery {
-  mode: 'related' | 'path' | 'all' | 'collection' | 'uses' | 'used-by' | 'maintained';
+  mode: 'related' | 'path' | 'all' | 'collection' | 'uses' | 'used-by' | 'maintained' | 'shared';
   resultIds?: string[];
   ids: string[];
   from?: string;
   to?: string;
   description: string;
+  /** Recorded chains explaining a result, including any intermediate item. */
+  paths?: Record<string, string[]>;
 }
 /** A small local grammar, not a remote model. App-owned sentences keep their existing route. */
 function connectionRequest(text: string): GraphQuery | null {
@@ -86,6 +94,7 @@ const collections = [
   'foundations',
   'templates',
   'documentation',
+  'documents',
 ] as const;
 type Collection = (typeof collections)[number];
 const typeValues = [
@@ -93,6 +102,7 @@ const typeValues = [
   'app',
   'writing',
   'report',
+  'document',
   'library',
   'foundation',
   'template',
@@ -108,6 +118,9 @@ export const queryExamples = [
   'show projects where status = published',
   'show foundations where type = template',
   'show writing about AI',
+  'what do Chess and LazyGrocer share',
+  'show writing about the foundations behind Chess',
+  'show documents for capstone',
   'what connects Chess to Styx',
 ];
 export type GraphCheck =
@@ -125,8 +138,8 @@ const matchesType = (node: GraphNode, type: string) =>
         ? Boolean(node.app)
         : type === 'writing'
           ? node.kind === 'post' || node.kind === 'paper'
-          : type === 'report'
-            ? node.kind === 'paper'
+          : type === 'report' || type === 'document'
+            ? node.paperKind === type
             : node.role === type;
 const inCollection = (node: GraphNode, collection: Collection) =>
   collection === 'work'
@@ -134,19 +147,21 @@ const inCollection = (node: GraphNode, collection: Collection) =>
     : collection === 'foundations'
       ? isFoundation(node)
       : collection === 'research' || collection === 'reports'
-        ? node.kind === 'paper'
-        : matchesType(
-            node,
-            collection === 'projects'
-              ? 'project'
-              : collection === 'apps'
-                ? 'app'
-                : collection === 'libraries'
-                  ? 'library'
-                  : collection === 'templates'
-                    ? 'template'
-                    : collection,
-          );
+        ? node.paperKind === 'report'
+        : collection === 'documents'
+          ? node.kind === 'paper'
+          : matchesType(
+              node,
+              collection === 'projects'
+                ? 'project'
+                : collection === 'apps'
+                  ? 'app'
+                  : collection === 'libraries'
+                    ? 'library'
+                    : collection === 'templates'
+                      ? 'template'
+                      : collection,
+            );
 const collectionTitle = (name: Collection) =>
   ({
     projects: 'Projects',
@@ -159,6 +174,7 @@ const collectionTitle = (name: Collection) =>
     foundations: 'Shared foundations',
     templates: 'Templates',
     documentation: 'Documentation',
+    documents: 'Documents and reports',
   })[name];
 
 function hasTopic(node: GraphNode, value: string) {
@@ -167,20 +183,6 @@ function hasTopic(node: GraphNode, value: string) {
     ' ',
   );
   return words.every((word) => haystack.includes(word));
-}
-/** Normalize provider→consumer and explicit consumer→provider edges, excluding shared subjects. */
-function dependents(id: string, reverse = false): string[] {
-  return [
-    ...new Set(
-      graphEdges.flatMap((edge) => {
-        const provider =
-          edge.relation === 'enables' ? edge.from : edge.relation === 'uses' ? edge.to : null;
-        const consumer =
-          edge.relation === 'enables' ? edge.to : edge.relation === 'uses' ? edge.from : null;
-        return (reverse ? consumer : provider) === id ? [reverse ? provider! : consumer!] : [];
-      }),
-    ),
-  ];
 }
 function relatedPlan(
   mode: GraphQuery['mode'],
@@ -198,8 +200,64 @@ function relatedPlan(
 }
 
 function request(text: string): GraphQuery | null {
+  const shared = /^what do (.+?) and (.+?) (?:share|have in common)$/i.exec(text);
+  if (shared) {
+    const from = findGraphNode(shared[1]),
+      to = findGraphNode(shared[2]);
+    if (!from || !to || from.id === to.id) return null;
+    const common = providers(from.id).filter((id) => providers(to.id).includes(id));
+    return {
+      mode: 'shared',
+      from: from.id,
+      to: to.id,
+      resultIds: common,
+      ids: [...new Set([from.id, to.id, ...common])],
+      description: `Services and foundations shared by ${from.title} and ${to.title}`,
+      paths: Object.fromEntries(common.map((id) => [id, [from.id, id, to.id]])),
+    };
+  }
+  const writing =
+    /^(?:show|find|list)(?: me)? writing about (?:the )?(tools|foundations) (?:behind|used by) (.+)$/i.exec(
+      text,
+    );
+  if (writing) {
+    const anchor = findGraphNode(writing[2]);
+    if (!anchor) return null;
+    const paths: Record<string, string[]> = {};
+    for (const provider of providers(anchor.id)) {
+      if (writing[1].toLowerCase() === 'foundations' && !isFoundation(graphNode(provider)!))
+        continue;
+      for (const edge of graphEdges) {
+        if (edge.from !== provider && edge.to !== provider) continue;
+        const article = edge.from === provider ? edge.to : edge.from;
+        if (
+          graphNode(article)?.kind !== 'post' ||
+          (!isContextEdge(edge) &&
+            !['discusses', 'documents', 'introduces'].includes(edge.relation))
+        )
+          continue;
+        const existing = paths[article];
+        if (
+          !existing ||
+          (isContextEdge(edgeBetween(existing[0], existing[1])!) && !isContextEdge(edge))
+        ) {
+          paths[article] = [article, provider, anchor.id];
+        }
+      }
+    }
+    return {
+      ...relatedPlan(
+        'related',
+        anchor,
+        Object.keys(paths),
+        `Writing about ${writing[1].toLowerCase()} behind ${anchor.title}`,
+      ),
+      ids: [...new Set([anchor.id, ...Object.values(paths).flat()])],
+      paths,
+    };
+  }
   const collection =
-    /^(?:(?:show|list|find|explore)\s+(?:me\s+)?(?:(?:my|the|all)\s+)?)?(projects|apps|work|writing|research|reports|libraries|foundations|templates|documentation)(?:\s+(about|using|related to|connected to|maintained by)\s+(.+))?$/i.exec(
+    /^(?:(?:show|list|find|explore)\s+(?:me\s+)?(?:(?:my|the|all)\s+)?)?(projects|apps|work|writing|research|reports|libraries|foundations|templates|documentation|documents)(?:\s+(about|using|related to|connected to|maintained by|for)\s+(.+))?$/i.exec(
       text,
     );
   if (collection) {
@@ -219,12 +277,16 @@ function request(text: string): GraphQuery | null {
     if (!anchor) return null;
     const reachable =
       modifier === 'using'
-        ? dependents(anchor.id)
-        : modifier === 'maintained by'
+        ? consumers(anchor.id)
+        : modifier === 'for'
           ? graphEdges
-              .filter((edge) => edge.relation === 'maintains' && edge.from === anchor.id)
-              .map((edge) => edge.to)
-          : neighborhood(anchor.id).filter((id) => id !== anchor.id);
+              .filter((edge) => edge.relation === 'documents' && edge.to === anchor.id)
+              .map((edge) => edge.from)
+          : modifier === 'maintained by'
+            ? graphEdges
+                .filter((edge) => edge.relation === 'maintains' && edge.from === anchor.id)
+                .map((edge) => edge.to)
+            : neighborhood(anchor.id).filter((id) => id !== anchor.id);
     const results = idsOf(candidates.filter((node) => reachable.includes(node.id)));
     return relatedPlan(
       modifier === 'using' ? 'used-by' : modifier === 'maintained by' ? 'maintained' : 'related',
@@ -237,7 +299,7 @@ function request(text: string): GraphQuery | null {
   if (uses) {
     const node = findGraphNode(uses[1]);
     return node
-      ? relatedPlan('used-by', node, dependents(node.id), `Work that uses ${node.title}`)
+      ? relatedPlan('used-by', node, consumers(node.id), `Work that uses ${node.title}`)
       : null;
   }
   const dependencies = /^what does (.+?) (use|depend on|maintain|contain|house)$/i.exec(text);
@@ -249,12 +311,14 @@ function request(text: string): GraphQuery | null {
       ? graphEdges
           .filter((edge) => edge.relation === 'maintains' && edge.from === node.id)
           .map((edge) => edge.to)
-      : dependents(node.id, true);
+      : providers(node.id);
     return relatedPlan(
       maintaining ? 'maintained' : 'uses',
       node,
       matches,
-      maintaining ? `Components maintained by ${node.title}` : `Foundations used by ${node.title}`,
+      maintaining
+        ? `Components maintained by ${node.title}`
+        : `Services and foundations used by ${node.title}`,
     );
   }
   const path = /^(?:show )?path from (.+?) to (.+)$/i.exec(text);
@@ -329,12 +393,26 @@ export function querySuggestions(text: string): string[] {
     const filtered = values.filter((value) => value.startsWith(tail.toLowerCase()));
     return (filtered.length ? filtered : values).map((value) => where[1] + prior + value);
   }
+  const shared = /^what do (.+?) and (.*)$/i.exec(query);
+  const first = shared ? findGraphNode(shared[1]) : undefined;
+  if (first) {
+    return graphNodes
+      .filter(
+        (node) =>
+          node.id !== first.id &&
+          [node.title, node.label, ...node.aliases].some((name) =>
+            name.toLowerCase().startsWith(shared![2].toLowerCase()),
+          ),
+      )
+      .slice(0, 6)
+      .map((node) => `what do ${first.title} and ${node.title} share`);
+  }
   const pool = [
     ...queryExamples,
     ...collections.map((name) => `show ${name}`),
     ...graphNodes.map((node) => `show everything related to ${node.title}`),
     ...graphNodes
-      .filter((node) => dependents(node.id).length)
+      .filter((node) => consumers(node.id).length)
       .map((node) => `what uses ${node.title}`),
   ];
   return [...new Set(pool)]
@@ -353,7 +431,7 @@ export function checkGraphQuery(text: string): GraphCheck {
   });
   if (!plan) {
     const suggestions = querySuggestions(text);
-    return /^(show|list|find|explore|what uses|what does|which (?:apps|projects|tools)|path from|what connects)\b/i.test(
+    return /^(show|list|find|explore|what uses|what does|what do|which (?:apps|projects|tools)|path from|what connects)\b/i.test(
       query,
     ) ||
       (suggestions.length > 0 && query.length > 2)
@@ -401,7 +479,16 @@ export function checkGraphQuery(text: string): GraphCheck {
       ...plan,
       mode: plan.from ? plan.mode : 'collection',
       resultIds: matches,
-      ids: [...new Set([...(plan.from ? [plan.from] : []), ...matches])],
+      ids:
+        plan.mode === 'path'
+          ? plan.ids
+          : [
+              ...new Set([
+                ...(plan.from ? [plan.from] : []),
+                ...(plan.to ? [plan.to] : []),
+                ...matches.flatMap((id) => plan.paths?.[id] ?? [id]),
+              ]),
+            ],
       description,
     },
   };
@@ -413,18 +500,15 @@ export function graphQuery(text: string): GraphQuery | null {
 }
 export const graphResultIds = (plan: GraphQuery) => plan.resultIds ?? plan.ids;
 export function graphResultDetail(plan: GraphQuery, id: string): string {
+  if (plan.paths?.[id]) return pathEdges(plan.paths[id]).map(edgeSentence).join(' · ');
+  if (plan.mode === 'path') {
+    const index = plan.ids.indexOf(id);
+    const edge = index > 0 ? edgeBetween(plan.ids[index - 1], id) : undefined;
+    if (edge) return edgeSentence(edge);
+  }
   if (plan.from && plan.from !== id) {
-    const edge =
-      graphEdges.find(
-        (edge) =>
-          [edge.from, edge.to].includes(plan.from!) &&
-          [edge.from, edge.to].includes(id) &&
-          edge.relation,
-      ) ??
-      graphEdges.find(
-        (edge) => [edge.from, edge.to].includes(plan.from!) && [edge.from, edge.to].includes(id),
-      );
-    if (edge) return `${graphNode(edge.from)!.title} ${edge.label} ${graphNode(edge.to)!.title}`;
+    const edge = edgeBetween(plan.from, id);
+    if (edge) return edgeSentence(edge);
   }
   return graphNode(id)!.about;
 }

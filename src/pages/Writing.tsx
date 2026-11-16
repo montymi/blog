@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 
 import { MarginList } from '@/components/MarginList';
+import { ConnectedWork } from '@/components/ConnectedWork';
 import { Kicker, Markdown, Meta, PageHeader } from '@/components/ui';
 import { formatDate } from '@/lib/dates';
 import { postBySlug, posts, reports } from '@/content';
@@ -76,6 +77,7 @@ export function Post() {
         title={post.title}
       />
       <Markdown>{post.body}</Markdown>
+      <ConnectedWork id={`post:${post.slug}`} />
       <nav
         aria-label="More writing"
         className="grid gap-4 border-t border-line pt-6 sm:grid-cols-2"

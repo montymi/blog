@@ -116,7 +116,7 @@ export function examples(apps: Manifest[]): string[] {
     ...apps.flatMap((app) => app.language?.examples.slice(0, 1) ?? []),
     'capstone',
     'show foundations',
-    'what uses authkit',
+    'what do Chess and LazyGrocer share',
     'show projects where status = published',
   ];
 }

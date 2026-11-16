@@ -2,7 +2,17 @@ import { graphQuery } from '@/lib/graph-query';
 import { expect, test } from 'vitest';
 
 import { papers, posts, projects } from '.';
-import { graphEdges, graphLinks, graphNodes, connectionPath, neighborhood } from './graph';
+import {
+  graphEdges,
+  graphLinks,
+  graphNodes,
+  connectionPath,
+  neighborhood,
+  connectionGroups,
+  isContextEdge,
+  pathEdges,
+  providers,
+} from './graph';
 import topics from '../../content/graph-topics.json';
 import { board } from '@/lib/board';
 import { graphLayout } from '@/lib/graph-layout';
@@ -10,7 +20,15 @@ import { graphLayout } from '@/lib/graph-layout';
 test('the graph uses the board catalog with unique identities and valid edges', () => {
   expect(new Set(graphNodes.map((n) => n.id)).size).toBe(graphNodes.length);
   const boardLinks = board(projects, posts, papers).flatMap((s) => (s.item ? [s.item.href] : []));
-  expect(graphNodes.map((n) => n.href).sort()).toEqual(boardLinks.sort());
+  expect(graphNodes.map((n) => n.href)).toEqual(expect.arrayContaining(boardLinks));
+  const supporting = papers.filter((p) => p.kind === 'document').map((p) => p.file);
+  expect(
+    graphNodes
+      .filter((n) => !boardLinks.includes(n.href))
+      .map((n) => n.href)
+      .sort(),
+  ).toEqual(supporting.sort());
+  expect(graphNodes.some((n) => n.href.includes('Resume'))).toBe(false);
   for (const edge of graphEdges) {
     expect(
       graphNodes.some((n) => n.id === edge.from),
@@ -22,16 +40,22 @@ test('the graph uses the board catalog with unique identities and valid edges', 
     ).toBe(true);
     expect(edge.from).not.toBe(edge.to);
     expect(edge.label).not.toBe('');
-    if (edge.relation)
-      expect([
-        'enables',
-        'uses',
-        'maintains',
-        'documents',
-        'discusses',
-        'introduces',
-        'hosts',
-      ]).toContain(edge.relation);
+    expect([
+      'authenticates',
+      'authorizes',
+      'exposes',
+      'supplies',
+      'standardizes',
+      'uses',
+      'maintains',
+      'documents',
+      'discusses',
+      'introduces',
+      'hosts',
+      'shared-theme',
+      'shared-topic',
+      'published-with',
+    ]).toContain(edge.relation);
   }
 });
 
@@ -91,6 +115,7 @@ test('shared subjects connect across sections while rendering each pair only onc
     from: 'project:mcp',
     to: 'project:schema-api-testing',
     label: 'shared topic: APIs and contracts',
+    relation: 'shared-topic',
   });
   expect(new Set(graphLinks.map((edge) => [edge.from, edge.to].sort().join('|'))).size).toBe(
     graphLinks.length,
@@ -111,6 +136,37 @@ test('the reusable libraries connect Charon with their actual consumers', () => 
     from: 'project:langkit',
     to: 'project:chess',
     label: 'standardizes grammar/check/run for',
-    relation: 'enables',
+    relation: 'standardizes',
   });
+});
+
+test('paths prefer documented chains over a shorter shared-subject shortcut', () => {
+  const path = connectionPath('project:authkit', 'project:mcp');
+  expect(path).toHaveLength(3);
+  expect(pathEdges(path).every((edge) => !isContextEdge(edge))).toBe(true);
+  const contextual = pathEdges(
+    connectionPath('paper:/library/BRCA1-Gene-Mutation.pdf', 'project:mcp'),
+  );
+  expect(contextual.some(isContextEdge)).toBe(true);
+});
+
+test('connected details separate actual use from context and include supporting documents once', () => {
+  const groups = connectionGroups('project:chess');
+  expect(
+    groups
+      .find((group) => group.title === 'Uses')!
+      .items.map(({ node }) => node.id)
+      .sort(),
+  ).toEqual(providers('project:chess').sort());
+  const items = groups.flatMap((group) => group.items.map(({ node }) => node.id));
+  expect(new Set(items).size).toBe(items.length);
+  expect(
+    groups
+      .find((group) => group.title === 'Shared subjects')!
+      .items.every(({ edges }) => edges.every(isContextEdge)),
+  ).toBe(true);
+  expect(
+    connectionGroups('project:capstone').find((group) => group.title === 'Project documents')!
+      .items,
+  ).toHaveLength(3);
 });

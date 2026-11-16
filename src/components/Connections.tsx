@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { graphQuery, graphResultIds } from '@/lib/graph-query';
+import { graphQuery, graphResultIds, graphResultDetail } from '@/lib/graph-query';
 
 import {
   graphEdges,
@@ -9,6 +9,8 @@ import {
   graphNode,
   graphNodes,
   neighborhood,
+  edgeSentence,
+  pathEdges,
   type GraphNode,
 } from '@/content/graph';
 import { edgeControl, graphLayout } from '@/lib/graph-layout';
@@ -17,7 +19,8 @@ import { projectRoleLabel } from '@/content';
 
 const positions = graphLayout(graphNodes, graphEdges);
 const words = { project: 'Project', post: 'Writing', paper: 'Report' };
-const kindLabel = (node: GraphNode) => projectRoleLabel(node.role) ?? words[node.kind];
+const kindLabel = (node: GraphNode) =>
+  node.paperKind === 'document' ? 'Document' : projectRoleLabel(node.role) ?? words[node.kind];
 
 /** Native buttons provide labels and keyboard access even without a WebGL context. */
 function GraphStage({
@@ -218,7 +221,7 @@ export function Connections({
             ? query.mode === 'path' && query.ids.length === 0
               ? 'No documented connection joins these items yet.'
               : `${query.description} · ${graphResultIds(query).length} matching items${
-                  query.from && query.resultIds ? ', with the source shown for context' : ''
+                  query.from && query.resultIds ? ', with context shown' : ''
                 }.`
             : 'That connection request was not understood. Try “show everything related to chess”.'}
         </p>
@@ -285,6 +288,43 @@ export function Connections({
         </span>
         <span>Projects · Libraries · Writing · Reports</span>
       </div>
+      {query && !picked && (query.mode === 'shared' || query.paths) && (
+        <section
+          aria-label="Query matches"
+          className="flex flex-col gap-3 border-t border-line pt-5"
+        >
+          <h3 className="kicker">{query.description}</h3>
+          {graphResultIds(query).length === 0 ? (
+            <p className="text-sm text-muted">No matching relationships are documented yet.</p>
+          ) : (
+            <ul className="divide-y divide-line">
+              {graphResultIds(query).map((id) => {
+                const result = graphNode(id)!;
+                const content = (
+                  <>
+                    <span className="font-semibold text-accent">{result.title} →</span>
+                    <span className="text-sm text-muted">{graphResultDetail(query, id)}</span>
+                  </>
+                );
+                const className = 'focus-ring flex flex-col gap-1 py-3';
+                return (
+                  <li key={id}>
+                    {result.away ? (
+                      <a href={result.href} className={className}>
+                        {content}
+                      </a>
+                    ) : (
+                      <Link to={result.href} className={className}>
+                        {content}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
+      )}
       {node && (
         <div className="grid min-w-0 gap-8 border-t border-line pt-6 sm:grid-cols-2">
           <div role="region" aria-label={`${node.title} map details`} className="min-w-0">
@@ -343,9 +383,9 @@ export function Connections({
               <div className="flex flex-col gap-2">
                 <p className="kicker">Connection path</p>
                 <ol className="flex flex-col gap-1 text-sm">
-                  {query.ids.map((id, i) => (
-                    <li key={id}>
-                      {i + 1}. {graphNode(id)!.title}
+                  {pathEdges(query.ids).map((edge, i) => (
+                    <li key={`${edge.from}:${edge.to}`}>
+                      {i + 1}. {edgeSentence(edge)}
                     </li>
                   ))}
                 </ol>

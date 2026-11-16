@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
-import { papers, projectCategory, projectVersion, type Project } from '@/content';
+import { projectCategory, projectVersion, type Project } from '@/content';
 import { formatDate } from '@/lib/dates';
 
 import { Kicker, Markdown } from './ui';
+import { ConnectedWork } from './ConnectedWork';
 
 /** Status as a word in a mono badge, never colour alone. */
 export function ProjectStatus({
@@ -70,11 +71,12 @@ function Readme({ url }: { url: string }) {
 export function ProjectDetails({
   project,
   embedded = false,
+  onSelectProject,
 }: {
   project: Project;
   embedded?: boolean;
+  onSelectProject?: (href: string) => void;
 }) {
-  const documents = papers.filter((paper) => paper.project === project.slug);
   return (
     <div className="flex min-w-0 flex-col gap-6">
       {embedded && (
@@ -133,21 +135,7 @@ export function ProjectDetails({
         </div>
       )}
 
-      {documents.length > 0 && (
-        <section aria-label="Project documents" className="flex flex-col gap-3">
-          <p className="kicker">Project documents</p>
-          <ul className="flex flex-col gap-3">
-            {documents.map((document) => (
-              <li key={document.file}>
-                <a href={document.file} className="link text-sm">
-                  {document.title}
-                </a>
-                <span className="block text-xs text-muted">PDF · {document.pages} pages</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      <ConnectedWork id={`project:${project.slug}`} onSelectProject={onSelectProject} />
 
       {project.audio && (
         <section aria-label="Listen" className="flex flex-col gap-2">

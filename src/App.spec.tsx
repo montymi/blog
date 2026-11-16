@@ -87,6 +87,48 @@ test('Projects and Writing browse their lists within the board', () => {
   expect(papersList.queryByRole('link', { name: /Resume/ })).not.toBeInTheDocument();
 });
 
+test('following a project connection stays inside the board and preserves real link destinations', () => {
+  at('/');
+  fireEvent.click(screen.getByRole('link', { name: /^[a-h][1-8]: Chess, released project$/ }));
+  const chess = within(screen.getByRole('region', { name: 'Chess project details' }));
+  const uses = within(chess.getByRole('region', { name: 'Uses' }));
+  const authkit = uses.getByRole('link', { name: 'Authkit' });
+  expect(authkit).toHaveAttribute('href', '/projects/authkit');
+  expect(authkit).toHaveAccessibleDescription('Authkit provides sign-in and role checks for Chess');
+  fireEvent.click(authkit);
+  const details = within(screen.getByRole('region', { name: 'Authkit project details' }));
+  expect(screen.queryByRole('region', { name: 'Chess project details' })).not.toBeInTheDocument();
+  expect(screen.getByRole('region', { name: 'The board' })).toBeInTheDocument();
+  expect(details.getByRole('region', { name: 'Used by' })).toBeInTheDocument();
+  fireEvent.click(
+    within(details.getByRole('region', { name: 'Used by' })).getByRole('link', {
+      name: 'LazyGrocer',
+    }),
+  );
+  expect(screen.getByRole('region', { name: 'LazyGrocer project details' })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'Back to board index' }));
+  expect(
+    screen.queryByRole('region', { name: 'LazyGrocer project details' }),
+  ).not.toBeInTheDocument();
+});
+
+test('project and writing pages provide the same evidence-based connections', () => {
+  at('/writing/technology-beyond-the-keyboard');
+  const connections = within(
+    screen.getByRole('region', { name: 'Connections for Technology Beyond the Keyboard' }),
+  );
+  const linguist = connections.getByRole('link', { name: 'linguist' });
+  expect(linguist).toHaveAccessibleDescription(
+    'Technology Beyond the Keyboard explores the speech pipeline implemented in linguist',
+  );
+  fireEvent.click(linguist);
+  const inverse = within(screen.getByRole('region', { name: 'Connections for linguist' }));
+  expect(inverse.getByRole('link', { name: 'Technology Beyond the Keyboard' })).toHaveAttribute(
+    'href',
+    '/writing/technology-beyond-the-keyboard',
+  );
+});
+
 test('Writing includes both reports and the résumé lives under About', () => {
   at('/writing');
   const reports = within(screen.getByRole('region', { name: 'Research reports' }));
@@ -146,6 +188,29 @@ test('the search bar returns actual dependency matches with explanations', () =>
   expect(results.getByRole('option', { name: /LazyGrocer/ })).toBeInTheDocument();
   expect(results.queryByRole('option', { name: /Schema API/ })).not.toBeInTheDocument();
   expect(screen.getByRole('status')).toHaveTextContent('2 matches');
+});
+
+test('a shared-foundation question shows evidence for both apps in search and on the map', () => {
+  at('/');
+  const input = screen.getByRole('combobox');
+  fireEvent.change(input, { target: { value: 'what do Chess and LazyGrocer share' } });
+  const options = within(screen.getByRole('listbox', { name: 'Results' }));
+  expect(options.getByRole('option', { name: /Authkit/ })).toHaveTextContent(
+    'Authkit provides sign-in and role checks for Chess · Authkit provides sign-in and role checks for LazyGrocer',
+  );
+  fireEvent.keyDown(input, { key: 'Enter' });
+  const matches = within(screen.getByRole('region', { name: 'Query matches' }));
+  expect(matches.getAllByRole('link')).toHaveLength(5);
+  expect(matches.getByRole('link', { name: /Langkit/ })).toHaveTextContent(
+    'Langkit standardizes grammar/check/run for LazyGrocer',
+  );
+});
+
+test('path answers name each recorded relationship on the map', () => {
+  at('/projects?explore=what%20connects%20Authkit%20to%20Connect');
+  expect(screen.getByText('Connection path')).toBeInTheDocument();
+  expect(screen.getByText(/1\. Charon maintains Authkit/)).toBeInTheDocument();
+  expect(screen.getByText(/2\. Charon sets access policy for Connect/)).toBeInTheDocument();
 });
 
 test('completion fills a checked filter before Enter opens its map', () => {

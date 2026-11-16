@@ -204,7 +204,12 @@ export function Shelf() {
             >
               Back to board index
             </button>
-            <ProjectDetails key={project.slug} project={project} embedded />
+            <ProjectDetails
+              key={project.slug}
+              project={project}
+              embedded
+              onSelectProject={setSelected}
+            />
           </div>
         ) : (
           <>
