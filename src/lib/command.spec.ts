@@ -34,7 +34,9 @@ test('each app offers an example to try', () => {
     'plan 4 dinners for 2 under $40',
     'mistakes where theme = fork by month',
     'capstone',
-    'show everything related to chess',
+    'show foundations',
+    'what uses authkit',
+    'show projects where status = published',
   ]);
 });
 

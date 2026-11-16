@@ -136,6 +136,46 @@ test('a connection query highlights a real path through the map', () => {
   expect(screen.getByRole('region', { name: 'Chess map details' })).toBeInTheDocument();
 });
 
+test('the search bar returns actual dependency matches with explanations', () => {
+  at('/');
+  fireEvent.change(screen.getByRole('combobox'), { target: { value: 'what uses authkit' } });
+  const results = within(screen.getByRole('listbox', { name: 'Results' }));
+  expect(results.getByRole('option', { name: /Chess/ })).toHaveTextContent(
+    'Authkit provides sign-in and role checks for Chess',
+  );
+  expect(results.getByRole('option', { name: /LazyGrocer/ })).toBeInTheDocument();
+  expect(results.queryByRole('option', { name: /Schema API/ })).not.toBeInTheDocument();
+  expect(screen.getByRole('status')).toHaveTextContent('2 matches');
+});
+
+test('completion fills a checked filter before Enter opens its map', () => {
+  at('/');
+  const input = screen.getByRole('combobox');
+  fireEvent.change(input, { target: { value: 'show projects where status =' } });
+  expect(
+    screen.getByRole('option', { name: /show projects where status = published/ }),
+  ).toBeInTheDocument();
+  fireEvent.keyDown(input, { key: 'Enter' });
+  expect(input).toHaveValue('show projects where status = published');
+  expect(screen.getByRole('status')).toHaveTextContent('Understood');
+  fireEvent.keyDown(input, { key: 'Enter' });
+  expect(screen.getByRole('heading', { level: 1, name: 'Projects' })).toBeInTheDocument();
+  expect(screen.getByRole('group', { name: 'Work connections map' })).toBeInTheDocument();
+});
+
+test('the search bar explains invalid values and offers empty results without unrelated matches', () => {
+  at('/');
+  const input = screen.getByRole('combobox');
+  fireEvent.change(input, { target: { value: 'show projects where status = banana' } });
+  expect(screen.getByRole('status')).toHaveTextContent('Status must be');
+  expect(
+    screen.getAllByRole('option').every((option) => option.textContent?.startsWith('Query')),
+  ).toBe(true);
+  fireEvent.change(input, { target: { value: 'show templates where status = archived' } });
+  expect(screen.getByRole('status')).toHaveTextContent('No matching items');
+  expect(screen.getAllByRole('option')).toHaveLength(1);
+});
+
 test('map reset and starting points stay together while exploring', () => {
   at('/projects');
   const controls = screen.getByRole('group', { name: 'Explore connections' });

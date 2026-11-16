@@ -2,7 +2,7 @@
 import relations from '../../content/relations.json';
 import topics from '../../content/graph-topics.json';
 import { rawThemes } from './themes';
-import { isFoundation, papers, postHref, posts, projects, type ProjectRole } from '.';
+import { papers, postHref, posts, projects, type ProjectRole, type ProjectStatus } from '.';
 
 export interface GraphNode {
   id: string;
@@ -15,11 +15,24 @@ export interface GraphNode {
   released?: boolean;
   role?: ProjectRole;
   aliases: string[];
+  topics: string[];
+  status?: ProjectStatus;
+  app?: boolean;
 }
+export type GraphRelation =
+  | 'enables'
+  | 'uses'
+  | 'maintains'
+  | 'documents'
+  | 'discusses'
+  | 'introduces'
+  | 'hosts';
+
 export interface GraphEdge {
   from: string;
   to: string;
   label: string;
+  relation?: GraphRelation;
 }
 
 const labels: Record<string, string> = {
@@ -49,6 +62,9 @@ export const graphNodes: GraphNode[] = [
     about: p.description,
     href: `/projects/${p.slug}`,
     away: false,
+    status: p.status,
+    app: Boolean(p.live),
+    topics: [] as string[],
     released: p.status === 'published',
     role: p.role,
   })),
@@ -57,6 +73,7 @@ export const graphNodes: GraphNode[] = [
     title: p.title,
     kind: 'post' as const,
     about: p.summary,
+    topics: [...p.tags, ...(p.url ? [new URL(p.url).hostname.replace(/^www\./, '')] : [])],
     href: postHref(p),
     away: Boolean(p.url),
   })),
@@ -66,6 +83,7 @@ export const graphNodes: GraphNode[] = [
       id: `paper:${p.file}`,
       title: p.title,
       kind: 'paper' as const,
+      topics: [] as string[],
       about: `Research report · ${p.pages} pages`,
       href: p.file,
       away: true,
@@ -74,13 +92,25 @@ export const graphNodes: GraphNode[] = [
   ...node,
   label: labels[node.id] ?? node.title,
   aliases: aliases[node.id] ?? [],
+  topics: [
+    ...new Set([
+      ...node.topics,
+      ...rawThemes.filter((theme) => theme.items.includes(node.id)).map((theme) => theme.name),
+      ...topics.filter((topic) => topic.items.includes(node.id)).map((topic) => topic.name),
+    ]),
+  ],
 }));
 
 const validIds = new Set(graphNodes.map((node) => node.id));
-const edges: GraphEdge[] = [...relations];
+const edges: GraphEdge[] = [...relations] as GraphEdge[];
 // Project documents already declare what they document; never duplicate that relationship by hand.
 for (const paper of papers.filter((p) => p.kind === 'report' && p.project)) {
-  edges.push({ from: `paper:${paper.file}`, to: `project:${paper.project}`, label: 'documents' });
+  edges.push({
+    from: `paper:${paper.file}`,
+    to: `project:${paper.project}`,
+    label: 'documents',
+    relation: 'documents',
+  });
 }
 for (const theme of rawThemes) {
   const items = theme.items.filter((id) => validIds.has(id));
@@ -164,105 +194,3 @@ export function connectionPath(from: string, to: string): string[] {
   }
   return [];
 }
-
-const clean = (text: string) =>
-  text
-    .toLowerCase()
-    .replace(/[’']/g, '')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .trim();
-export function findGraphNode(text: string): GraphNode | undefined {
-  const query = clean(text.replace(/^(the|my)\s+/i, ''));
-  if (!query) return undefined;
-  const score = (node: GraphNode) =>
-    Math.max(
-      ...[node.title, node.label, ...node.aliases].map((name) => {
-        const term = clean(name);
-        return term === query ? 100 : term.includes(query) ? 30 : query.includes(term) ? 10 : 0;
-      }),
-    );
-  return [...graphNodes].sort((a, b) => score(b) - score(a)).find((node) => score(node) > 0);
-}
-
-export interface GraphQuery {
-  mode: 'related' | 'path' | 'all' | 'collection';
-  ids: string[];
-  from?: string;
-  to?: string;
-  description: string;
-}
-/** A small local grammar, not a remote model. App-owned sentences keep their existing route. */
-export function graphQuery(text: string): GraphQuery | null {
-  const query = text.trim().replace(/[?.!]+$/, '');
-  if (/^(show|explore|open) (me )?(the )?(graph|connections|constellation)$/i.test(query)) {
-    return {
-      mode: 'all',
-      ids: graphNodes.map((node) => node.id),
-      description: 'Explore how the work connects',
-    };
-  }
-  const collection =
-    /^show (?:me )?(?:my |the |all )?(research|reports|projects|writing|libraries|foundations)$/i.exec(
-      query,
-    );
-  if (collection) {
-    if (/libraries|foundations/i.test(collection[1])) {
-      const foundations = /foundations/i.test(collection[1]);
-      return {
-        mode: 'collection',
-        ids: graphNodes
-          .filter((node) => (foundations ? isFoundation(node) : node.role === 'library'))
-          .map((node) => node.id),
-        description: foundations ? 'Shared foundations' : 'Shared libraries',
-      };
-    }
-    const kind = /research|reports/i.test(collection[1])
-      ? 'paper'
-      : /projects/i.test(collection[1])
-        ? 'project'
-        : 'post';
-    return {
-      mode: 'collection',
-      ids: graphNodes
-        .filter((node) => node.kind === kind || (kind === 'post' && node.kind === 'paper'))
-        .map((node) => node.id),
-      description:
-        kind === 'paper'
-          ? 'Research reports'
-          : kind === 'project'
-            ? 'Projects'
-            : 'Writing and reports',
-    };
-  }
-  const path =
-    /^(?:what|how) connects? (.+?) (?:to|and|with) (.+)$/i.exec(query) ??
-    /^how (?:does|do|is|are) (.+?) connect(?:ed)? (?:to|with) (.+)$/i.exec(query);
-  if (path) {
-    const from = findGraphNode(path[1]);
-    const to = findGraphNode(path[2].replace(/^the platform$/i, 'connect'));
-    if (!from || !to) return null;
-    return {
-      mode: 'path',
-      from: from.id,
-      to: to.id,
-      ids: connectionPath(from.id, to.id),
-      description: `${from.title} → ${to.title}`,
-    };
-  }
-  const related =
-    /^(?:show|find|explore)(?: me)? (?:everything |work |things )?(?:related to|connected to|about) (.+)$/i.exec(
-      query,
-    ) ?? /^(?:what is|whats|what's) (?:related|connected) to (.+)$/i.exec(query);
-  if (!related) return null;
-  const node = findGraphNode(related[1]);
-  return node
-    ? {
-        mode: 'related',
-        from: node.id,
-        ids: neighborhood(node.id),
-        description: `Work connected to ${node.title}`,
-      }
-    : null;
-}
-export const graphHref = (query: string) =>
-  `/projects?explore=${encodeURIComponent(query)}#connections`;
