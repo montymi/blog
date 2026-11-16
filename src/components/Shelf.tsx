@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { papers, posts, projects } from '@/content';
 import { themes, type Entry, type Kind } from '@/content/themes';
 import { board, pieceKey } from '@/lib/board';
+import { publicationName } from '@/lib/publication';
 import { SNAPSHOTS } from '@/platform/registry';
 
 import { Board } from './Board';
@@ -49,7 +50,7 @@ function Row({ entry }: { entry: Entry }) {
     <>
       <span className="font-semibold group-hover:text-accent">{entry.title}</span>
       <span className="kicker">
-        {entry.away && entry.kind === 'post' ? 'Substack' : KIND_WORD[entry.kind]}
+        {entry.away && entry.kind === 'post' ? publicationName(entry.href) : KIND_WORD[entry.kind]}
       </span>
     </>
   );

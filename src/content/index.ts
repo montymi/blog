@@ -24,7 +24,7 @@ export interface Post {
   summary: string;
   minutes: number;
   body: string;
-  /** Set when the post lives elsewhere (Substack): the list links there, not to a page here. */
+  /** Set when the post lives elsewhere: the list links to the original publication. */
   url?: string;
 }
 
