@@ -1,12 +1,18 @@
 # Charon
 
-The control plane for an agent experience platform: app discovery, access grants, policy, audit trails, and federation between independent operators.
+The foundation of an agent experience platform: access policy, audit, federation, and reusable application libraries.
 
 [Open Charon](https://charon.montymi.com)
 
 ## What it does
 
 Charon manages the platform’s app access, requests, grants, policy, and audit trails. Its operator console requires sign-in. Styx provides identity; Connect gives agents a common way to discover and use app capabilities.
+
+## Reusable foundations
+
+Charon also houses [Authkit](/projects/authkit) and [Langkit](/projects/langkit), both version 0.1.0. Chess and LazyGrocer already use pinned copies of both.
+
+Authkit provides shared sign-in and app-specific authorization. Langkit standardizes grammar, checking, and execution across app-owned query languages, including dry runs, batches, and idempotency hooks. Connect consumes that contract to give agents one gateway to the apps.
 
 ## Source
 

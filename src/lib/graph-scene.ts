@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 
 import type { GraphEdge, GraphNode } from '@/content/graph';
-import type { Point } from './graph-layout';
+import { edgeControl, type Point } from './graph-layout';
 
 export interface SceneState {
   selected: string | null;
@@ -50,10 +50,9 @@ export function createGraphScene(
   }
   const uniqueEdges = new Map(edges.map((e) => [[e.from, e.to].sort().join('|'), e]));
   for (const edge of uniqueEdges.values()) {
-    const geometry = new THREE.BufferGeometry().setFromPoints([
-      new THREE.Vector3(),
-      new THREE.Vector3(),
-    ]);
+    const geometry = new THREE.BufferGeometry().setFromPoints(
+      Array.from({ length: 25 }, () => new THREE.Vector3()),
+    );
     const material = new THREE.LineBasicMaterial({ transparent: true });
     geometries.push(geometry);
     materials.push(material);
@@ -108,7 +107,17 @@ export function createGraphScene(
       const material = line.material as THREE.LineBasicMaterial;
       const lit = state.focus?.has(edge.from) && state.focus.has(edge.to);
       material.color.copy(lit ? palette.accent : palette.line);
-      material.opacity = !state.focus ? 0.5 : lit ? 0.85 : 0.08;
+      const direct = !edge.label.startsWith('shared') && !edge.label.startsWith('published');
+      const incident = edge.from === state.selected || edge.to === state.selected;
+      material.opacity = !state.focus
+        ? direct
+          ? 0.48
+          : 0.25
+        : lit
+          ? incident
+            ? 0.9
+            : 0.4
+          : 0.05;
     }
   }
   function draw() {
@@ -150,11 +159,16 @@ export function createGraphScene(
       meshes.get(node.id)!.position.set(p.x * 12, p.y * (worldHeight / 2 - 4), p.z);
     }
     for (const { edge, line } of lines) {
-      const positions = line.geometry.getAttribute('position') as THREE.BufferAttribute;
       const a = meshes.get(edge.from)!.position,
         b = meshes.get(edge.to)!.position;
-      positions.setXYZ(0, a.x, a.y, a.z);
-      positions.setXYZ(1, b.x, b.y, b.z);
+      const control = edgeControl(points.get(edge.from)!, points.get(edge.to)!);
+      const curve = new THREE.QuadraticBezierCurve3(
+        a,
+        new THREE.Vector3(control.x * 12, control.y * (worldHeight / 2 - 4), control.z),
+        b,
+      );
+      const positions = line.geometry.getAttribute('position') as THREE.BufferAttribute;
+      curve.getPoints(24).forEach((p, i) => positions.setXYZ(i, p.x, p.y, p.z));
       positions.needsUpdate = true;
       line.geometry.computeBoundingSphere();
     }

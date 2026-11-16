@@ -5,50 +5,57 @@ export interface Point {
   y: number;
   z: number;
 }
-/** Deterministic spring layout. Neither dates nor work duration influence position or size. */
+
+/** A slight bow keeps long grid links from appearing to end at intermediate spheres. */
+export function edgeControl(a: Point, b: Point): Point {
+  const dx = b.x - a.x,
+    dy = b.y - a.y,
+    length = Math.max(0.01, Math.hypot(dx, dy));
+  const bend = Math.min(0.16, length * 0.12);
+  return {
+    x: (a.x + b.x) / 2 - (dy / length) * bend,
+    y: (a.y + b.y) / 2 + (dx / length) * bend,
+    z: (a.z + b.z) / 2 - 0.8,
+  };
+}
+
+/** A stable lattice, with strongly connected items placed near one another. */
 export function graphLayout(nodes: GraphNode[], edges: GraphEdge[]): Map<string, Point> {
-  const ordered = [...nodes].sort((a, b) => a.id.localeCompare(b.id));
-  const points = ordered.map((node, i) => ({
-    id: node.id,
-    x: Math.cos(i * 2.399963) * (2 + Math.sqrt(i) * 2),
-    y: Math.sin(i * 2.399963) * (2 + Math.sqrt(i) * 2),
-  }));
-  const index = new Map(points.map((p, i) => [p.id, i]));
-  for (let step = 0; step < 450; step++) {
-    const forces = points.map(() => ({ x: 0, y: 0 }));
-    for (let i = 0; i < points.length; i++)
-      for (let j = i + 1; j < points.length; j++) {
-        const dx = points[i].x - points[j].x,
-          dy = points[i].y - points[j].y;
-        const d = Math.max(0.2, Math.hypot(dx, dy));
-        const f = 10 / (d * d);
-        forces[i].x += (dx / d) * f;
-        forces[i].y += (dy / d) * f;
-        forces[j].x -= (dx / d) * f;
-        forces[j].y -= (dy / d) * f;
-      }
-    for (const edge of edges) {
-      const i = index.get(edge.from),
-        j = index.get(edge.to);
-      if (i === undefined || j === undefined) continue;
-      const dx = points[j].x - points[i].x,
-        dy = points[j].y - points[i].y;
-      const d = Math.max(0.2, Math.hypot(dx, dy));
-      const f = (d - 4) * 0.035;
-      forces[i].x += (dx / d) * f;
-      forces[i].y += (dy / d) * f;
-      forces[j].x -= (dx / d) * f;
-      forces[j].y -= (dy / d) * f;
-    }
-    const temperature = 0.5 * (1 - step / 500);
-    points.forEach((p, i) => {
-      p.x += Math.max(-temperature, Math.min(temperature, forces[i].x - p.x * 0.008));
-      p.y += Math.max(-temperature, Math.min(temperature, forces[i].y - p.y * 0.008));
-    });
+  if (!nodes.length) return new Map();
+  const neighbors = new Map(nodes.map((node) => [node.id, new Set<string>()]));
+  for (const edge of edges) {
+    neighbors.get(edge.from)?.add(edge.to);
+    neighbors.get(edge.to)?.add(edge.from);
   }
-  const maxX = Math.max(1, ...points.map((p) => Math.abs(p.x)));
-  const maxY = Math.max(1, ...points.map((p) => Math.abs(p.y)));
-  return new Map(
-    points.map((p, i) => [p.id, { x: p.x / maxX, y: p.y / maxY, z: Math.sin(i * 1.7) * 0.7 }]),
-  );
+  const columns = Math.ceil(Math.sqrt(nodes.length));
+  const rows = Math.ceil(nodes.length / columns);
+  const slots = Array.from({ length: nodes.length }, (_, i) => ({
+    x: columns === 1 ? 0 : ((i % columns) / (columns - 1)) * 2 - 1,
+    y: rows === 1 ? 0 : 1 - (Math.floor(i / columns) / (rows - 1)) * 2,
+  }));
+  const placed = new Map<string, Point>();
+  const remaining = [...nodes];
+  while (remaining.length) {
+    // Stable ties mean content input order never moves a sphere.
+    remaining.sort((a, b) => {
+      const links = (id: string) => [...neighbors.get(id)!].filter((id) => placed.has(id)).length;
+      return (
+        links(b.id) - links(a.id) ||
+        neighbors.get(b.id)!.size - neighbors.get(a.id)!.size ||
+        a.id.localeCompare(b.id)
+      );
+    });
+    const node = remaining.shift()!;
+    const connected = [...neighbors.get(node.id)!].flatMap((id) =>
+      placed.has(id) ? [placed.get(id)!] : [],
+    );
+    const cost = (slot: { x: number; y: number }) =>
+      connected.reduce((sum, p) => sum + Math.hypot(slot.x - p.x, slot.y - p.y), 0) +
+      Math.hypot(slot.x, slot.y) * 0.05;
+    slots.sort((a, b) => cost(a) - cost(b) || b.y - a.y || a.x - b.x);
+    const slot = slots.shift()!;
+    const hash = [...node.id].reduce((sum, letter) => sum + letter.charCodeAt(0), 0);
+    placed.set(node.id, { ...slot, z: ((hash % 5) - 2) * 0.12 });
+  }
+  return placed;
 }

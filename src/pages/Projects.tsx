@@ -5,7 +5,7 @@ import { Connections } from '@/components/Connections';
 import { ProjectDetails, ProjectStatus } from '@/components/ProjectDetails';
 import { Kicker, Meta, PageHeader } from '@/components/ui';
 import { formatDate } from '@/lib/dates';
-import { projectBySlug, projects, projectVersion } from '@/content';
+import { projectBySlug, projectCategory, projects, projectVersion } from '@/content';
 
 import NotFound from './NotFound';
 
@@ -72,10 +72,17 @@ export function Projects() {
             >
               <span className="flex flex-wrap items-center gap-x-3 gap-y-1">
                 <Kicker as="span">
-                  {project.kind} · {projectVersion(project)} · updated{' '}
+                  {projectCategory(project)} · {projectVersion(project)} · updated{' '}
                   {formatDate(project.updated, 'long')}
                 </Kicker>
-                <ProjectStatus status={project.status} />
+                <ProjectStatus
+                  status={project.status}
+                  label={
+                    project.role === 'library' && project.status === 'published'
+                      ? 'In use'
+                      : undefined
+                  }
+                />
               </span>
               <span className="text-[1.3125rem] font-semibold leading-7 group-hover:text-accent">
                 {project.title}
@@ -96,7 +103,10 @@ export function ProjectPage() {
   return (
     <article className="flex flex-col gap-8">
       <Meta title={project.title} description={project.description} />
-      <PageHeader kicker={`${project.kind} · ${projectVersion(project)}`} title={project.title}>
+      <PageHeader
+        kicker={`${projectCategory(project)} · ${projectVersion(project)}`}
+        title={project.title}
+      >
         {project.description}
       </PageHeader>
 

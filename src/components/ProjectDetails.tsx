@@ -1,12 +1,18 @@
 import { useState } from 'react';
 
-import { papers, projectVersion, type Project } from '@/content';
+import { papers, projectCategory, projectVersion, type Project } from '@/content';
 import { formatDate } from '@/lib/dates';
 
 import { Kicker, Markdown } from './ui';
 
 /** Status as a word in a mono badge, never colour alone. */
-export function ProjectStatus({ status }: { status: Project['status'] }) {
+export function ProjectStatus({
+  status,
+  label = status,
+}: {
+  status: Project['status'];
+  label?: string;
+}) {
   const tone = {
     published: 'border-line-strong text-ink',
     draft: 'border-transparent bg-inset text-muted',
@@ -16,7 +22,7 @@ export function ProjectStatus({ status }: { status: Project['status'] }) {
     <span
       className={`rounded-sm border px-2 py-0.5 font-mono text-xs uppercase tracking-[0.08em] ${tone}`}
     >
-      {status}
+      {label}
     </span>
   );
 }
@@ -74,7 +80,7 @@ export function ProjectDetails({
       {embedded && (
         <header className="flex flex-col gap-2">
           <Kicker>
-            {project.kind} · {projectVersion(project)}
+            {projectCategory(project)} · {projectVersion(project)}
           </Kicker>
           <h3 className="font-display text-3xl leading-tight">{project.title}</h3>
           <p className="text-sm text-muted">{project.description}</p>
@@ -86,7 +92,16 @@ export function ProjectDetails({
         }`}
       >
         {[
-          ['Status', <ProjectStatus key="s" status={project.status} />],
+          [
+            'Status',
+            <ProjectStatus
+              key="s"
+              status={project.status}
+              label={
+                project.role === 'library' && project.status === 'published' ? 'In use' : undefined
+              }
+            />,
+          ],
           [
             project.versionLabel ?? 'Version',
             <span key="v" className="font-mono">

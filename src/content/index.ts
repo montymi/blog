@@ -35,6 +35,7 @@ export interface Project {
   title: string;
   /** Michael's own release shapes: an album is a large project, an episode a tool, a single a small one. */
   kind: 'album' | 'episode' | 'single';
+  role?: 'library' | 'platform';
   version: string;
   /** Unversioned projects show their source revision instead of an invented release number. */
   versionLabel?: 'Build';
@@ -159,3 +160,6 @@ export const projectBySlug = (slug: string) => projects.find((project) => projec
 /** The same release/revision wording everywhere a project appears. */
 export const projectVersion = (project: Project) =>
   project.versionLabel === 'Build' ? `build ${project.version}` : `v${project.version}`;
+
+export const projectCategory = (project: Project) =>
+  project.role === 'library' ? 'Library' : project.role === 'platform' ? 'Platform' : project.kind;

@@ -136,6 +136,51 @@ test('a connection query highlights a real path through the map', () => {
   expect(screen.getByRole('region', { name: 'Chess map details' })).toBeInTheDocument();
 });
 
+test('map reset and starting points stay together while exploring', () => {
+  at('/projects');
+  const controls = screen.getByRole('group', { name: 'Explore connections' });
+  const group = within(controls);
+  expect(group.getByText('Start with')).toBeInTheDocument();
+  fireEvent.click(group.getByRole('button', { name: 'Connect' }));
+  expect(screen.getByRole('region', { name: 'Connect map details' })).toBeInTheDocument();
+  expect(group.getByRole('button', { name: 'Capstone' })).toBeInTheDocument();
+  fireEvent.click(group.getByRole('button', { name: 'Show all connections' }));
+  expect(group.getByRole('button', { name: 'Show all connections' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  expect(screen.queryByRole('region', { name: 'Connect map details' })).not.toBeInTheDocument();
+});
+
+test('the homepage presents reusable foundations alongside the apps', () => {
+  at('/');
+  const foundations = within(screen.getByRole('region', { name: 'Shared foundations' }));
+  expect(foundations.getByRole('link', { name: /Authkit/ })).toHaveAttribute(
+    'href',
+    '/projects/authkit',
+  );
+  expect(foundations.getByRole('link', { name: /Langkit/ })).toHaveAttribute(
+    'href',
+    '/projects/langkit',
+  );
+});
+
+test.each(['authkit', 'langkit'])(
+  'the %s library has source details without implying a separate live app',
+  (slug) => {
+    at(`/projects/${slug}`);
+    expect(screen.getByText('Library · v0.1.0')).toBeInTheDocument();
+    expect(screen.getByText('In use')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Code on GitHub (private)' })).toHaveAttribute(
+      'href',
+      `https://github.com/montymi/charon/tree/main/${slug}`,
+    );
+    expect(
+      screen.queryByRole('link', { name: new RegExp(`^Open ${slug}`, 'i') }),
+    ).not.toBeInTheDocument();
+  },
+);
+
 test('Build is the label for an unversioned Connect deployment', () => {
   at('/projects/mcp');
   expect(screen.getByText('Build', { exact: true })).toBeInTheDocument();

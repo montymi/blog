@@ -1,8 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { graphEdges, graphNode, graphNodes, graphQuery, neighborhood } from '@/content/graph';
-import { graphLayout } from '@/lib/graph-layout';
+import {
+  graphEdges,
+  graphLinks,
+  graphNode,
+  graphNodes,
+  graphQuery,
+  neighborhood,
+} from '@/content/graph';
+import { edgeControl, graphLayout } from '@/lib/graph-layout';
 import type { SceneState } from '@/lib/graph-scene';
 
 const positions = graphLayout(graphNodes, graphEdges);
@@ -41,7 +48,7 @@ function GraphStage({
             host.current,
             labels.current,
             graphNodes,
-            graphEdges,
+            graphLinks,
             positions,
             (id) => callbacks.current.onHover(id),
             (id) => callbacks.current.onOpen(id),
@@ -68,6 +75,7 @@ function GraphStage({
     <div
       ref={host}
       data-renderer={three ? 'three' : 'flat'}
+      data-connections={graphLinks.length}
       role="group"
       aria-label="Work connections map"
       className="connections-map relative h-[540px] overflow-hidden rounded border border-line bg-raised sm:h-[500px]"
@@ -79,20 +87,21 @@ function GraphStage({
           aria-hidden="true"
           className="absolute inset-0 h-full w-full"
         >
-          {graphEdges.map((edge, i) => {
+          {graphLinks.map((edge, i) => {
             const a = positions.get(edge.from)!,
               b = positions.get(edge.to)!;
+            const control = edgeControl(a, b);
             return (
-              <line
+              <path
                 key={i}
-                x1={50 + a.x * 37.5}
-                y1={50 - a.y * 35}
-                x2={50 + b.x * 37.5}
-                y2={50 - b.y * 35}
+                d={`M ${50 + a.x * 37.5} ${50 - a.y * 35} Q ${50 + control.x * 37.5} ${
+                  50 - control.y * 35
+                } ${50 + b.x * 37.5} ${50 - b.y * 35}`}
+                fill="none"
                 stroke="currentColor"
                 strokeWidth=".13"
                 className="text-line-strong"
-                opacity={!focus || (focus.has(edge.from) && focus.has(edge.to)) ? 0.65 : 0.1}
+                opacity={!focus ? 0.3 : focus.has(edge.from) && focus.has(edge.to) ? 0.65 : 0.07}
               />
             );
           })}
@@ -193,16 +202,6 @@ export function Connections({
             How the work fits together.
           </h2>
         </div>
-        <button
-          type="button"
-          className="btn-secondary min-h-9 px-3 py-1 text-xs"
-          onClick={() => {
-            setPicked(null);
-            onClear();
-          }}
-        >
-          Show all connections
-        </button>
       </div>
       <p className="max-w-prose text-sm text-muted">
         Hover or focus a sphere to identify it. Select it to open its project, article, or report.
@@ -216,6 +215,49 @@ export function Connections({
             : 'That connection request was not understood. Try “show everything related to chess”.'}
         </p>
       )}
+      <div
+        role="group"
+        aria-label="Explore connections"
+        className="flex flex-wrap items-center gap-2 rounded border border-line bg-inset p-3"
+      >
+        <button
+          type="button"
+          className={`btn-secondary min-h-11 px-3 text-xs ${
+            !selected && !focus ? 'border-accent text-accent' : ''
+          }`}
+          aria-pressed={!selected && !focus}
+          onClick={() => {
+            setPicked(null);
+            setHovered(null);
+            onClear();
+          }}
+        >
+          Show all connections
+        </button>
+        <span className="px-1 text-xs text-muted">Start with</span>
+        {[
+          'project:mcp',
+          'project:authkit',
+          'project:langkit',
+          'project:chess',
+          'project:capstone',
+        ].map((id) => (
+          <button
+            type="button"
+            key={id}
+            aria-pressed={selected === id}
+            className={`btn-secondary min-h-11 px-3 text-xs ${
+              selected === id ? 'border-accent text-accent' : ''
+            }`}
+            onClick={() => {
+              setPicked(id);
+              setHovered(null);
+            }}
+          >
+            {graphNode(id)!.title}
+          </button>
+        ))}
+      </div>
       <GraphStage
         selected={hovered ?? selected}
         focus={focus}
@@ -230,6 +272,9 @@ export function Connections({
             : 'Choose a sphere, or ask for a connection using the search field.'}
       </p>
       <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted" aria-label="Map key">
+        <span>
+          {graphNodes.length} items · {graphLinks.length} connections
+        </span>
         <span className="text-accent">● Released project</span>
         <span>● Project</span>
         <span className="text-bad">● Writing</span>
@@ -240,7 +285,7 @@ export function Connections({
           Report
         </span>
       </div>
-      {node ? (
+      {node && (
         <div className="grid min-w-0 gap-8 border-t border-line pt-6 sm:grid-cols-2">
           <div role="region" aria-label={`${node.title} map details`} className="min-w-0">
             <div className="flex flex-col items-start gap-3">
@@ -308,23 +353,11 @@ export function Connections({
             )}
           </div>
         </div>
-      ) : (
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted">
-          <span>Start with</span>
-          {['project:mcp', 'project:chess', 'project:capstone'].map((id) => (
-            <button
-              type="button"
-              key={id}
-              className="btn-secondary min-h-9 px-3 py-1 text-xs"
-              onClick={() => setPicked(id)}
-            >
-              {graphNode(id)!.title}
-            </button>
-          ))}
-        </div>
       )}
+
       <p className="text-xs text-muted">
-        Connections describe shared themes and documented relationships.
+        Connections include direct integrations, shared subjects, publications, and project
+        documents.
       </p>
     </section>
   );

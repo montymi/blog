@@ -7,7 +7,7 @@ export const site = {
   owner: 'Michael Montanaro',
   line: 'Tools that make the next step clearer.',
   description:
-    'Michael Montanaro builds small apps that turn everyday questions into useful next steps. Try LazyGrocer or Chess.',
+    'Michael Montanaro builds apps and reusable tools for agent experiences, with shared identity, permissions, and query languages.',
   github: 'montymi',
 };
 

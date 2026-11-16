@@ -1,0 +1,14 @@
+{
+  "title": "Authkit",
+  "kind": "episode",
+  "role": "library",
+  "version": "0.1.0",
+  "status": "published",
+  "description": "Reusable sign-in and authorization for apps: OAuth / OIDC, PKCE, verified identities, app-specific roles, session renewal, and logout. Already used by Chess and LazyGrocer.",
+  "released": "2026-11-13",
+  "releaseLabel": "Started",
+  "updated": "2026-11-14",
+  "github": "https://github.com/montymi/charon/tree/main/authkit",
+  "sourcePrivate": true,
+  "readme": "/projects/authkit/README.md"
+}
