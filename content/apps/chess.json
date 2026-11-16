@@ -8,18 +8,8 @@
   "repo": "montymi/chess",
   "language": {
     "name": "the question language",
-    "verbs": [
-      "games",
-      "score",
-      "rating",
-      "mistakes",
-      "blunders",
-      "found"
-    ],
-    "examples": [
-      "mistakes where theme = fork by month",
-      "score by opening where color = black"
-    ],
+    "verbs": ["games", "score", "rating", "mistakes", "blunders", "found"],
+    "examples": ["games by month", "score by opening where color = black"],
     "check": "https://chess.montymi.com/api/history/check?q={query}",
     "open": "https://chess.montymi.com/progress?ask={query}",
     "grammar": "https://chess.montymi.com/api/history/grammar"
