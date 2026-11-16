@@ -3,25 +3,55 @@
     "id": "everyday-apps",
     "name": "Everyday apps",
     "about": "Software I use myself, every week.",
-    "items": ["app:chef", "app:chess", "project:lazygrocer"]
+    "items": [
+      "app:chef",
+      "app:chess",
+      "project:lazygrocer",
+      "project:chess"
+    ]
+  },
+  {
+    "id": "agent-experience",
+    "name": "Agent experience",
+    "about": "Identity, permissions, and a common way for agents to use apps.",
+    "items": [
+      "app:styx",
+      "app:charon",
+      "app:connect",
+      "project:styx",
+      "project:charon",
+      "project:mcp"
+    ]
   },
   {
     "id": "voice-and-ai",
     "name": "Voice and AI",
     "about": "Talking to software, and software that talks back.",
-    "items": ["project:linguist", "project:sesh-cli", "post:technology-beyond-the-keyboard"]
+    "items": [
+      "project:linguist",
+      "project:sesh-cli",
+      "post:technology-beyond-the-keyboard"
+    ]
   },
   {
     "id": "explaining-things",
     "name": "Explaining things",
     "about": "Docs, lessons, and other ways of getting someone started.",
-    "items": ["project:cleardocs", "project:coding-from-zero", "post:talking-docs"]
+    "items": [
+      "project:cleardocs",
+      "project:coding-from-zero",
+      "post:talking-docs"
+    ]
   },
   {
     "id": "developer-tools",
     "name": "Developer tools",
     "about": "Small tools that help software projects fit together.",
-    "items": ["project:serialpy", "project:schema-api-testing", "project:sesh"]
+    "items": [
+      "project:serialpy",
+      "project:schema-api-testing",
+      "project:sesh"
+    ]
   },
   {
     "id": "engineering-and-research",
@@ -39,6 +69,9 @@
     "id": "teams-and-stories",
     "name": "Teams and stories",
     "about": "Writing about people: the field, the team, a shop window.",
-    "items": ["post:preseason", "post:window-shopping"]
+    "items": [
+      "post:preseason",
+      "post:window-shopping"
+    ]
   }
 ]

@@ -1,0 +1,10 @@
+{
+  "title": "Chess",
+  "kind": "episode",
+  "version": "rolling",
+  "status": "published",
+  "description": "Play against a hand-built AI or a friend online, then explore your games, mistakes, and openings. Available to assistants through Connect.",
+  "released": "TBD",
+  "updated": "2026-11-16",
+  "live": "https://chess.montymi.com"
+}

@@ -1,0 +1,10 @@
+{
+  "title": "Styx",
+  "kind": "episode",
+  "version": "rolling",
+  "status": "published",
+  "description": "The platform\u2019s identity layer: sign-in, OAuth / OIDC, and roles, with an independent identity authority for each operator.",
+  "released": "TBD",
+  "updated": "2026-11-16",
+  "live": "https://styx.montymi.com"
+}
