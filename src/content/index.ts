@@ -37,7 +37,7 @@ export interface Project {
   kind: 'album' | 'episode' | 'single';
   version: string;
   /** Unversioned projects show their source revision instead of an invented release number. */
-  versionLabel?: 'Revision';
+  versionLabel?: 'Build';
   status: ProjectStatus;
   description: string;
   released: string;
@@ -158,4 +158,4 @@ export const projectBySlug = (slug: string) => projects.find((project) => projec
 
 /** The same release/revision wording everywhere a project appears. */
 export const projectVersion = (project: Project) =>
-  project.versionLabel === 'Revision' ? `rev ${project.version}` : `v${project.version}`;
+  project.versionLabel === 'Build' ? `build ${project.version}` : `v${project.version}`;

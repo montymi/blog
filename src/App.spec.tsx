@@ -112,6 +112,36 @@ test('the capstone project keeps its report and supporting documents together', 
   );
 });
 
+test('the map has unlabeled sphere controls that open the existing project pages', () => {
+  // Modern browsers may return a promise from scrolling; it must never become effect cleanup.
+  window.scrollTo = vi.fn(() => Promise.resolve());
+  at('/projects');
+  const map = within(screen.getByRole('group', { name: 'Work connections map' }));
+  const sphere = map.getByRole('button', { name: 'Chess, Project' });
+  expect(sphere.querySelector('.sr-only')).toHaveTextContent('Chess');
+  fireEvent.focus(sphere);
+  expect(screen.getByRole('status')).toHaveTextContent('Chess · Project');
+  fireEvent.click(sphere);
+  expect(screen.getByRole('heading', { level: 1, name: 'Chess' })).toBeInTheDocument();
+});
+
+test('a connection query highlights a real path through the map', () => {
+  at('/projects?explore=what%20connects%20Chess%20to%20Styx');
+  expect(screen.getByText('Connection path')).toBeInTheDocument();
+  const map = within(screen.getByRole('group', { name: 'Work connections map' }));
+  expect(map.getByRole('button', { name: 'Chess, Project' })).toHaveAttribute(
+    'aria-current',
+    'true',
+  );
+  expect(screen.getByRole('region', { name: 'Chess map details' })).toBeInTheDocument();
+});
+
+test('Build is the label for an unversioned Connect deployment', () => {
+  at('/projects/mcp');
+  expect(screen.getByText('Build', { exact: true })).toBeInTheDocument();
+  expect(screen.queryByText('Revision', { exact: true })).not.toBeInTheDocument();
+});
+
 test.each(['chess', 'charon', 'styx', 'mcp'])(
   'the %s project has source-backed metadata and a public README',
   (slug) => {

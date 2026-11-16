@@ -3,6 +3,7 @@
  * (see platform/contract.ts); anything else searches what the site holds.
  */
 import { route, type Manifest } from '@/platform/contract';
+import { findGraphNode, graphHref, graphQuery, type GraphQuery } from '@/content/graph';
 
 export interface Destination {
   label: string;
@@ -41,6 +42,7 @@ export function search(text: string, index: Searchable[], limit = 6): Destinatio
 
 export type Answer =
   | { type: 'ask'; app: Manifest; query: string }
+  | { type: 'graph'; query: string; interpretation: GraphQuery; href: string }
   | { type: 'results'; results: Destination[] }
   | { type: 'empty' };
 
@@ -48,10 +50,32 @@ export function answer(text: string, index: Searchable[], apps: Manifest[]): Ans
   const query = text.trim();
   if (!query) return { type: 'empty' };
   const app = route(query, apps);
-  return app ? { type: 'ask', app, query } : { type: 'results', results: search(query, index) };
+  if (app) return { type: 'ask', app, query };
+  const interpretation = graphQuery(query);
+  if (interpretation) return { type: 'graph', query, interpretation, href: graphHref(query) };
+  const opening = /^(?:open|take me to|go to) (.+)$/i.exec(query);
+  const node = opening ? findGraphNode(opening[1]) : undefined;
+  if (node)
+    return {
+      type: 'results',
+      results: [
+        {
+          label: node.title,
+          kind: node.kind === 'paper' ? 'PDF' : node.kind === 'post' ? 'Post' : 'Project',
+          href: node.href,
+          away: node.away,
+          detail: node.about,
+        },
+      ],
+    };
+  return { type: 'results', results: search(query, index) };
 }
 
 /** A few sentences to try: each app's first example, then a search. */
 export function examples(apps: Manifest[]): string[] {
-  return [...apps.flatMap((app) => app.language?.examples.slice(0, 1) ?? []), 'capstone'];
+  return [
+    ...apps.flatMap((app) => app.language?.examples.slice(0, 1) ?? []),
+    'capstone',
+    'show everything related to chess',
+  ];
 }

@@ -1,0 +1,10 @@
+[
+  { "from": "project:styx", "to": "project:charon", "label": "provides identity for" },
+  { "from": "project:styx", "to": "project:mcp", "label": "authenticates people using" },
+  { "from": "project:charon", "to": "project:mcp", "label": "sets access policy for" },
+  { "from": "project:mcp", "to": "project:chess", "label": "connects agents to" },
+  { "from": "project:mcp", "to": "project:lazygrocer", "label": "connects agents to" },
+  { "from": "post:blitzys-blitz-adventures-in-chess", "to": "project:chess", "label": "discusses" },
+  { "from": "post:talking-docs", "to": "project:blog", "label": "describes audio documentation on" },
+  { "from": "post:welcome", "to": "project:blog", "label": "introduces" }
+]
