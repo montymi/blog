@@ -1,0 +1,13 @@
+{
+  "title": "next-template",
+  "kind": "episode",
+  "role": "template",
+  "version": "1.0.0",
+  "status": "published",
+  "description": "Reusable Next.js starter with TypeScript, Tailwind, localization, themes, PWA support, and a Jest testing setup.",
+  "released": "2025-01-25",
+  "releaseLabel": "Started",
+  "updated": "2025-03-04",
+  "github": "https://github.com/montymi/next-template",
+  "readme": "https://raw.githubusercontent.com/montymi/next-template/main/README.md"
+}

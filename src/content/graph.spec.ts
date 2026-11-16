@@ -38,6 +38,12 @@ test('queries and neighbor exploration share the same relationships', () => {
   expect(result.ids).toContain('post:blitzys-blitz-adventures-in-chess');
   expect(graphQuery('show my research')?.ids).toHaveLength(2);
   expect(graphQuery('show libraries')?.ids.sort()).toEqual(['project:authkit', 'project:langkit']);
+  expect(graphQuery('show foundations')?.ids.sort()).toEqual([
+    'project:authkit',
+    'project:cleardocs',
+    'project:langkit',
+    'project:next-template',
+  ]);
 });
 
 test('a connection path is made of documented edges and unknown items stay unknown', () => {

@@ -12,11 +12,11 @@ import {
 } from '@/content/graph';
 import { edgeControl, graphLayout } from '@/lib/graph-layout';
 import type { SceneState } from '@/lib/graph-scene';
+import { projectRoleLabel } from '@/content';
 
 const positions = graphLayout(graphNodes, graphEdges);
 const words = { project: 'Project', post: 'Writing', paper: 'Report' };
-const kindLabel = (node: GraphNode) =>
-  node.role === 'library' ? 'Library' : node.role === 'platform' ? 'Platform' : words[node.kind];
+const kindLabel = (node: GraphNode) => projectRoleLabel(node.role) ?? words[node.kind];
 
 /** Native buttons provide labels and keyboard access even without a WebGL context. */
 function GraphStage({

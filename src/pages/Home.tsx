@@ -8,7 +8,7 @@ import { Sky } from '@/components/Sky';
 import { Switchboard } from '@/components/Switchboard';
 import { Meta } from '@/components/ui';
 import { site } from '@/config';
-import { posts, projects, projectVersion } from '@/content';
+import { isFoundation, posts, projects, projectCategory, projectVersion } from '@/content';
 
 function Part({ title, more, children }: { title: string; more?: ReactNode; children: ReactNode }) {
   return (
@@ -47,7 +47,8 @@ function Home() {
               </h1>
               <p className="max-w-[28rem] text-[1.0625rem] text-muted">
                 I build apps with shared identity, permissions, and query languages that people and
-                agents can use. The libraries behind them are built to be reused too.
+                agents can use. Shared libraries, templates, and documentation make those
+                foundations reusable.
               </p>
             </div>
             <Command />
@@ -68,26 +69,26 @@ function Home() {
               Shared foundations
             </h3>
             <p className="text-sm text-muted">
-              Maintained in Charon and already used by Chess and LazyGrocer. Authkit handles
-              identity and roles; Langkit gives each app’s language the same grammar, check, and run
-              contract.
+              Reusable foundations for identity, app languages, documentation, and web interfaces.
+              Authkit and Langkit live in Charon and already serve Chess and LazyGrocer; ClearDocs
+              and next-template provide documentation patterns and an app starter.
             </p>
           </div>
           <ul className="grid gap-4 sm:grid-cols-2">
-            {projects
-              .filter((project) => project.role === 'library')
-              .map((project) => (
-                <li key={project.slug}>
-                  <Link
-                    to={`/projects/${project.slug}`}
-                    className="focus-ring flex h-full flex-col gap-2 rounded border border-line bg-raised p-4 hover:border-line-strong"
-                  >
-                    <span className="kicker">Library · {projectVersion(project)}</span>
-                    <span className="text-lg font-semibold">{project.title} →</span>
-                    <span className="text-sm text-muted">{project.description}</span>
-                  </Link>
-                </li>
-              ))}
+            {projects.filter(isFoundation).map((project) => (
+              <li key={project.slug}>
+                <Link
+                  to={`/projects/${project.slug}`}
+                  className="focus-ring flex h-full flex-col gap-2 rounded border border-line bg-raised p-4 hover:border-line-strong"
+                >
+                  <span className="kicker">
+                    {projectCategory(project)} · {projectVersion(project)}
+                  </span>
+                  <span className="text-lg font-semibold">{project.title} →</span>
+                  <span className="text-sm text-muted">{project.description}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
         </section>
       </Part>

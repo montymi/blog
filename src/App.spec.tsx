@@ -163,6 +163,27 @@ test('the homepage presents reusable foundations alongside the apps', () => {
     'href',
     '/projects/langkit',
   );
+  expect(foundations.getByRole('link', { name: /ClearDocs/ })).toHaveAttribute(
+    'href',
+    '/projects/cleardocs',
+  );
+  expect(foundations.getByRole('link', { name: /next-template/ })).toHaveAttribute(
+    'href',
+    '/projects/next-template',
+  );
+  expect(foundations.getByText('Documentation · v1.4.0')).toBeInTheDocument();
+  expect(foundations.getByText('Template · v1.0.0')).toBeInTheDocument();
+});
+
+test('next-template links to its public source and README as a reusable starter', () => {
+  at('/projects/next-template');
+  expect(screen.getByRole('heading', { level: 1, name: 'next-template' })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Code on GitHub' })).toHaveAttribute(
+    'href',
+    'https://github.com/montymi/next-template',
+  );
+  expect(screen.getByText('README from GitHub')).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Open next-template' })).not.toBeInTheDocument();
 });
 
 test.each(['authkit', 'langkit'])(

@@ -103,5 +103,10 @@
     "from": "project:langkit",
     "to": "project:mcp",
     "label": "defines the app contract consumed by"
+  },
+  {
+    "from": "project:cleardocs",
+    "to": "project:blog",
+    "label": "provides README patterns for"
   }
 ]
