@@ -34,6 +34,7 @@ test('each app offers an example to try', () => {
     'plan 4 dinners for 2 under $40',
     'mistakes where theme = fork by month',
     'capstone',
+    'show everything related to chess',
   ]);
 });
 
@@ -49,4 +50,18 @@ test('anything else searches, every word must match, titles first', () => {
 
 test('nothing typed is nothing to show', () => {
   expect(answer('   ', index, SNAPSHOTS)).toEqual({ type: 'empty' });
+});
+
+test('connection questions open a shareable map and direct requests still find existing pages', () => {
+  const result = answer('what connects Chess to Styx', index, SNAPSHOTS);
+  expect(result).toMatchObject({ type: 'graph', interpretation: { mode: 'path' } });
+  if (result.type === 'graph') expect(result.href).toContain('/projects?explore=');
+  expect(answer('open capstone report', index, SNAPSHOTS)).toMatchObject({
+    type: 'results',
+    results: [{ href: '/library/Capstone-Report.pdf' }],
+  });
+  expect(answer('show my research', index, SNAPSHOTS)).toMatchObject({
+    type: 'graph',
+    interpretation: { mode: 'collection' },
+  });
 });

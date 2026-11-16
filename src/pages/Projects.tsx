@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
-import { Skyline } from '@/components/Skyline';
+import { Connections } from '@/components/Connections';
 import { ProjectDetails, ProjectStatus } from '@/components/ProjectDetails';
 import { Kicker, Meta, PageHeader } from '@/components/ui';
 import { formatDate } from '@/lib/dates';
@@ -19,6 +19,8 @@ const KINDS = [
 type Kind = (typeof KINDS)[number]['id'];
 
 export function Projects() {
+  const [params, setParams] = useSearchParams();
+  const exploration = params.get('explore') ?? '';
   const [kind, setKind] = useState<Kind>('all');
   const shown = projects.filter((p) => kind === 'all' || p.kind === kind);
   return (
@@ -32,7 +34,15 @@ export function Projects() {
         tools, and singles are small pieces.
       </PageHeader>
 
-      <Skyline projects={projects} />
+      <Connections
+        key={exploration}
+        queryText={exploration}
+        onClear={() => {
+          const next = new URLSearchParams(params);
+          next.delete('explore');
+          setParams(next, { replace: true });
+        }}
+      />
 
       <div role="radiogroup" aria-label="Show" className="flex flex-wrap gap-2">
         {KINDS.map((option) => (

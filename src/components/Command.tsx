@@ -130,14 +130,26 @@ export function Command({
             },
           },
         ]
-    : result.type === 'results'
-      ? result.results.map((to) => ({
-          label: to.label,
-          kind: to.kind,
-          detail: to.detail,
-          run: () => go(to),
-        }))
-      : [];
+    : result.type === 'graph'
+      ? [
+          {
+            label: result.interpretation.description,
+            kind: 'Map',
+            detail:
+              result.interpretation.mode === 'path' && result.interpretation.ids.length === 0
+                ? 'No documented path yet. Open the map to explore.'
+                : `${result.interpretation.ids.length} connected items · explore the map`,
+            run: () => go({ label: '', kind: '', href: result.href }),
+          },
+        ]
+      : result.type === 'results'
+        ? result.results.map((to) => ({
+            label: to.label,
+            kind: to.kind,
+            detail: to.detail,
+            run: () => go(to),
+          }))
+        : [];
 
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'ArrowDown' && options.length) {
@@ -157,7 +169,7 @@ export function Command({
     <div className="flex flex-col gap-3">
       {large && (
         <label htmlFor={`${id}-input`} className="kicker">
-          Ask an app, or search
+          Ask an app, find work, or explore connections
         </label>
       )}
       <div
@@ -178,7 +190,7 @@ export function Command({
           id={`${id}-input`}
           type="text"
           role="combobox"
-          aria-label="Ask an app, or search the site"
+          aria-label="Ask an app, search the site, or explore connections"
           aria-expanded={options.length > 0}
           aria-controls={`${id}-list`}
           aria-activedescendant={options.length ? `${id}-${active}` : undefined}
@@ -221,6 +233,14 @@ export function Command({
       )}
 
       {asking && <Reading app={asking.app} query={asking.query} check={check} pending={pending} />}
+
+      {result.type === 'graph' && (
+        <p role="status" className="text-sm text-muted">
+          {result.interpretation.mode === 'path'
+            ? 'Follow a documented connection path.'
+            : 'Explore the recorded relationships between projects, writing, and reports.'}
+        </p>
+      )}
 
       {result.type === 'results' && options.length === 0 && (
         <p role="status" className="text-sm text-muted">
