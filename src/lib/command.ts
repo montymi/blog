@@ -3,7 +3,16 @@
  * (see platform/contract.ts); anything else searches what the site holds.
  */
 import { route, type Manifest } from '@/platform/contract';
-import { findGraphNode, graphHref, graphQuery, type GraphQuery } from '@/content/graph';
+import {
+  findGraphNode,
+  graphHref,
+  checkGraphQuery,
+  graphResultIds,
+  graphResultDetail,
+  graphResultKind,
+  type GraphQuery,
+} from '@/lib/graph-query';
+import { graphNode } from '@/content/graph';
 
 export interface Destination {
   label: string;
@@ -42,7 +51,15 @@ export function search(text: string, index: Searchable[], limit = 6): Destinatio
 
 export type Answer =
   | { type: 'ask'; app: Manifest; query: string }
-  | { type: 'graph'; query: string; interpretation: GraphQuery; href: string }
+  | {
+      type: 'graph';
+      query: string;
+      interpretation: GraphQuery;
+      href: string;
+      results: Destination[];
+      canonical: string;
+    }
+  | { type: 'query-help'; message: string; suggestions: string[] }
   | { type: 'results'; results: Destination[] }
   | { type: 'empty' };
 
@@ -51,8 +68,30 @@ export function answer(text: string, index: Searchable[], apps: Manifest[]): Ans
   if (!query) return { type: 'empty' };
   const app = route(query, apps);
   if (app) return { type: 'ask', app, query };
-  const interpretation = graphQuery(query);
-  if (interpretation) return { type: 'graph', query, interpretation, href: graphHref(query) };
+  const checked = checkGraphQuery(text);
+  if (checked.kind === 'help')
+    return { type: 'query-help', message: checked.message, suggestions: checked.suggestions };
+  if (checked.kind === 'valid') {
+    const interpretation = checked.plan;
+    const results = graphResultIds(interpretation).map((id) => {
+      const node = graphNode(id)!;
+      return {
+        label: node.title,
+        kind: graphResultKind(node),
+        href: node.href,
+        away: node.away,
+        detail: graphResultDetail(interpretation, id),
+      };
+    });
+    return {
+      type: 'graph',
+      query,
+      interpretation,
+      href: graphHref(query),
+      results,
+      canonical: checked.canonical,
+    };
+  }
   const opening = /^(?:open|take me to|go to) (.+)$/i.exec(query);
   const node = opening ? findGraphNode(opening[1]) : undefined;
   if (node)
@@ -76,6 +115,8 @@ export function examples(apps: Manifest[]): string[] {
   return [
     ...apps.flatMap((app) => app.language?.examples.slice(0, 1) ?? []),
     'capstone',
-    'show everything related to chess',
+    'show foundations',
+    'what uses authkit',
+    'show projects where status = published',
   ];
 }

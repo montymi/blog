@@ -68,11 +68,6 @@ function Home() {
             <h3 id="foundations-title" className="font-display text-2xl">
               Shared foundations
             </h3>
-            <p className="text-sm text-muted">
-              Reusable foundations for identity, app languages, documentation, and web interfaces.
-              Authkit and Langkit live in Charon and already serve Chess and LazyGrocer; ClearDocs
-              and next-template provide documentation patterns and an app starter.
-            </p>
           </div>
           <ul className="grid gap-4 sm:grid-cols-2">
             {projects.filter(isFoundation).map((project) => (

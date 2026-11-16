@@ -2,111 +2,133 @@
   {
     "from": "project:styx",
     "to": "project:charon",
-    "label": "provides identity for"
+    "label": "provides identity for",
+    "relation": "enables"
   },
   {
     "from": "project:styx",
     "to": "project:mcp",
-    "label": "authenticates people using"
+    "label": "authenticates people using",
+    "relation": "enables"
   },
   {
     "from": "project:charon",
     "to": "project:mcp",
-    "label": "sets access policy for"
+    "label": "sets access policy for",
+    "relation": "enables"
   },
   {
     "from": "project:mcp",
     "to": "project:chess",
-    "label": "connects agents to"
+    "label": "connects agents to",
+    "relation": "enables"
   },
   {
     "from": "project:mcp",
     "to": "project:lazygrocer",
-    "label": "connects agents to"
+    "label": "connects agents to",
+    "relation": "enables"
   },
   {
     "from": "post:blitzys-blitz-adventures-in-chess",
     "to": "project:chess",
-    "label": "discusses"
+    "label": "discusses",
+    "relation": "discusses"
   },
   {
     "from": "post:talking-docs",
     "to": "project:blog",
-    "label": "describes audio documentation on"
+    "label": "describes audio documentation on",
+    "relation": "discusses"
   },
   {
     "from": "post:welcome",
     "to": "project:blog",
-    "label": "introduces"
+    "label": "introduces",
+    "relation": "introduces"
   },
   {
     "from": "project:charon",
     "to": "project:chess",
-    "label": "governs access to"
+    "label": "governs access to",
+    "relation": "enables"
   },
   {
     "from": "project:charon",
     "to": "project:lazygrocer",
-    "label": "governs access to"
+    "label": "governs access to",
+    "relation": "enables"
   },
   {
     "from": "project:styx",
     "to": "project:chess",
-    "label": "provides sign-in for"
+    "label": "provides sign-in for",
+    "relation": "enables"
   },
   {
     "from": "project:styx",
     "to": "project:lazygrocer",
-    "label": "provides sign-in for"
+    "label": "provides sign-in for",
+    "relation": "enables"
   },
   {
     "from": "project:blog",
     "to": "project:coding-from-zero",
-    "label": "hosts the audio walkthrough for"
+    "label": "hosts the audio walkthrough for",
+    "relation": "hosts"
   },
   {
     "from": "project:charon",
     "to": "project:authkit",
-    "label": "maintains"
+    "label": "maintains",
+    "relation": "maintains"
   },
   {
     "from": "project:charon",
     "to": "project:langkit",
-    "label": "maintains"
+    "label": "maintains",
+    "relation": "maintains"
   },
   {
     "from": "project:authkit",
     "to": "project:styx",
-    "label": "integrates apps with"
+    "label": "integrates apps with",
+    "relation": "uses"
   },
   {
     "from": "project:authkit",
     "to": "project:chess",
-    "label": "provides sign-in and role checks for"
+    "label": "provides sign-in and role checks for",
+    "relation": "enables"
   },
   {
     "from": "project:authkit",
     "to": "project:lazygrocer",
-    "label": "provides sign-in and role checks for"
+    "label": "provides sign-in and role checks for",
+    "relation": "enables"
   },
   {
     "from": "project:langkit",
     "to": "project:chess",
-    "label": "standardizes grammar/check/run for"
+    "label": "standardizes grammar/check/run for",
+    "relation": "enables"
   },
   {
     "from": "project:langkit",
     "to": "project:lazygrocer",
-    "label": "standardizes grammar/check/run for"
+    "label": "standardizes grammar/check/run for",
+    "relation": "enables"
   },
   {
     "from": "project:langkit",
     "to": "project:mcp",
-    "label": "defines the app contract consumed by"
+    "label": "defines the app contract consumed by",
+    "relation": "enables"
   },
   {
     "from": "project:cleardocs",
     "to": "project:blog",
-    "label": "provides README patterns for"
+    "label": "provides README patterns for",
+    "relation": "enables"
   }
 ]

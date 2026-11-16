@@ -1,14 +1,8 @@
+import { graphQuery } from '@/lib/graph-query';
 import { expect, test } from 'vitest';
 
 import { papers, posts, projects } from '.';
-import {
-  graphEdges,
-  graphLinks,
-  graphNodes,
-  graphQuery,
-  connectionPath,
-  neighborhood,
-} from './graph';
+import { graphEdges, graphLinks, graphNodes, connectionPath, neighborhood } from './graph';
 import topics from '../../content/graph-topics.json';
 import { board } from '@/lib/board';
 import { graphLayout } from '@/lib/graph-layout';
@@ -28,6 +22,16 @@ test('the graph uses the board catalog with unique identities and valid edges', 
     ).toBe(true);
     expect(edge.from).not.toBe(edge.to);
     expect(edge.label).not.toBe('');
+    if (edge.relation)
+      expect([
+        'enables',
+        'uses',
+        'maintains',
+        'documents',
+        'discusses',
+        'introduces',
+        'hosts',
+      ]).toContain(edge.relation);
   }
 });
 
@@ -107,5 +111,6 @@ test('the reusable libraries connect Charon with their actual consumers', () => 
     from: 'project:langkit',
     to: 'project:chess',
     label: 'standardizes grammar/check/run for',
+    relation: 'enables',
   });
 });

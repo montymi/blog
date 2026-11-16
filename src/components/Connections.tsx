@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { graphQuery, graphResultIds } from '@/lib/graph-query';
+
 import {
   graphEdges,
   graphLinks,
   graphNode,
   graphNodes,
-  graphQuery,
   neighborhood,
   type GraphNode,
 } from '@/content/graph';
@@ -216,7 +217,9 @@ export function Connections({
           {query
             ? query.mode === 'path' && query.ids.length === 0
               ? 'No documented connection joins these items yet.'
-              : `${query.description} · ${query.ids.length} items highlighted.`
+              : `${query.description} · ${graphResultIds(query).length} matching items${
+                  query.from && query.resultIds ? ', with the source shown for context' : ''
+                }.`
             : 'That connection request was not understood. Try “show everything related to chess”.'}
         </p>
       )}

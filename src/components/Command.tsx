@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { searchIndex } from '@/content/search';
 import { ASK_EVENT } from '@/lib/ask';
 import { answer, examples, type Destination } from '@/lib/command';
+import { queryExamples } from '@/lib/graph-query';
 import { fill, permalink, type Check, type Manifest } from '@/platform/contract';
 import { SNAPSHOTS } from '@/platform/registry';
 import { useCheck } from '@/platform/useCheck';
@@ -69,6 +70,7 @@ export function Command({
   const [text, setText] = useState('');
   const [active, setActive] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const id = useId();
@@ -98,6 +100,12 @@ export function Command({
     onDone?.();
     if (to.away) window.location.assign(to.href);
     else navigate(to.href);
+  }
+
+  function complete(query: string) {
+    setText(query);
+    setHelpOpen(false);
+    input.current?.focus();
   }
 
   // A sentence the app refused stays here to be fixed: nothing to open until it reads.
@@ -138,18 +146,31 @@ export function Command({
             detail:
               result.interpretation.mode === 'path' && result.interpretation.ids.length === 0
                 ? 'No documented path yet. Open the map to explore.'
-                : `${result.interpretation.ids.length} connected items · explore the map`,
+                : `${result.results.length} matching items · explore the map`,
             run: () => go({ label: '', kind: '', href: result.href }),
           },
-        ]
-      : result.type === 'results'
-        ? result.results.map((to) => ({
+          ...result.results.slice(0, 6).map((to) => ({
             label: to.label,
             kind: to.kind,
             detail: to.detail,
             run: () => go(to),
+          })),
+        ]
+      : result.type === 'query-help'
+        ? result.suggestions.map((suggestion) => ({
+            label: suggestion,
+            kind: 'Query',
+            detail: 'Complete this request',
+            run: () => complete(suggestion),
           }))
-        : [];
+        : result.type === 'results'
+          ? result.results.map((to) => ({
+              label: to.label,
+              kind: to.kind,
+              detail: to.detail,
+              run: () => go(to),
+            }))
+          : [];
 
   function onKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'ArrowDown' && options.length) {
@@ -235,11 +256,61 @@ export function Command({
       {asking && <Reading app={asking.app} query={asking.query} check={check} pending={pending} />}
 
       {result.type === 'graph' && (
+        <div role="status" className="flex flex-col gap-1 border-l-2 border-accent pl-3 text-sm">
+          <p>
+            Understood: <span className="font-semibold">{result.canonical}</span>
+          </p>
+          <p className="text-xs text-muted">
+            {result.results.length === 0
+              ? 'No matching items.'
+              : `${result.results.length} matches${
+                  result.results.length > 6 ? ' · first 6 below; open the map for all results' : ''
+                }.`}{' '}
+            {result.interpretation.mode === 'path'
+              ? 'Each step follows a recorded relationship.'
+              : ''}
+          </p>
+        </div>
+      )}
+
+      {result.type === 'query-help' && (
         <p role="status" className="text-sm text-muted">
-          {result.interpretation.mode === 'path'
-            ? 'Follow a documented connection path.'
-            : 'Explore the recorded relationships between projects, writing, and reports.'}
+          {result.message}
         </p>
+      )}
+
+      <button
+        type="button"
+        className="link self-start text-xs"
+        aria-expanded={helpOpen}
+        onClick={() => setHelpOpen(!helpOpen)}
+      >
+        What can I ask?
+      </button>
+      {helpOpen && (
+        <div
+          role="region"
+          aria-label="Search examples"
+          className="flex flex-col gap-3 rounded border border-line bg-inset p-3 text-sm"
+        >
+          <p>
+            Find projects, writing, or reports; filter by status, type, or topic; or follow a
+            connection. App requests still start with their own verb.
+          </p>
+          <ul className="flex flex-col gap-1">
+            {queryExamples.map((query) => (
+              <li key={query}>
+                <button
+                  type="button"
+                  className="focus-ring min-h-11 text-left font-mono text-xs text-accent"
+                  onClick={() => complete(query)}
+                >
+                  {query}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
 
       {result.type === 'results' && options.length === 0 && (
@@ -277,7 +348,13 @@ export function Command({
                 {option.label}
               </span>
               {option.detail && (
-                <span className="truncate text-sm text-muted">{option.detail}</span>
+                <span
+                  className={`${
+                    result.type === 'graph' ? 'line-clamp-2' : 'truncate'
+                  } text-sm text-muted`}
+                >
+                  {option.detail}
+                </span>
               )}
             </span>
             {index === active && (
