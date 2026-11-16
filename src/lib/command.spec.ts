@@ -32,7 +32,7 @@ test("a sentence an app owns is that app's to read, as typed", () => {
 test('each app offers an example to try', () => {
   expect(examples(SNAPSHOTS)).toEqual([
     'plan 4 dinners for 2 under $40',
-    'mistakes where theme = fork by month',
+    'games by month',
     'capstone',
     'show foundations',
     'what do Chess and LazyGrocer share',
