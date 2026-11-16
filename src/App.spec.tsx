@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, expect, test, vi } from 'vitest';
@@ -38,6 +38,35 @@ test('the front page links to every app by its address', () => {
   }
   expect(hrefs).not.toContain('https://manager.montymi.com');
   expect(hrefs).not.toContain('https://chef.montymi.com/connect');
+});
+
+test('research papers open directly from their board squares', () => {
+  at('/');
+  expect(screen.getByRole('link', { name: /BRCA1 Gene Mutation Report, paper/ })).toHaveAttribute(
+    'href',
+    '/library/BRCA1-Gene-Mutation.pdf',
+  );
+  expect(
+    screen.getByRole('link', { name: /Solar Charging for E-Mobility Devices Report, paper/ }),
+  ).toHaveAttribute('href', '/library/Capstone-Report.pdf');
+});
+
+test('home cards name the actual publication of external writing', () => {
+  at('/');
+  const written = within(screen.getByRole('region', { name: 'Written' }));
+  const chess = written.getByRole('link', { name: /Blitzy’s Blitz: Adventures in Chess/ });
+  expect(within(chess).getByText(/· Blitzy/)).toBeInTheDocument();
+  expect(within(chess).queryByText(/Substack/)).not.toBeInTheDocument();
+  const preseason = written.getByRole('link', { name: /Preseason/ });
+  expect(within(preseason).getByText(/· Substack/)).toBeInTheDocument();
+});
+
+test('the writing list keeps Blitzy and Substack publication labels distinct', () => {
+  at('/writing');
+  const chess = screen.getByRole('link', { name: /Blitzy’s Blitz: Adventures in Chess/ });
+  expect(within(chess).getByText(/on Blitzy/)).toBeInTheDocument();
+  const preseason = screen.getByRole('link', { name: /Preseason/ });
+  expect(within(preseason).getByText(/on Substack/)).toBeInTheDocument();
 });
 
 test.each(Object.entries(MOVED))('the old address %s opens %s', (from, to) => {

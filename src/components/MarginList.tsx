@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { postHref, type Post } from '@/content';
 import { formatDate } from '@/lib/dates';
+import { publicationName } from '@/lib/publication';
 
 /**
  * Posts as lines in the notebook: the date sits in the margin, left of the red margin rule,
@@ -30,7 +31,7 @@ export function MarginList({ posts }: { posts: Post[] }) {
                 <span className="max-w-prose text-sm text-muted">{post.summary}</span>
                 <span className="text-xs text-muted">
                   {post.minutes} min read{post.tags.length > 0 && `, ${post.tags.join(', ')}`}
-                  {post.url && `, on ${new URL(post.url).hostname.replace(/^[^.]+\./, '')}`}
+                  {`, on ${publicationName(post.url)}`}
                 </span>
               </span>
             </a>
@@ -52,7 +53,6 @@ export function MarginList({ posts }: { posts: Post[] }) {
                 <span className="max-w-prose text-sm text-muted">{post.summary}</span>
                 <span className="text-xs text-muted">
                   {post.minutes} min read{post.tags.length > 0 && `, ${post.tags.join(', ')}`}
-                  {post.url && `, on ${new URL(post.url).hostname.replace(/^[^.]+\./, '')}`}
                 </span>
               </span>
             </Link>

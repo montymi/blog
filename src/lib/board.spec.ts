@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { posts, projects } from '@/content';
+import { papers, posts, projects } from '@/content';
 import { SNAPSHOTS } from '@/platform/registry';
 
 import { SIZE, board, knightsTour, squareName } from './board';
@@ -10,10 +10,12 @@ test('squares are named like a chessboard, filling rank 1 first', () => {
 });
 
 test('everything is on the board, oldest first, the running apps last', () => {
-  const squares = board(projects, posts, SNAPSHOTS);
+  const squares = board(projects, posts, SNAPSHOTS, papers);
   expect(squares).toHaveLength(SIZE);
   const filled = squares.filter((s) => s.item);
-  expect(filled).toHaveLength(projects.length + posts.length + SNAPSHOTS.length);
+  expect(filled).toHaveLength(
+    projects.length + posts.length + SNAPSHOTS.length + papers.filter((p) => p.date).length,
+  );
   const when = filled.filter((s) => s.item!.kind !== 'app').map((s) => s.item!.when);
   expect(when).toEqual([...when].sort());
   expect(filled.at(-1)!.item!.kind).toBe('app');
@@ -28,4 +30,12 @@ test('the knight tours every square once, by knight moves', () => {
     const dr = Math.abs(Math.floor(tour[i] / 8) - Math.floor(tour[i - 1] / 8));
     expect([df, dr].sort().join()).toBe('1,2');
   }
+});
+
+test('research reports have PDF squares while the résumé stays off the board', () => {
+  const items = board(projects, posts, SNAPSHOTS, papers).flatMap((s) => (s.item ? [s.item] : []));
+  for (const href of ['/library/BRCA1-Gene-Mutation.pdf', '/library/Capstone-Report.pdf']) {
+    expect(items).toContainEqual(expect.objectContaining({ kind: 'paper', href, away: true }));
+  }
+  expect(items.some((item) => item.href === '/library/Resume-MichaelMontanaro.pdf')).toBe(false);
 });
