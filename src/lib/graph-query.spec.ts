@@ -1,7 +1,13 @@
 import { expect, test } from 'vitest';
 
 import { graphNode } from '@/content/graph';
-import { checkGraphQuery, graphQuery, graphResultIds, querySuggestions } from './graph-query';
+import {
+  checkGraphQuery,
+  graphQuery,
+  graphResultIds,
+  graphResultDetail,
+  querySuggestions,
+} from './graph-query';
 
 const results = (query: string) => {
   const plan = graphQuery(query);
@@ -78,4 +84,51 @@ test('completion preserves the current operator and preceding conditions', () =>
   expect(querySuggestions('show projects where status = nope')).toContain(
     'show projects where status = published',
   );
+});
+
+test('shared-foundation comparisons require both documented consumers and explain both sides', () => {
+  const query = graphQuery('what do Chess and LazyGrocer share?')!;
+  expect(graphResultIds(query).sort()).toEqual([
+    'project:authkit',
+    'project:charon',
+    'project:langkit',
+    'project:mcp',
+    'project:styx',
+  ]);
+  expect(graphResultIds(query)).not.toContain('project:next-template');
+  expect(graphResultDetail(query, 'project:langkit')).toContain(
+    'Langkit standardizes grammar/check/run for Chess',
+  );
+  expect(graphResultDetail(query, 'project:langkit')).toContain(
+    'Langkit standardizes grammar/check/run for LazyGrocer',
+  );
+  expect(results('what do Chess and BRCA1 have in common')).toEqual([]);
+  const filtered = graphQuery('what do Chess and LazyGrocer share where type = library')!;
+  expect(graphResultIds(filtered).sort()).toEqual(['project:authkit', 'project:langkit']);
+  expect(filtered.ids).toContain('project:chess');
+  expect(filtered.ids).toContain('project:lazygrocer');
+  expect(graphQuery('what do Chess and unknown share')).toBeNull();
+  expect(querySuggestions('what do Chess')).toContain('what do Chess and LazyGrocer share');
+});
+
+test('documents are searchable without becoming additional board squares or research reports', () => {
+  expect(results('show documents for capstone')).toHaveLength(3);
+  expect(results('show work where type = document')).toHaveLength(2);
+  expect(results('show research')).toHaveLength(2);
+});
+
+test('writing behind an app carries the intermediate foundation and its exact evidence', () => {
+  const query = graphQuery('show writing about the foundations behind Chess')!;
+  const article = 'post:technology-beyond-the-keyboard';
+  expect(graphResultIds(query)).toContain(article);
+  expect(query.ids).toContain('project:langkit');
+  expect(graphResultDetail(query, article)).toContain('shared topic: Language interfaces');
+  expect(graphResultDetail(query, article)).toContain(
+    'Langkit standardizes grammar/check/run for Chess',
+  );
+  const filtered = graphQuery(
+    'show writing about the foundations behind Chess where topic = voice',
+  )!;
+  expect(graphResultIds(filtered)).toContain(article);
+  expect(filtered.ids).toContain('project:langkit');
 });

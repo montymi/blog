@@ -3,31 +3,31 @@
     "from": "project:styx",
     "to": "project:charon",
     "label": "provides identity for",
-    "relation": "enables"
+    "relation": "authenticates"
   },
   {
     "from": "project:styx",
     "to": "project:mcp",
     "label": "authenticates people using",
-    "relation": "enables"
+    "relation": "authenticates"
   },
   {
     "from": "project:charon",
     "to": "project:mcp",
     "label": "sets access policy for",
-    "relation": "enables"
+    "relation": "authorizes"
   },
   {
     "from": "project:mcp",
     "to": "project:chess",
     "label": "connects agents to",
-    "relation": "enables"
+    "relation": "exposes"
   },
   {
     "from": "project:mcp",
     "to": "project:lazygrocer",
     "label": "connects agents to",
-    "relation": "enables"
+    "relation": "exposes"
   },
   {
     "from": "post:blitzys-blitz-adventures-in-chess",
@@ -51,25 +51,25 @@
     "from": "project:charon",
     "to": "project:chess",
     "label": "governs access to",
-    "relation": "enables"
+    "relation": "authorizes"
   },
   {
     "from": "project:charon",
     "to": "project:lazygrocer",
     "label": "governs access to",
-    "relation": "enables"
+    "relation": "authorizes"
   },
   {
     "from": "project:styx",
     "to": "project:chess",
     "label": "provides sign-in for",
-    "relation": "enables"
+    "relation": "authenticates"
   },
   {
     "from": "project:styx",
     "to": "project:lazygrocer",
     "label": "provides sign-in for",
-    "relation": "enables"
+    "relation": "authenticates"
   },
   {
     "from": "project:blog",
@@ -99,36 +99,42 @@
     "from": "project:authkit",
     "to": "project:chess",
     "label": "provides sign-in and role checks for",
-    "relation": "enables"
+    "relation": "supplies"
   },
   {
     "from": "project:authkit",
     "to": "project:lazygrocer",
     "label": "provides sign-in and role checks for",
-    "relation": "enables"
+    "relation": "supplies"
   },
   {
     "from": "project:langkit",
     "to": "project:chess",
     "label": "standardizes grammar/check/run for",
-    "relation": "enables"
+    "relation": "standardizes"
   },
   {
     "from": "project:langkit",
     "to": "project:lazygrocer",
     "label": "standardizes grammar/check/run for",
-    "relation": "enables"
+    "relation": "standardizes"
   },
   {
     "from": "project:langkit",
     "to": "project:mcp",
     "label": "defines the app contract consumed by",
-    "relation": "enables"
+    "relation": "standardizes"
   },
   {
     "from": "project:cleardocs",
     "to": "project:blog",
     "label": "provides README patterns for",
-    "relation": "enables"
+    "relation": "supplies"
+  },
+  {
+    "from": "post:technology-beyond-the-keyboard",
+    "to": "project:linguist",
+    "label": "explores the speech pipeline implemented in",
+    "relation": "discusses"
   }
 ]
