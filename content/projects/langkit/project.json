@@ -1,0 +1,14 @@
+{
+  "title": "Langkit",
+  "kind": "episode",
+  "role": "library",
+  "version": "0.1.0",
+  "status": "published",
+  "description": "A reusable contract for app query languages: grammar, check, and run, with dry runs, version binding, atomic batches, and idempotency hooks. Each app keeps its own parser.",
+  "released": "2026-11-14",
+  "releaseLabel": "Started",
+  "updated": "2026-11-15",
+  "github": "https://github.com/montymi/charon/tree/main/langkit",
+  "sourcePrivate": true,
+  "readme": "/projects/langkit/README.md"
+}

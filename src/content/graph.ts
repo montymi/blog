@@ -1,5 +1,6 @@
 /** One catalog for the board's relationships, the visual explorer, and the command line. */
 import relations from '../../content/relations.json';
+import topics from '../../content/graph-topics.json';
 import { rawThemes } from './themes';
 import { papers, postHref, posts, projects } from '.';
 
@@ -12,6 +13,7 @@ export interface GraphNode {
   href: string;
   away: boolean;
   released?: boolean;
+  role?: 'library' | 'platform';
   aliases: string[];
 }
 export interface GraphEdge {
@@ -47,6 +49,7 @@ export const graphNodes: GraphNode[] = [
     href: `/projects/${p.slug}`,
     away: false,
     released: p.status === 'published',
+    role: p.role,
   })),
   ...posts.map((p) => ({
     id: `post:${p.slug}`,
@@ -92,6 +95,17 @@ for (const theme of rawThemes) {
       }
     }
 }
+// Cross-cutting subjects are many-to-many; the board's single-theme grouping stays intact.
+for (const topic of topics) {
+  for (let i = 0; i < topic.items.length; i++)
+    for (let j = i + 1; j < topic.items.length; j++) {
+      edges.push({
+        from: topic.items[i],
+        to: topic.items[j],
+        label: `shared topic: ${topic.name}`,
+      });
+    }
+}
 // A publication is a factual connection, distinct from one article discussing another item.
 const publications = new Map<string, string[]>();
 for (const post of posts.filter((p) => p.url)) {
@@ -109,6 +123,15 @@ for (const [host, items] of publications) {
     }
 }
 export const graphEdges: GraphEdge[] = edges;
+// Draw one line per pair; retain all of its explanations in graphEdges.
+const links = new Map<string, GraphEdge>();
+for (const edge of edges) {
+  const key = [edge.from, edge.to].sort().join('|');
+  const previous = links.get(key);
+  if (!previous || (previous.label.startsWith('shared') && !edge.label.startsWith('shared')))
+    links.set(key, edge);
+}
+export const graphLinks = [...links.values()];
 export const graphNode = (id: string) => graphNodes.find((node) => node.id === id);
 
 export function neighborhood(id: string): string[] {
@@ -177,10 +200,18 @@ export function graphQuery(text: string): GraphQuery | null {
       description: 'Explore how the work connects',
     };
   }
-  const collection = /^show (?:me )?(?:my |the |all )?(research|reports|projects|writing)$/i.exec(
-    query,
-  );
+  const collection =
+    /^show (?:me )?(?:my |the |all )?(research|reports|projects|writing|libraries|foundations)$/i.exec(
+      query,
+    );
   if (collection) {
+    if (/libraries|foundations/i.test(collection[1])) {
+      return {
+        mode: 'collection',
+        ids: graphNodes.filter((node) => node.role === 'library').map((node) => node.id),
+        description: 'Shared libraries',
+      };
+    }
     const kind = /research|reports/i.test(collection[1])
       ? 'paper'
       : /projects/i.test(collection[1])

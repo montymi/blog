@@ -15,7 +15,9 @@
     "items": [
       "project:styx",
       "project:charon",
-      "project:mcp"
+      "project:mcp",
+      "project:authkit",
+      "project:langkit"
     ]
   },
   {

@@ -1,12 +1,22 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { graphEdges, graphNode, graphNodes, graphQuery, neighborhood } from '@/content/graph';
-import { graphLayout } from '@/lib/graph-layout';
+import {
+  graphEdges,
+  graphLinks,
+  graphNode,
+  graphNodes,
+  graphQuery,
+  neighborhood,
+  type GraphNode,
+} from '@/content/graph';
+import { edgeControl, graphLayout } from '@/lib/graph-layout';
 import type { SceneState } from '@/lib/graph-scene';
 
 const positions = graphLayout(graphNodes, graphEdges);
 const words = { project: 'Project', post: 'Writing', paper: 'Report' };
+const kindLabel = (node: GraphNode) =>
+  node.role === 'library' ? 'Library' : node.role === 'platform' ? 'Platform' : words[node.kind];
 
 /** Native buttons provide labels and keyboard access even without a WebGL context. */
 function GraphStage({
@@ -41,7 +51,7 @@ function GraphStage({
             host.current,
             labels.current,
             graphNodes,
-            graphEdges,
+            graphLinks,
             positions,
             (id) => callbacks.current.onHover(id),
             (id) => callbacks.current.onOpen(id),
@@ -68,31 +78,38 @@ function GraphStage({
     <div
       ref={host}
       data-renderer={three ? 'three' : 'flat'}
+      data-connections={graphLinks.length}
       role="group"
       aria-label="Work connections map"
-      className="connections-map relative h-[540px] overflow-hidden rounded border border-line bg-raised sm:h-[500px]"
+      style={
+        {
+          containerType: 'size',
+          touchAction: 'pan-y',
+          '--orbit-radius': 'min(37.037cqw,37.037cqh)',
+        } as CSSProperties
+      }
+      className="connections-map relative h-[400px] overflow-hidden rounded border border-line bg-raised sm:h-[500px]"
     >
       {!three && (
         <svg
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
+          viewBox="-1.35 -1.35 2.7 2.7"
+          preserveAspectRatio="xMidYMid meet"
           aria-hidden="true"
           className="absolute inset-0 h-full w-full"
         >
-          {graphEdges.map((edge, i) => {
+          {graphLinks.map((edge, i) => {
             const a = positions.get(edge.from)!,
               b = positions.get(edge.to)!;
+            const control = edgeControl(a, b);
             return (
-              <line
+              <path
                 key={i}
-                x1={50 + a.x * 37.5}
-                y1={50 - a.y * 35}
-                x2={50 + b.x * 37.5}
-                y2={50 - b.y * 35}
+                d={`M ${a.x} ${-a.y} Q ${control.x} ${-control.y} ${b.x} ${-b.y}`}
+                fill="none"
                 stroke="currentColor"
-                strokeWidth=".13"
+                strokeWidth=".004"
                 className="text-line-strong"
-                opacity={!focus || (focus.has(edge.from) && focus.has(edge.to)) ? 0.65 : 0.1}
+                opacity={!focus ? 0.3 : focus.has(edge.from) && focus.has(edge.to) ? 0.65 : 0.07}
               />
             );
           })}
@@ -109,14 +126,17 @@ function GraphStage({
               else labels.current.delete(node.id);
             }}
             type="button"
-            aria-label={`${node.title}, ${words[node.kind]}`}
+            aria-label={`${node.title}, ${kindLabel(node)}`}
             aria-current={selected === node.id ? 'true' : undefined}
             onClick={() => onOpen(node.id)}
             onMouseEnter={() => onHover(node.id)}
             onMouseLeave={() => onHover(null)}
             onFocus={() => onHover(node.id)}
             onBlur={() => onHover(null)}
-            style={{ left: `${50 + p.x * 37.5}%`, top: `${50 - p.y * 35}%` }}
+            style={{
+              left: `calc(50% + var(--orbit-radius) * ${p.x})`,
+              top: `calc(50% - var(--orbit-radius) * ${p.y})`,
+            }}
             className={`focus-ring absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full ${
               three ? 'pointer-events-none focus-visible:ring-2 focus-visible:ring-accent' : ''
             } ${active ? 'opacity-100' : 'opacity-30 focus:opacity-100'}`}
@@ -125,18 +145,11 @@ function GraphStage({
             {!three && (
               <span
                 aria-hidden="true"
-                className="h-5 w-5 rounded-full shadow-md"
-                style={{
-                  background: `radial-gradient(circle at 30% 25%, rgb(var(--c-raised)), rgb(var(--c-${
-                    node.kind === 'post'
-                      ? 'bad'
-                      : node.kind === 'paper'
-                        ? 'highlight'
-                        : node.released
-                          ? 'accent'
-                          : 'muted'
-                  })) 55%, rgb(var(--c-ink)))`,
-                }}
+                className={`h-2 w-2 rounded-full ${
+                  selected === node.id
+                    ? 'bg-accent ring-1 ring-accent ring-offset-4 ring-offset-raised'
+                    : 'bg-ink'
+                }`}
               />
             )}
           </button>
@@ -193,19 +206,10 @@ export function Connections({
             How the work fits together.
           </h2>
         </div>
-        <button
-          type="button"
-          className="btn-secondary min-h-9 px-3 py-1 text-xs"
-          onClick={() => {
-            setPicked(null);
-            onClear();
-          }}
-        >
-          Show all connections
-        </button>
       </div>
       <p className="max-w-prose text-sm text-muted">
-        Hover or focus a sphere to identify it. Select it to open its project, article, or report.
+        Drag to turn the constellation. Hover or focus a point to identify it, then select it to
+        open its page.
       </p>
       {queryText && !picked && (
         <p role="status" className="rounded border border-line bg-inset px-4 py-3 text-sm">
@@ -216,6 +220,49 @@ export function Connections({
             : 'That connection request was not understood. Try “show everything related to chess”.'}
         </p>
       )}
+      <div
+        role="group"
+        aria-label="Explore connections"
+        className="flex flex-wrap items-center gap-2 rounded border border-line bg-inset p-3"
+      >
+        <button
+          type="button"
+          className={`btn-secondary min-h-11 px-3 text-xs ${
+            !selected && !focus ? 'border-accent text-accent' : ''
+          }`}
+          aria-pressed={!selected && !focus}
+          onClick={() => {
+            setPicked(null);
+            setHovered(null);
+            onClear();
+          }}
+        >
+          Show all connections
+        </button>
+        <span className="px-1 text-xs text-muted">Start with</span>
+        {[
+          'project:mcp',
+          'project:authkit',
+          'project:langkit',
+          'project:chess',
+          'project:capstone',
+        ].map((id) => (
+          <button
+            type="button"
+            key={id}
+            aria-pressed={selected === id}
+            className={`btn-secondary min-h-11 px-3 text-xs ${
+              selected === id ? 'border-accent text-accent' : ''
+            }`}
+            onClick={() => {
+              setPicked(id);
+              setHovered(null);
+            }}
+          >
+            {graphNode(id)!.title}
+          </button>
+        ))}
+      </div>
       <GraphStage
         selected={hovered ?? selected}
         focus={focus}
@@ -224,27 +271,22 @@ export function Connections({
       />
       <p role="status" className="min-h-6 text-sm text-muted" aria-live="polite">
         {hovered
-          ? `${graphNode(hovered)!.title} · ${words[graphNode(hovered)!.kind]}`
+          ? `${graphNode(hovered)!.title} · ${kindLabel(graphNode(hovered)!)}`
           : node
-            ? `${node.title} · ${words[node.kind]}`
-            : 'Choose a sphere, or ask for a connection using the search field.'}
+            ? `${node.title} · ${kindLabel(node)}`
+            : 'Choose a point, or ask for a connection using the search field.'}
       </p>
       <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted" aria-label="Map key">
-        <span className="text-accent">● Released project</span>
-        <span>● Project</span>
-        <span className="text-bad">● Writing</span>
         <span>
-          <span aria-hidden="true" style={{ color: 'rgb(var(--c-highlight))' }}>
-            ●
-          </span>{' '}
-          Report
+          {graphNodes.length} items · {graphLinks.length} connections
         </span>
+        <span>Projects · Libraries · Writing · Reports</span>
       </div>
-      {node ? (
+      {node && (
         <div className="grid min-w-0 gap-8 border-t border-line pt-6 sm:grid-cols-2">
           <div role="region" aria-label={`${node.title} map details`} className="min-w-0">
             <div className="flex flex-col items-start gap-3">
-              <p className="kicker">{words[node.kind]}</p>
+              <p className="kicker">{kindLabel(node)}</p>
               <h3 className="font-display text-3xl">{node.title}</h3>
               <p className="text-sm text-muted">{node.about}</p>
               {node.away ? (
@@ -308,23 +350,11 @@ export function Connections({
             )}
           </div>
         </div>
-      ) : (
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted">
-          <span>Start with</span>
-          {['project:mcp', 'project:chess', 'project:capstone'].map((id) => (
-            <button
-              type="button"
-              key={id}
-              className="btn-secondary min-h-9 px-3 py-1 text-xs"
-              onClick={() => setPicked(id)}
-            >
-              {graphNode(id)!.title}
-            </button>
-          ))}
-        </div>
       )}
+
       <p className="text-xs text-muted">
-        Connections describe shared themes and documented relationships.
+        Connections include direct integrations, shared subjects, publications, and project
+        documents.
       </p>
     </section>
   );

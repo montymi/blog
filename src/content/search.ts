@@ -40,7 +40,7 @@ export const searchIndex: Searchable[] = [
     kind: 'Project',
     href: `/projects/${project.slug}`,
     detail: `${project.kind}, ${projectVersion(project)}`,
-    text: `${project.description} ${project.kind} ${project.status}`,
+    text: `${project.description} ${project.role ?? ''} ${project.kind} ${project.status}`,
   })),
   ...papers.map((paper) => ({
     label: paper.title,
