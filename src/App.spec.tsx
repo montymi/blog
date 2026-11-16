@@ -30,10 +30,15 @@ test('the front page links to every app by its address', () => {
   for (const href of [
     'https://chef.montymi.com',
     'https://chess.montymi.com',
-    'https://chef.montymi.com/connect',
+    'https://styx.montymi.com',
+    'https://charon.montymi.com',
+    'https://connect.montymi.com/mcp',
+    '/writing/agent-experience-platform',
   ]) {
     expect(hrefs).toContain(href);
   }
+  expect(hrefs).not.toContain('https://manager.montymi.com');
+  expect(hrefs).not.toContain('https://chef.montymi.com/connect');
 });
 
 test.each(Object.entries(MOVED))('the old address %s opens %s', (from, to) => {

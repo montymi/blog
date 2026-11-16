@@ -1,0 +1,8 @@
+{
+  "montymi": 1,
+  "id": "charon",
+  "name": "Charon",
+  "about": "Access requests, grants, policy, and audit trails for the network. The operator console requires sign-in.",
+  "url": "https://charon.montymi.com",
+  "health": "https://charon.montymi.com"
+}

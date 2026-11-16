@@ -1,0 +1,10 @@
+{
+  "title": "Charon",
+  "kind": "album",
+  "version": "rolling",
+  "status": "published",
+  "description": "The control plane for an agent experience platform: app discovery, access grants, policy, audit trails, and federation between independent operators.",
+  "released": "TBD",
+  "updated": "2026-11-16",
+  "live": "https://charon.montymi.com"
+}

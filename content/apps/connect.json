@@ -1,0 +1,8 @@
+{
+  "montymi": 1,
+  "id": "connect",
+  "name": "Connect",
+  "about": "One agent gateway for app discovery, checked requests, and controlled actions over MCP, REST, and WebSocket.",
+  "url": "https://connect.montymi.com/mcp",
+  "health": "https://connect.montymi.com/health/live"
+}

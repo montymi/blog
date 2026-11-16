@@ -6,7 +6,7 @@ import { REGISTRY, SNAPSHOTS } from './registry';
 test('every registered app has a manifest that keeps the contract', () => {
   expect(SNAPSHOTS).toHaveLength(REGISTRY.length);
   for (const [i, manifest] of SNAPSHOTS.entries()) {
-    expect(manifest.url).toBe(REGISTRY[i].origin);
+    expect(new URL(manifest.url).origin).toBe(REGISTRY[i].origin);
   }
 });
 

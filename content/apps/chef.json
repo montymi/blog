@@ -8,14 +8,18 @@
   "repo": "montymi/LazyGrocer",
   "language": {
     "name": "the planning language",
-    "verbs": ["plan"],
-    "examples": ["plan 4 dinners for 2 under $40", "plan 5 lunches for 1 without meat prep"],
+    "verbs": [
+      "plan"
+    ],
+    "examples": [
+      "plan 4 dinners for 2 under $40",
+      "plan 5 lunches for 1 without meat prep"
+    ],
     "check": "https://chef.montymi.com/api/v1/planner/check?q={query}",
     "open": "https://chef.montymi.com/week?q={query}",
     "grammar": "https://chef.montymi.com/api/v1/planner/grammar"
   },
   "assistant": {
-    "connect": "https://chef.montymi.com/connect",
-    "mcp": "https://mcp.montymi.com/chef"
+    "mcp": "https://connect.montymi.com/mcp"
   }
 }
