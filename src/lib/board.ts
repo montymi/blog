@@ -3,10 +3,10 @@
  * like a board's notation, newest toward h8. Sixty-four is the limit by design: when the board
  * is full, something has to leave it.
  */
-import type { Post, Project } from '@/content';
+import type { Paper, Post, Project } from '@/content';
 import type { Manifest } from '@/platform/contract';
 
-export type Piece = 'app' | 'project' | 'post';
+export type Piece = 'app' | 'project' | 'post' | 'paper';
 
 export interface Square {
   /** Board notation: a1 ... h8. */
@@ -25,8 +25,22 @@ export const squareName = (n: number) => `${FILES[n % 8]}${Math.floor(n / 8) + 1
 
 const dated = (iso: string) => (/^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : null);
 
-export function board(projects: Project[], posts: Post[], apps: Manifest[]): Square[] {
+export function board(
+  projects: Project[],
+  posts: Post[],
+  apps: Manifest[],
+  papers: Paper[] = [],
+): Square[] {
   const items = [
+    ...papers
+      .filter((p) => p.date)
+      .map((p) => ({
+        kind: 'paper' as const,
+        title: p.title,
+        href: p.file,
+        away: true,
+        when: p.date!,
+      })),
     ...projects.map((p) => ({
       kind: 'project' as const,
       title: p.title,

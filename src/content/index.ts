@@ -48,6 +48,8 @@ export interface Project {
 }
 
 export interface Paper {
+  /** Publication date (YYYY-MM-DD or year). Dated papers also get a board square. */
+  date?: string;
   title: string;
   file: string;
   pages: number;
