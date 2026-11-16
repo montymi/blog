@@ -62,13 +62,8 @@ test('map positions are deterministic and independent of input ordering', () => 
     expect(Math.abs(p.y)).toBeLessThanOrEqual(1);
   }
   const points = [...a.values()];
-  const xs = [...new Set(points.map((p) => p.x))].sort((a, b) => a - b);
-  const ys = [...new Set(points.map((p) => p.y))].sort((a, b) => a - b);
-  expect(Math.abs(xs.length - ys.length)).toBeLessThanOrEqual(1);
-  for (const levels of [xs, ys])
-    for (let i = 2; i < levels.length; i++) {
-      expect(levels[i] - levels[i - 1]).toBeCloseTo(levels[1] - levels[0]);
-    }
+  for (const point of points) expect(Math.hypot(point.x, point.y, point.z)).toBeCloseTo(1);
+  expect(new Set(points.map((p) => p.z)).size).toBeGreaterThan(points.length / 2);
   expect(new Set(points.map((p) => `${p.x},${p.y}`)).size).toBe(graphNodes.length);
 });
 

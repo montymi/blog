@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import {
@@ -8,12 +8,15 @@ import {
   graphNodes,
   graphQuery,
   neighborhood,
+  type GraphNode,
 } from '@/content/graph';
 import { edgeControl, graphLayout } from '@/lib/graph-layout';
 import type { SceneState } from '@/lib/graph-scene';
 
 const positions = graphLayout(graphNodes, graphEdges);
 const words = { project: 'Project', post: 'Writing', paper: 'Report' };
+const kindLabel = (node: GraphNode) =>
+  node.role === 'library' ? 'Library' : node.role === 'platform' ? 'Platform' : words[node.kind];
 
 /** Native buttons provide labels and keyboard access even without a WebGL context. */
 function GraphStage({
@@ -78,12 +81,19 @@ function GraphStage({
       data-connections={graphLinks.length}
       role="group"
       aria-label="Work connections map"
-      className="connections-map relative h-[540px] overflow-hidden rounded border border-line bg-raised sm:h-[500px]"
+      style={
+        {
+          containerType: 'size',
+          touchAction: 'pan-y',
+          '--orbit-radius': 'min(37.037cqw,37.037cqh)',
+        } as CSSProperties
+      }
+      className="connections-map relative h-[400px] overflow-hidden rounded border border-line bg-raised sm:h-[500px]"
     >
       {!three && (
         <svg
-          viewBox="0 0 100 100"
-          preserveAspectRatio="none"
+          viewBox="-1.35 -1.35 2.7 2.7"
+          preserveAspectRatio="xMidYMid meet"
           aria-hidden="true"
           className="absolute inset-0 h-full w-full"
         >
@@ -94,12 +104,10 @@ function GraphStage({
             return (
               <path
                 key={i}
-                d={`M ${50 + a.x * 37.5} ${50 - a.y * 35} Q ${50 + control.x * 37.5} ${
-                  50 - control.y * 35
-                } ${50 + b.x * 37.5} ${50 - b.y * 35}`}
+                d={`M ${a.x} ${-a.y} Q ${control.x} ${-control.y} ${b.x} ${-b.y}`}
                 fill="none"
                 stroke="currentColor"
-                strokeWidth=".13"
+                strokeWidth=".004"
                 className="text-line-strong"
                 opacity={!focus ? 0.3 : focus.has(edge.from) && focus.has(edge.to) ? 0.65 : 0.07}
               />
@@ -118,14 +126,17 @@ function GraphStage({
               else labels.current.delete(node.id);
             }}
             type="button"
-            aria-label={`${node.title}, ${words[node.kind]}`}
+            aria-label={`${node.title}, ${kindLabel(node)}`}
             aria-current={selected === node.id ? 'true' : undefined}
             onClick={() => onOpen(node.id)}
             onMouseEnter={() => onHover(node.id)}
             onMouseLeave={() => onHover(null)}
             onFocus={() => onHover(node.id)}
             onBlur={() => onHover(null)}
-            style={{ left: `${50 + p.x * 37.5}%`, top: `${50 - p.y * 35}%` }}
+            style={{
+              left: `calc(50% + var(--orbit-radius) * ${p.x})`,
+              top: `calc(50% - var(--orbit-radius) * ${p.y})`,
+            }}
             className={`focus-ring absolute z-10 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full ${
               three ? 'pointer-events-none focus-visible:ring-2 focus-visible:ring-accent' : ''
             } ${active ? 'opacity-100' : 'opacity-30 focus:opacity-100'}`}
@@ -134,18 +145,11 @@ function GraphStage({
             {!three && (
               <span
                 aria-hidden="true"
-                className="h-5 w-5 rounded-full shadow-md"
-                style={{
-                  background: `radial-gradient(circle at 30% 25%, rgb(var(--c-raised)), rgb(var(--c-${
-                    node.kind === 'post'
-                      ? 'bad'
-                      : node.kind === 'paper'
-                        ? 'highlight'
-                        : node.released
-                          ? 'accent'
-                          : 'muted'
-                  })) 55%, rgb(var(--c-ink)))`,
-                }}
+                className={`h-2 w-2 rounded-full ${
+                  selected === node.id
+                    ? 'bg-accent ring-1 ring-accent ring-offset-4 ring-offset-raised'
+                    : 'bg-ink'
+                }`}
               />
             )}
           </button>
@@ -204,7 +208,8 @@ export function Connections({
         </div>
       </div>
       <p className="max-w-prose text-sm text-muted">
-        Hover or focus a sphere to identify it. Select it to open its project, article, or report.
+        Drag to turn the constellation. Hover or focus a point to identify it, then select it to
+        open its page.
       </p>
       {queryText && !picked && (
         <p role="status" className="rounded border border-line bg-inset px-4 py-3 text-sm">
@@ -266,30 +271,22 @@ export function Connections({
       />
       <p role="status" className="min-h-6 text-sm text-muted" aria-live="polite">
         {hovered
-          ? `${graphNode(hovered)!.title} · ${words[graphNode(hovered)!.kind]}`
+          ? `${graphNode(hovered)!.title} · ${kindLabel(graphNode(hovered)!)}`
           : node
-            ? `${node.title} · ${words[node.kind]}`
-            : 'Choose a sphere, or ask for a connection using the search field.'}
+            ? `${node.title} · ${kindLabel(node)}`
+            : 'Choose a point, or ask for a connection using the search field.'}
       </p>
       <div className="flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted" aria-label="Map key">
         <span>
           {graphNodes.length} items · {graphLinks.length} connections
         </span>
-        <span className="text-accent">● Released project</span>
-        <span>● Project</span>
-        <span className="text-bad">● Writing</span>
-        <span>
-          <span aria-hidden="true" style={{ color: 'rgb(var(--c-highlight))' }}>
-            ●
-          </span>{' '}
-          Report
-        </span>
+        <span>Projects · Libraries · Writing · Reports</span>
       </div>
       {node && (
         <div className="grid min-w-0 gap-8 border-t border-line pt-6 sm:grid-cols-2">
           <div role="region" aria-label={`${node.title} map details`} className="min-w-0">
             <div className="flex flex-col items-start gap-3">
-              <p className="kicker">{words[node.kind]}</p>
+              <p className="kicker">{kindLabel(node)}</p>
               <h3 className="font-display text-3xl">{node.title}</h3>
               <p className="text-sm text-muted">{node.about}</p>
               {node.away ? (
