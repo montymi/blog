@@ -11,7 +11,6 @@ import About from '@/pages/About';
 import Ask from '@/pages/Ask';
 import Home from '@/pages/Home';
 import NotFound from '@/pages/NotFound';
-import Papers from '@/pages/Papers';
 import { ProjectPage, Projects } from '@/pages/Projects';
 import { Post, Writing } from '@/pages/Writing';
 
@@ -41,7 +40,6 @@ export function AppRoutes() {
         <Route path="writing/:slug" element={<Post />} />
         <Route path="projects" element={<Projects />} />
         <Route path="projects/:slug" element={<ProjectPage />} />
-        <Route path="papers" element={<Papers />} />
         <Route path="about" element={<About />} />
         <Route path="q/*" element={<Ask />} />
         {Object.entries(MOVED).map(([from, to]) => (

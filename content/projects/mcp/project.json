@@ -1,10 +1,15 @@
 {
   "title": "Connect",
   "kind": "episode",
-  "version": "rolling",
+  "version": "b023fc9",
   "status": "published",
-  "description": "One connector for the platform\u2019s apps. Discover capabilities, check requests, and act through MCP, REST, or live events under the same policy.",
-  "released": "TBD",
+  "description": "One connector for the platform’s apps. Discover capabilities, check requests, and act through MCP, REST, or live events under the same policy.",
+  "released": "2026-11-07",
   "updated": "2026-11-16",
-  "live": "https://connect.montymi.com"
+  "live": "https://connect.montymi.com",
+  "github": "https://github.com/montymi/mcp",
+  "sourcePrivate": true,
+  "readme": "/projects/mcp/README.md",
+  "releaseLabel": "Started",
+  "versionLabel": "Revision"
 }

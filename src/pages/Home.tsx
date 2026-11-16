@@ -8,7 +8,7 @@ import { Sky } from '@/components/Sky';
 import { Switchboard } from '@/components/Switchboard';
 import { Meta } from '@/components/ui';
 import { site } from '@/config';
-import { papers, posts, projects } from '@/content';
+import { posts } from '@/content';
 
 function Part({ title, more, children }: { title: string; more?: ReactNode; children: ReactNode }) {
   return (
@@ -73,18 +73,7 @@ function Home() {
 
       <Band className="border-t border-line bg-inset py-14">
         <section aria-label="The board">
-          <Shelf
-            more={
-              <>
-                <Link to="/projects" className="link">
-                  All {projects.length} projects →
-                </Link>
-                <Link to="/papers" className="link">
-                  {papers.length} papers →
-                </Link>
-              </>
-            }
-          />
+          <Shelf />
         </section>
       </Band>
     </div>

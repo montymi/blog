@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { Project } from '@/content';
+import { projectVersion, type Project } from '@/content';
 import { formatDate } from '@/lib/dates';
 import {
   CELL,
@@ -164,15 +164,19 @@ export function Skyline({ projects }: { projects: Project[] }) {
       <figcaption aria-live="polite" className="min-h-12 text-sm text-muted">
         {shown ? (
           <>
-            <span className="font-semibold text-ink">{shown.title}</span>, {shown.kind} v
-            {shown.version}
-            {shown.released === 'TBD' ? ', ' : `, released ${formatDate(shown.released)}, `}
+            <span className="font-semibold text-ink">{shown.title}</span>, {shown.kind}{' '}
+            {projectVersion(shown)}
+            {shown.released === 'TBD'
+              ? ', '
+              : `, ${(shown.releaseLabel ?? 'Released').toLowerCase()} ${formatDate(
+                  shown.released,
+                )}, `}
             {keptFor(shown)}, {shown.status}.
           </>
         ) : (
           <>
-            Each block is a project. Left to right is when it was released, and the taller it
-            stands, the longer I kept working on it. Point at one to read it, or open it.
+            Each block is a project. Left to right is when it started or was released, and the
+            taller it stands, the longer I kept working on it. Point at one to read it, or open it.
           </>
         )}
       </figcaption>

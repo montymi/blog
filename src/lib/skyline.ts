@@ -17,7 +17,7 @@ const shippedOn = (p: Project) => (Number.isNaN(day(p.released)) ? p.updated : p
 export function keptFor(project: Project): string {
   if (Number.isNaN(day(project.released))) return 'not released yet';
   const days = Math.max(0, Math.round(day(project.updated) - day(project.released)));
-  if (days < 1) return 'released once';
+  if (days < 1) return project.releaseLabel === 'Started' ? 'started' : 'released once';
   if (days < 45) return `kept ${days} ${days === 1 ? 'day' : 'days'}`;
   const months = Math.round(days / 30.4);
   return months < 18 ? `kept ${months} months` : `kept ${Math.round(days / 365)} years`;

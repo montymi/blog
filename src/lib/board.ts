@@ -3,15 +3,21 @@
  * like a board's notation, newest toward h8. Sixty-four is the limit by design: when the board
  * is full, something has to leave it.
  */
-import type { Paper, Post, Project } from '@/content';
-import type { Manifest } from '@/platform/contract';
+import { postHref, type Paper, type Post, type Project } from '@/content';
 
-export type Piece = 'app' | 'project' | 'post' | 'paper';
+export type Piece = 'project' | 'post' | 'paper';
 
 export interface Square {
   /** Board notation: a1 ... h8. */
   name: string;
-  item: { kind: Piece; title: string; href: string; away?: boolean; when: string } | null;
+  item: {
+    kind: Piece;
+    title: string;
+    href: string;
+    away?: boolean;
+    when: string;
+    released?: boolean;
+  } | null;
 }
 
 /** What a piece is across the site's lists (a theme's entries use the same kinds and titles). */
@@ -25,24 +31,20 @@ export const squareName = (n: number) => `${FILES[n % 8]}${Math.floor(n / 8) + 1
 
 const dated = (iso: string) => (/^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : null);
 
-export function board(
-  projects: Project[],
-  posts: Post[],
-  apps: Manifest[],
-  papers: Paper[] = [],
-): Square[] {
+export function board(projects: Project[], posts: Post[], papers: Paper[] = []): Square[] {
   const items = [
     ...papers
-      .filter((p) => p.date)
+      .filter((p) => p.kind !== 'resume' && p.kind !== 'document')
       .map((p) => ({
         kind: 'paper' as const,
         title: p.title,
         href: p.file,
         away: true,
-        when: p.date!,
+        when: p.date ?? '',
       })),
     ...projects.map((p) => ({
       kind: 'project' as const,
+      released: p.status === 'published',
       title: p.title,
       href: `/projects/${p.slug}`,
       when: dated(p.released) ?? p.updated,
@@ -50,22 +52,12 @@ export function board(
     ...posts.map((p) => ({
       kind: 'post' as const,
       title: p.title,
-      href: `/writing/${p.slug}`,
+      href: postHref(p),
+      away: Boolean(p.url),
       when: p.date,
     })),
   ].sort((a, b) => a.when.localeCompare(b.when) || a.title.localeCompare(b.title));
-  // The apps are what's running now: they take the newest squares.
-  const all = [
-    ...items,
-    ...apps.map((app) => ({
-      kind: 'app' as const,
-      title: app.name,
-      href: app.url,
-      away: true,
-      when: 'now',
-    })),
-  ].slice(0, SIZE);
-  return Array.from({ length: SIZE }, (_, n) => ({ name: squareName(n), item: all[n] ?? null }));
+  return Array.from({ length: SIZE }, (_, n) => ({ name: squareName(n), item: items[n] ?? null }));
 }
 
 const KNIGHT = [

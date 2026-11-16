@@ -4,22 +4,21 @@ import { Link } from 'react-router-dom';
 import { papers, posts, projects } from '@/content';
 import { board, knightsTour, pieceKey, squareName, type Piece, type Square } from '@/lib/board';
 import { formatDate } from '@/lib/dates';
-import { SNAPSHOTS } from '@/platform/registry';
 
 const KIND: Record<Piece, string> = {
-  app: 'App, running now',
   project: 'Project',
   post: 'Writing',
-  paper: 'Paper',
+  paper: 'Report',
 };
 
 /** Each kind marked by form, not colour alone: a solid pitch square, an ink block, a red-pen line. */
-function Mark({ kind }: { kind: Piece }) {
+function Mark({ kind, released }: { kind: Piece; released?: boolean }) {
   if (kind === 'paper')
     return (
       <span className="absolute inset-x-[29%] inset-y-[22%] rounded-[1px] border border-ink/70 bg-raised" />
     );
-  if (kind === 'app') return <span className="absolute inset-[22%] rounded-sm bg-accent" />;
+  if (kind === 'project' && released)
+    return <span className="absolute inset-[22%] rounded-sm bg-accent" />;
   if (kind === 'project')
     return (
       <span className="absolute inset-[26%] rounded-sm border border-ink/80 bg-raised shadow-[3px_3px_0_0_rgb(var(--c-ink)/0.75)]" />
@@ -73,11 +72,19 @@ function useKnightsTour(
 }
 
 /**
- * Everything made, on sixty-four squares: oldest at a1, newest toward h8, the running apps last.
+ * Everything made, one square each: oldest at a1, newest toward h8. Released projects turn green.
  * Point at a square to read it; empty squares are room for what comes next.
  */
-export function Board({ focus = null }: { focus?: Set<string> | null }) {
-  const squares = useMemo(() => board(projects, posts, SNAPSHOTS, papers), []);
+export function Board({
+  focus = null,
+  selectedHref,
+  onSelectProject,
+}: {
+  focus?: Set<string> | null;
+  selectedHref?: string;
+  onSelectProject?: (href: string) => void;
+}) {
+  const squares = useMemo(() => board(projects, posts, papers), []);
   const [shown, setShown] = useState<Square | null>(null);
   // The square lit fall brown by the knight's tour or a tap (where there is no hover to do it).
   const [lit, setLit] = useState<string | null>(null);
@@ -112,7 +119,10 @@ export function Board({ focus = null }: { focus?: Set<string> | null }) {
               : 'motion-safe:duration-700 motion-safe:hover:duration-75'
           }`;
           const label = square.item
-            ? `${square.name}: ${square.item.title}, ${KIND[square.item.kind].toLowerCase()}`
+            ? `${square.name}: ${square.item.title}, ${(square.item.released
+                ? 'Released project'
+                : KIND[square.item.kind]
+              ).toLowerCase()}`
             : '';
           // A theme picked beside the board: what's outside it steps back.
           const away = focus && square.item && !focus.has(pieceKey(square.item));
@@ -122,11 +132,13 @@ export function Board({ focus = null }: { focus?: Set<string> | null }) {
                 away ? 'opacity-20' : ''
               }`}
             >
-              <Mark kind={square.item.kind} />
+              <Mark kind={square.item.kind} released={square.item.released} />
             </span>
           );
           const props = {
-            className: `focus-ring relative block ${shade} ${fall} focus-visible:z-10`,
+            className: `focus-ring relative block ${shade} ${fall} focus-visible:z-10 ${
+              square.item?.href === selectedHref ? 'ring-2 ring-inset ring-accent' : ''
+            }`,
             'aria-label': label,
             onMouseEnter: () => setShown(square),
             onMouseLeave: () => setShown(null),
@@ -145,7 +157,26 @@ export function Board({ focus = null }: { focus?: Set<string> | null }) {
                   {inside}
                 </a>
               ) : (
-                <Link to={square.item.href} {...props} style={{ height: '100%' }}>
+                <Link
+                  to={square.item.href}
+                  {...props}
+                  style={{ height: '100%' }}
+                  aria-current={square.item.href === selectedHref ? 'true' : undefined}
+                  onClick={(event) => {
+                    if (
+                      square.item?.kind === 'project' &&
+                      onSelectProject &&
+                      !event.metaKey &&
+                      !event.ctrlKey &&
+                      !event.shiftKey &&
+                      !event.altKey &&
+                      event.button === 0
+                    ) {
+                      event.preventDefault();
+                      onSelectProject(square.item.href);
+                    }
+                  }}
+                >
                   {inside}
                 </Link>
               )}
@@ -160,8 +191,8 @@ export function Board({ focus = null }: { focus?: Set<string> | null }) {
         {shown?.item ? (
           <span>
             <span className="text-ink">{shown.name}</span> {shown.item.title} ·{' '}
-            {KIND[shown.item.kind]}
-            {shown.item.when !== 'now' && `, ${formatDate(shown.item.when)}`}
+            {shown.item.released ? 'Released project' : KIND[shown.item.kind]}
+            {shown.item.when && `, ${formatDate(shown.item.when)}`}
           </span>
         ) : (
           <>
