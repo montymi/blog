@@ -1,7 +1,7 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
-import { posts, projects } from '@/content';
+import { papers, posts, projects } from '@/content';
 import { themes, type Entry, type Kind } from '@/content/themes';
 import { board, pieceKey } from '@/lib/board';
 import { SNAPSHOTS } from '@/platform/registry';
@@ -31,12 +31,12 @@ function Glyph({ kind }: { kind: Kind }) {
 }
 
 // Everything, newest first: the board's squares read backwards.
-const SQUARES = board(projects, posts, SNAPSHOTS).flatMap((s) => (s.item ? [s.item] : []));
+const SQUARES = board(projects, posts, SNAPSHOTS, papers).flatMap((s) => (s.item ? [s.item] : []));
 const RECENT: Entry[] = [...SQUARES]
   .reverse()
   .map(({ kind, title, href, away }) => ({ kind, title, href, away: Boolean(away) }));
 const order = new Map(SQUARES.map((item, i) => [pieceKey(item), i]));
-/** A theme's entries, newest first; papers aren't on the board, so they come last. */
+/** A theme’s entries, newest first; undated entries follow the board’s pieces. */
 const newestFirst = (entries: Entry[]) =>
   [...entries].sort((a, b) => (order.get(pieceKey(b)) ?? -1) - (order.get(pieceKey(a)) ?? -1));
 

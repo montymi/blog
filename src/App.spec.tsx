@@ -40,6 +40,17 @@ test('the front page links to every app by its address', () => {
   expect(hrefs).not.toContain('https://chef.montymi.com/connect');
 });
 
+test('research papers open directly from their board squares', () => {
+  at('/');
+  expect(screen.getByRole('link', { name: /BRCA1 Gene Mutation Report, paper/ })).toHaveAttribute(
+    'href',
+    '/library/BRCA1-Gene-Mutation.pdf',
+  );
+  expect(
+    screen.getByRole('link', { name: /Solar Charging for E-Mobility Devices Report, paper/ }),
+  ).toHaveAttribute('href', '/library/Capstone-Report.pdf');
+});
+
 test.each(Object.entries(MOVED))('the old address %s opens %s', (from, to) => {
   at(from);
   const section = to.slice(1);

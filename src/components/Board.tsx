@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { posts, projects } from '@/content';
+import { papers, posts, projects } from '@/content';
 import { board, knightsTour, pieceKey, squareName, type Piece, type Square } from '@/lib/board';
 import { formatDate } from '@/lib/dates';
 import { SNAPSHOTS } from '@/platform/registry';
@@ -10,10 +10,15 @@ const KIND: Record<Piece, string> = {
   app: 'App, running now',
   project: 'Project',
   post: 'Writing',
+  paper: 'Paper',
 };
 
 /** Each kind marked by form, not colour alone: a solid pitch square, an ink block, a red-pen line. */
 function Mark({ kind }: { kind: Piece }) {
+  if (kind === 'paper')
+    return (
+      <span className="absolute inset-x-[29%] inset-y-[22%] rounded-[1px] border border-ink/70 bg-raised" />
+    );
   if (kind === 'app') return <span className="absolute inset-[22%] rounded-sm bg-accent" />;
   if (kind === 'project')
     return (
@@ -72,7 +77,7 @@ function useKnightsTour(
  * Point at a square to read it; empty squares are room for what comes next.
  */
 export function Board({ focus = null }: { focus?: Set<string> | null }) {
-  const squares = useMemo(() => board(projects, posts, SNAPSHOTS), []);
+  const squares = useMemo(() => board(projects, posts, SNAPSHOTS, papers), []);
   const [shown, setShown] = useState<Square | null>(null);
   // The square lit fall brown by the knight's tour or a tap (where there is no hover to do it).
   const [lit, setLit] = useState<string | null>(null);
