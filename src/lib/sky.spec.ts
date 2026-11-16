@@ -33,3 +33,14 @@ test('overnight the moon takes its place, highest at midnight', () => {
   expect(skyAt(0).y).toBe(30);
   expect(skyAt(5.99).kind).toBe('moon');
 });
+
+test('the moon stays inside the scene through dusk and dawn', () => {
+  for (let minute = 0; minute < 12 * 60; minute++) {
+    const moon = skyAt(18 + minute / 60);
+    expect(moon.kind).toBe('moon');
+    expect(moon.x - 20).toBeGreaterThanOrEqual(0);
+    expect(moon.x + 20).toBeLessThanOrEqual(SCENE.width);
+    expect(moon.y - 20).toBeGreaterThanOrEqual(0);
+    expect(moon.y + 20).toBeLessThanOrEqual(120);
+  }
+});
