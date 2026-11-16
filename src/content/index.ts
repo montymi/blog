@@ -29,13 +29,14 @@ export interface Post {
 }
 
 export type ProjectStatus = 'published' | 'draft' | 'archived';
+export type ProjectRole = 'library' | 'platform' | 'documentation' | 'template';
 
 export interface Project {
   slug: string;
   title: string;
   /** Michael's own release shapes: an album is a large project, an episode a tool, a single a small one. */
   kind: 'album' | 'episode' | 'single';
-  role?: 'library' | 'platform';
+  role?: ProjectRole;
   version: string;
   /** Unversioned projects show their source revision instead of an invented release number. */
   versionLabel?: 'Build';
@@ -161,5 +162,17 @@ export const projectBySlug = (slug: string) => projects.find((project) => projec
 export const projectVersion = (project: Project) =>
   project.versionLabel === 'Build' ? `build ${project.version}` : `v${project.version}`;
 
-export const projectCategory = (project: Project) =>
-  project.role === 'library' ? 'Library' : project.role === 'platform' ? 'Platform' : project.kind;
+export const projectRoleLabel = (role?: ProjectRole) =>
+  role
+    ? {
+        library: 'Library',
+        platform: 'Platform',
+        documentation: 'Documentation',
+        template: 'Template',
+      }[role]
+    : undefined;
+
+export const projectCategory = (project: Project) => projectRoleLabel(project.role) ?? project.kind;
+
+export const isFoundation = ({ role }: { role?: ProjectRole }) =>
+  role === 'library' || role === 'documentation' || role === 'template';

@@ -3,9 +3,10 @@
   "kind": "single",
   "version": "1.4.0",
   "status": "published",
-  "description": "Open-source software has a high barrier of entry due to source code disorganization, caused mainly by a lack of structured documentation. For this project, I will create a brief GitHub README file to depict an ideal version of the file and argue that the current state of OSS's documentation is not acceptable. OSS documentation must find a method of tracking and portraying project information that is universally accepted within the open-source community.",
+  "description": "Reusable README and documentation patterns for open-source projects, covering setup, architecture, contribution guides, and project roadmaps.",
   "released": "2022-08-01",
   "updated": "2024-10-25",
   "github": "https://www.github.com/montymi/ClearDocs",
-  "readme": "https://raw.githubusercontent.com/montymi/ClearDocs/main/README.md"
+  "readme": "https://raw.githubusercontent.com/montymi/ClearDocs/main/README.md",
+  "role": "documentation"
 }

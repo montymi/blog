@@ -47,7 +47,8 @@
     "items": [
       "project:serialpy",
       "project:schema-api-testing",
-      "project:sesh"
+      "project:sesh",
+      "project:next-template"
     ]
   },
   {

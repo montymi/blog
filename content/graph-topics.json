@@ -75,5 +75,23 @@
       "project:chess",
       "project:lazygrocer"
     ]
+  },
+  {
+    "name": "Reusable project foundations",
+    "items": [
+      "project:authkit",
+      "project:langkit",
+      "project:cleardocs",
+      "project:next-template"
+    ]
+  },
+  {
+    "name": "Web app foundations",
+    "items": [
+      "project:next-template",
+      "project:blog",
+      "project:chess",
+      "project:lazygrocer"
+    ]
   }
 ]

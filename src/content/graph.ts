@@ -2,7 +2,7 @@
 import relations from '../../content/relations.json';
 import topics from '../../content/graph-topics.json';
 import { rawThemes } from './themes';
-import { papers, postHref, posts, projects } from '.';
+import { isFoundation, papers, postHref, posts, projects, type ProjectRole } from '.';
 
 export interface GraphNode {
   id: string;
@@ -13,7 +13,7 @@ export interface GraphNode {
   href: string;
   away: boolean;
   released?: boolean;
-  role?: 'library' | 'platform';
+  role?: ProjectRole;
   aliases: string[];
 }
 export interface GraphEdge {
@@ -35,6 +35,7 @@ const labels: Record<string, string> = {
 };
 const aliases: Record<string, string[]> = {
   'project:mcp': ['connect', 'gateway', 'mcp'],
+  'project:next-template': ['next template', 'nextjs starter', 'web starter'],
   'project:lazygrocer': ['chef', 'lazy grocer', 'groceries'],
   'project:capstone': ['capstone', 'solar charging', 'e-mobility'],
   'paper:/library/BRCA1-Gene-Mutation.pdf': ['brca1', 'brca 1', 'gene mutation', 'genetics'],
@@ -206,10 +207,13 @@ export function graphQuery(text: string): GraphQuery | null {
     );
   if (collection) {
     if (/libraries|foundations/i.test(collection[1])) {
+      const foundations = /foundations/i.test(collection[1]);
       return {
         mode: 'collection',
-        ids: graphNodes.filter((node) => node.role === 'library').map((node) => node.id),
-        description: 'Shared libraries',
+        ids: graphNodes
+          .filter((node) => (foundations ? isFoundation(node) : node.role === 'library'))
+          .map((node) => node.id),
+        description: foundations ? 'Shared foundations' : 'Shared libraries',
       };
     }
     const kind = /research|reports/i.test(collection[1])
