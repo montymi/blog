@@ -36,11 +36,16 @@ export interface Project {
   /** Michael's own release shapes: an album is a large project, an episode a tool, a single a small one. */
   kind: 'album' | 'episode' | 'single';
   version: string;
+  /** Unversioned projects show their source revision instead of an invented release number. */
+  versionLabel?: 'Revision';
   status: ProjectStatus;
   description: string;
   released: string;
+  /** Use the first source date when there is no published release date. */
+  releaseLabel?: 'Started';
   updated: string;
   github?: string;
+  sourcePrivate?: boolean;
   readme?: string;
   live?: string;
   audio?: string;
@@ -48,7 +53,10 @@ export interface Project {
 }
 
 export interface Paper {
-  /** Publication date (YYYY-MM-DD or year). Dated papers also get a board square. */
+  kind?: 'report' | 'document' | 'resume';
+  /** Supporting files and reports can also be reached from their project. */
+  project?: string;
+  /** Publication date (YYYY-MM-DD or year), when known. */
   date?: string;
   title: string;
   file: string;
@@ -138,7 +146,8 @@ export const projects: Project[] = Object.entries(projectFiles)
   }))
   .sort((a, b) => b.updated.localeCompare(a.updated) || a.title.localeCompare(b.title));
 
-export const papers: Paper[] = papersJson;
+export const papers: Paper[] = papersJson as Paper[];
+export const reports = papers.filter((paper) => paper.kind === 'report');
 export const activities: Activity[] = activitiesJson;
 
 export const postBySlug = (slug: string) => posts.find((post) => post.slug === slug && !post.url);
@@ -146,3 +155,7 @@ export const postBySlug = (slug: string) => posts.find((post) => post.slug === s
 /** Where a post is read: its page here, or the site it was published on. */
 export const postHref = (post: Post) => post.url ?? `/writing/${post.slug}`;
 export const projectBySlug = (slug: string) => projects.find((project) => project.slug === slug);
+
+/** The same release/revision wording everywhere a project appears. */
+export const projectVersion = (project: Project) =>
+  project.versionLabel === 'Revision' ? `rev ${project.version}` : `v${project.version}`;

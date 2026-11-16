@@ -1,4 +1,4 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, expect, test, vi } from 'vitest';
@@ -42,14 +42,87 @@ test('the front page links to every app by its address', () => {
 
 test('research papers open directly from their board squares', () => {
   at('/');
-  expect(screen.getByRole('link', { name: /BRCA1 Gene Mutation Report, paper/ })).toHaveAttribute(
+  expect(screen.getByRole('link', { name: /BRCA1 Gene Mutation Report, report/ })).toHaveAttribute(
     'href',
     '/library/BRCA1-Gene-Mutation.pdf',
   );
   expect(
-    screen.getByRole('link', { name: /Solar Charging for E-Mobility Devices Report, paper/ }),
+    screen.getByRole('link', { name: /Solar Charging for E-Mobility Devices Report, report/ }),
   ).toHaveAttribute('href', '/library/Capstone-Report.pdf');
 });
+
+test('a project has one square and opens its details inside the board', () => {
+  at('/');
+  const squares = screen.getAllByRole('link', { name: /^[a-h][1-8]: Charon, released project$/ });
+  expect(squares).toHaveLength(1);
+  fireEvent.click(squares[0]);
+  const details = within(screen.getByRole('region', { name: 'Charon project details' }));
+  expect(details.getByRole('heading', { name: 'Charon' })).toBeInTheDocument();
+  expect(details.getByRole('link', { name: 'Open Charon' })).toHaveAttribute(
+    'href',
+    'https://charon.montymi.com',
+  );
+  expect(details.getByRole('link', { name: 'Code on GitHub (private)' })).toHaveAttribute(
+    'href',
+    'https://github.com/montymi/charon',
+  );
+  expect(details.getByText('Project README')).toBeInTheDocument();
+  expect(screen.getByRole('region', { name: 'Built' })).toBeInTheDocument();
+  fireEvent.click(details.getByRole('button', { name: 'Back to board index' }));
+  expect(screen.queryByRole('region', { name: 'Charon project details' })).not.toBeInTheDocument();
+});
+
+test('Projects and Writing browse their lists within the board', () => {
+  at('/');
+  fireEvent.click(screen.getByRole('button', { name: /^Projects \(/ }));
+  const projectsList = within(screen.getByRole('list', { name: 'Projects' }));
+  fireEvent.click(projectsList.getByRole('link', { name: /^Styx/ }));
+  expect(screen.getByRole('region', { name: 'Styx project details' })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: /^Writing \(/ }));
+  const papersList = within(screen.getByRole('list', { name: 'Writing' }));
+  expect(papersList.getByRole('link', { name: /BRCA1/ })).toHaveAttribute(
+    'href',
+    '/library/BRCA1-Gene-Mutation.pdf',
+  );
+  expect(papersList.queryByRole('link', { name: /Resume/ })).not.toBeInTheDocument();
+});
+
+test('Writing includes both reports and the résumé lives under About', () => {
+  at('/writing');
+  const reports = within(screen.getByRole('region', { name: 'Research reports' }));
+  expect(reports.getAllByRole('link', { name: /Report/ })).toHaveLength(2);
+  expect(reports.queryByRole('link', { name: /Resume/ })).not.toBeInTheDocument();
+});
+
+test('About provides the résumé PDF', () => {
+  at('/about');
+  expect(screen.getByRole('link', { name: 'Résumé (PDF)' })).toHaveAttribute(
+    'href',
+    '/library/Resume-MichaelMontanaro.pdf',
+  );
+});
+
+test('the capstone project keeps its report and supporting documents together', () => {
+  at('/projects/capstone');
+  const documents = within(screen.getByRole('region', { name: 'Project documents' }));
+  expect(documents.getAllByRole('link')).toHaveLength(3);
+  expect(documents.getByRole('link', { name: 'Capstone Software Presentation' })).toHaveAttribute(
+    'href',
+    '/library/Capstone-Project-Walkthrough.pdf',
+  );
+});
+
+test.each(['chess', 'charon', 'styx', 'mcp'])(
+  'the %s project has source-backed metadata and a public README',
+  (slug) => {
+    at(`/projects/${slug}`);
+    expect(screen.getByRole('link', { name: 'Code on GitHub (private)' })).toBeInTheDocument();
+    expect(screen.getByText('Project README')).toBeInTheDocument();
+    expect(screen.getByText('Started')).toBeInTheDocument();
+    expect(screen.queryByText('rolling')).not.toBeInTheDocument();
+    expect(screen.queryByText('TBD')).not.toBeInTheDocument();
+  },
+);
 
 test('home cards name the actual publication of external writing', () => {
   at('/');

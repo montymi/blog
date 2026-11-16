@@ -11,6 +11,10 @@ function About() {
         opens the repo next.
       </PageHeader>
 
+      <a href="/library/Resume-MichaelMontanaro.pdf" className="btn-secondary self-start">
+        Résumé (PDF)
+      </a>
+
       <div className="grid gap-10 sm:grid-cols-2">
         <section aria-label="As a programmer" className="flex flex-col gap-3">
           <Kicker as="h2">As a programmer</Kicker>

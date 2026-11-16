@@ -1,10 +1,15 @@
 {
   "title": "Styx",
   "kind": "episode",
-  "version": "rolling",
+  "version": "a126047",
   "status": "published",
-  "description": "The platform\u2019s identity layer: sign-in, OAuth / OIDC, and roles, with an independent identity authority for each operator.",
-  "released": "TBD",
-  "updated": "2026-11-16",
-  "live": "https://styx.montymi.com"
+  "description": "The platform’s identity layer: sign-in, OAuth / OIDC, and roles, with an independent identity authority for each operator.",
+  "released": "2026-11-13",
+  "updated": "2026-11-14",
+  "live": "https://styx.montymi.com",
+  "github": "https://github.com/montymi/charon/tree/main/styx",
+  "sourcePrivate": true,
+  "readme": "/projects/styx/README.md",
+  "releaseLabel": "Started",
+  "versionLabel": "Revision"
 }

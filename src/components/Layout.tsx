@@ -10,7 +10,6 @@ import { LastShipped } from './ui';
 const SECTIONS = [
   { to: '/writing', label: 'Writing' },
   { to: '/projects', label: 'Projects' },
-  { to: '/papers', label: 'Papers' },
   { to: '/about', label: 'About' },
 ];
 

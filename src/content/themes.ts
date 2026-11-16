@@ -1,14 +1,12 @@
 /**
- * Everything grouped by what it's about, across kinds: an app, a project, a paper and a post can
+ * Everything grouped by what it's about: a project, a paper and a post can
  * share a theme. The grouping is curated in content/themes.json, one theme per item; a test
  * checks every item it names exists.
  */
-import { SNAPSHOTS } from '@/platform/registry';
-
 import themesJson from '../../content/themes.json';
 import { papers, postHref, posts, projects } from '.';
 
-export type Kind = 'app' | 'project' | 'paper' | 'post';
+export type Kind = 'project' | 'paper' | 'post';
 
 export interface Entry {
   kind: Kind;
@@ -16,6 +14,7 @@ export interface Entry {
   href: string;
   /** True when it leaves this site. */
   away: boolean;
+  released?: boolean;
 }
 
 export interface Theme {
@@ -30,13 +29,17 @@ export function resolve(ref: string): Entry | null {
   const at = ref.indexOf(':');
   const kind = ref.slice(0, at);
   const id = ref.slice(at + 1);
-  if (kind === 'app') {
-    const app = SNAPSHOTS.find((a) => a.id === id);
-    return app ? { kind, title: app.name, href: app.url, away: true } : null;
-  }
   if (kind === 'project') {
     const project = projects.find((p) => p.slug === id);
-    return project ? { kind, title: project.title, href: `/projects/${id}`, away: false } : null;
+    return project
+      ? {
+          kind,
+          title: project.title,
+          href: `/projects/${id}`,
+          away: false,
+          released: project.status === 'published',
+        }
+      : null;
   }
   if (kind === 'paper') {
     const paper = papers.find((p) => p.file === id);

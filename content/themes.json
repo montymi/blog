@@ -4,8 +4,6 @@
     "name": "Everyday apps",
     "about": "Software I use myself, every week.",
     "items": [
-      "app:chef",
-      "app:chess",
       "project:lazygrocer",
       "project:chess"
     ]
@@ -15,9 +13,6 @@
     "name": "Agent experience",
     "about": "Identity, permissions, and a common way for agents to use apps.",
     "items": [
-      "app:styx",
-      "app:charon",
-      "app:connect",
       "project:styx",
       "project:charon",
       "project:mcp"
@@ -60,8 +55,6 @@
     "items": [
       "project:capstone",
       "paper:/library/Capstone-Report.pdf",
-      "paper:/library/Capstone-Software-Ecosystem.pdf",
-      "paper:/library/Capstone-Project-Walkthrough.pdf",
       "paper:/library/BRCA1-Gene-Mutation.pdf"
     ]
   },

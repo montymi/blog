@@ -4,7 +4,8 @@
  */
 export const MOVED: Record<string, string> = {
   '/blog': '/writing',
-  '/library': '/papers',
+  '/library': '/writing',
+  '/papers': '/writing',
   '/discography': '/projects',
   '/activity': '/about',
 };
