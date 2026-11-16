@@ -32,8 +32,7 @@ test('the front page links to every app by its address', () => {
     'https://chess.montymi.com',
     'https://styx.montymi.com',
     'https://charon.montymi.com',
-    'https://connect.montymi.com/mcp',
-    '/writing/agent-experience-platform',
+    'https://connect.montymi.com',
   ]) {
     expect(hrefs).toContain(href);
   }

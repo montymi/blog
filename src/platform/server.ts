@@ -28,7 +28,7 @@ export async function manifests(): Promise<Known[]> {
     REGISTRY.map(async ({ origin }, i): Promise<Known> => {
       try {
         const live = readManifest(await getJson(manifestUrl(origin)));
-        if (live && new URL(live.url).origin === origin) return { manifest: live, source: 'live' };
+        if (live && live.url === origin) return { manifest: live, source: 'live' };
       } catch {
         // Down, redeploying, or not publishing a manifest yet: the snapshot stands in.
       }

@@ -107,10 +107,7 @@ export function Switchboard() {
               One Charon connector reaches every app, with your identity and permissions.
             </p>
           </div>
-          <a
-            href="/writing/agent-experience-platform"
-            className="btn-secondary min-h-9 px-3 py-1 text-xs"
-          >
+          <a href="https://connect.montymi.com" className="btn-secondary min-h-9 px-3 py-1 text-xs">
             Connect through Charon
           </a>
         </div>

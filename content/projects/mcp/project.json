@@ -6,5 +6,5 @@
   "description": "One connector for the platform\u2019s apps. Discover capabilities, check requests, and act through MCP, REST, or live events under the same policy.",
   "released": "TBD",
   "updated": "2026-11-16",
-  "live": "https://connect.montymi.com/mcp"
+  "live": "https://connect.montymi.com"
 }
