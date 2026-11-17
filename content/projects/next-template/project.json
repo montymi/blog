@@ -4,10 +4,10 @@
   "role": "template",
   "version": "1.0.0",
   "status": "published",
-  "description": "Reusable Next.js starter with TypeScript, Tailwind, localization, themes, PWA support, and a Jest testing setup.",
+  "description": "Next.js starter with a live design editor, configurable themes, generated brand assets, and GitHub forks that preserve your settings.",
   "released": "2025-01-25",
   "releaseLabel": "Started",
-  "updated": "2025-03-04",
+  "updated": "2026-11-17",
   "github": "https://github.com/montymi/next-template",
   "readme": "https://raw.githubusercontent.com/montymi/next-template/main/README.md"
 }

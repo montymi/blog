@@ -1,12 +1,12 @@
 {
   "title": "ClearDocs",
   "kind": "single",
-  "version": "1.4.0",
+  "version": "0.1.0",
   "status": "published",
-  "description": "Reusable README and documentation patterns for open-source projects, covering setup, architecture, contribution guides, and project roadmaps.",
+  "description": "Python CLI for generating READMEs, scaffolding Material for MkDocs sites, and creating GitHub Pages deployment workflows.",
   "released": "2022-08-01",
-  "updated": "2024-10-25",
-  "github": "https://www.github.com/montymi/ClearDocs",
+  "updated": "2026-11-17",
+  "github": "https://github.com/montymi/ClearDocs",
   "readme": "https://raw.githubusercontent.com/montymi/ClearDocs/main/README.md",
   "role": "documentation"
 }

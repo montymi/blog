@@ -276,7 +276,7 @@ test('the homepage presents reusable foundations alongside the apps', () => {
     'href',
     '/projects/next-template',
   );
-  expect(foundations.getByText('Documentation · v1.4.0')).toBeInTheDocument();
+  expect(foundations.getByText('Documentation · v0.1.0')).toBeInTheDocument();
   expect(foundations.getByText('Template · v1.0.0')).toBeInTheDocument();
 });
 
