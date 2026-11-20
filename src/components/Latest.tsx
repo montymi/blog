@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { postHref, type Post } from '@/content';
 import { formatDate } from '@/lib/dates';
+import { publicationName } from '@/lib/publication';
 
 /**
  * The newest posts side by side, each under a rule; the newest under the red pen. On a phone
@@ -11,7 +12,7 @@ export function Latest({ posts }: { posts: Post[] }) {
   return (
     <ol className="grid gap-8 sm:grid-cols-3 sm:gap-6">
       {posts.map((post, i) => {
-        const where = post.url ? 'Substack' : post.tags[0];
+        const where = post.url ? publicationName(post.url) : post.tags[0];
         const inside = (
           <>
             <span className="kicker">

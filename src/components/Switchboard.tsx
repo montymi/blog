@@ -75,7 +75,7 @@ export function Switchboard() {
       });
     return () => controller.abort();
   }, []);
-  const assistants = SNAPSHOTS.filter((app) => app.assistant?.connect);
+  const hasConnector = SNAPSHOTS.some((app) => app.assistant?.mcp);
 
   return (
     <div className="flex flex-col gap-4">
@@ -99,25 +99,17 @@ export function Switchboard() {
           </li>
         ))}
       </ul>
-      {assistants.length > 0 && (
+      {hasConnector && (
         <div className="flex flex-col gap-3 rounded border border-dashed border-line-strong p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-0.5">
             <h3 className="text-sm font-semibold">Use them with Claude</h3>
             <p className="text-xs text-muted">
-              Connect an app to Claude, and ask for a week or a question in plain words.
+              One Charon connector reaches every app, with your identity and permissions.
             </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {assistants.map((app) => (
-              <a
-                key={app.id}
-                href={app.assistant!.connect}
-                className="btn-secondary min-h-9 px-3 py-1 text-xs"
-              >
-                Connect {app.name}
-              </a>
-            ))}
-          </div>
+          <a href="https://connect.montymi.com" className="btn-secondary min-h-9 px-3 py-1 text-xs">
+            Connect through Charon
+          </a>
         </div>
       )}
     </div>

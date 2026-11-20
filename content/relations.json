@@ -1,0 +1,140 @@
+[
+  {
+    "from": "project:styx",
+    "to": "project:charon",
+    "label": "provides identity for",
+    "relation": "authenticates"
+  },
+  {
+    "from": "project:styx",
+    "to": "project:mcp",
+    "label": "authenticates people using",
+    "relation": "authenticates"
+  },
+  {
+    "from": "project:charon",
+    "to": "project:mcp",
+    "label": "sets access policy for",
+    "relation": "authorizes"
+  },
+  {
+    "from": "project:mcp",
+    "to": "project:chess",
+    "label": "connects agents to",
+    "relation": "exposes"
+  },
+  {
+    "from": "project:mcp",
+    "to": "project:lazygrocer",
+    "label": "connects agents to",
+    "relation": "exposes"
+  },
+  {
+    "from": "post:blitzys-blitz-adventures-in-chess",
+    "to": "project:chess",
+    "label": "discusses",
+    "relation": "discusses"
+  },
+  {
+    "from": "post:talking-docs",
+    "to": "project:blog",
+    "label": "describes audio documentation on",
+    "relation": "discusses"
+  },
+  {
+    "from": "post:welcome",
+    "to": "project:blog",
+    "label": "introduces",
+    "relation": "introduces"
+  },
+  {
+    "from": "project:charon",
+    "to": "project:chess",
+    "label": "governs access to",
+    "relation": "authorizes"
+  },
+  {
+    "from": "project:charon",
+    "to": "project:lazygrocer",
+    "label": "governs access to",
+    "relation": "authorizes"
+  },
+  {
+    "from": "project:styx",
+    "to": "project:chess",
+    "label": "provides sign-in for",
+    "relation": "authenticates"
+  },
+  {
+    "from": "project:styx",
+    "to": "project:lazygrocer",
+    "label": "provides sign-in for",
+    "relation": "authenticates"
+  },
+  {
+    "from": "project:blog",
+    "to": "project:coding-from-zero",
+    "label": "hosts the audio walkthrough for",
+    "relation": "hosts"
+  },
+  {
+    "from": "project:charon",
+    "to": "project:authkit",
+    "label": "maintains",
+    "relation": "maintains"
+  },
+  {
+    "from": "project:charon",
+    "to": "project:langkit",
+    "label": "maintains",
+    "relation": "maintains"
+  },
+  {
+    "from": "project:authkit",
+    "to": "project:styx",
+    "label": "integrates apps with",
+    "relation": "uses"
+  },
+  {
+    "from": "project:authkit",
+    "to": "project:chess",
+    "label": "provides sign-in and role checks for",
+    "relation": "supplies"
+  },
+  {
+    "from": "project:authkit",
+    "to": "project:lazygrocer",
+    "label": "provides sign-in and role checks for",
+    "relation": "supplies"
+  },
+  {
+    "from": "project:langkit",
+    "to": "project:chess",
+    "label": "standardizes grammar/check/run for",
+    "relation": "standardizes"
+  },
+  {
+    "from": "project:langkit",
+    "to": "project:lazygrocer",
+    "label": "standardizes grammar/check/run for",
+    "relation": "standardizes"
+  },
+  {
+    "from": "project:langkit",
+    "to": "project:mcp",
+    "label": "defines the app contract consumed by",
+    "relation": "standardizes"
+  },
+  {
+    "from": "project:cleardocs",
+    "to": "project:blog",
+    "label": "provides README patterns for",
+    "relation": "supplies"
+  },
+  {
+    "from": "post:technology-beyond-the-keyboard",
+    "to": "project:linguist",
+    "label": "explores the speech pipeline implemented in",
+    "relation": "discusses"
+  }
+]

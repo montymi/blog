@@ -1,0 +1,99 @@
+[
+  {
+    "name": "Agent interfaces",
+    "items": [
+      "project:mcp",
+      "project:charon",
+      "project:chess",
+      "project:lazygrocer",
+      "project:sesh-cli",
+      "project:langkit"
+    ]
+  },
+  {
+    "name": "AI-assisted development",
+    "items": [
+      "project:chess",
+      "project:sesh-cli",
+      "post:blitzys-blitz-adventures-in-chess",
+      "post:from-sketch-to-production-in-8-hours",
+      "post:questioning-agile-development",
+      "post:c-to-rust-refactor-in-5-days-blitzy-autonomously-rewrote-curl"
+    ]
+  },
+  {
+    "name": "APIs and contracts",
+    "items": [
+      "project:mcp",
+      "project:styx",
+      "project:charon",
+      "project:serialpy",
+      "project:schema-api-testing",
+      "project:authkit",
+      "project:langkit"
+    ]
+  },
+  {
+    "name": "Technical communication",
+    "items": [
+      "project:cleardocs",
+      "project:coding-from-zero",
+      "project:blog",
+      "paper:/library/Capstone-Report.pdf",
+      "paper:/library/BRCA1-Gene-Mutation.pdf",
+      "post:talking-docs",
+      "post:questioning-agile-development"
+    ]
+  },
+  {
+    "name": "Developer workflows",
+    "items": [
+      "project:sesh",
+      "project:sesh-cli",
+      "project:serialpy",
+      "project:schema-api-testing",
+      "post:from-sketch-to-production-in-8-hours",
+      "post:questioning-agile-development"
+    ]
+  },
+  {
+    "name": "Storytelling",
+    "items": [
+      "post:preseason",
+      "post:window-shopping",
+      "post:talking-docs",
+      "post:from-sketch-to-production-in-8-hours"
+    ]
+  },
+  {
+    "name": "Authentication and authorization",
+    "items": [
+      "project:authkit",
+      "project:styx",
+      "project:charon",
+      "project:mcp",
+      "project:chess",
+      "project:lazygrocer"
+    ]
+  },
+  {
+    "name": "Reusable project foundations",
+    "items": ["project:authkit", "project:langkit", "project:cleardocs", "project:next-template"]
+  },
+  {
+    "name": "Web app foundations",
+    "items": ["project:next-template", "project:blog", "project:chess", "project:lazygrocer"]
+  },
+  {
+    "name": "Language interfaces",
+    "items": [
+      "project:linguist",
+      "project:sesh-cli",
+      "project:langkit",
+      "project:chess",
+      "project:lazygrocer",
+      "project:mcp",
+      "post:technology-beyond-the-keyboard"
+    ]
+  }
+]

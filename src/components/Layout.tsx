@@ -10,7 +10,6 @@ import { LastShipped } from './ui';
 const SECTIONS = [
   { to: '/writing', label: 'Writing' },
   { to: '/projects', label: 'Projects' },
-  { to: '/papers', label: 'Papers' },
   { to: '/about', label: 'About' },
 ];
 
@@ -18,7 +17,9 @@ const SECTIONS = [
 function Layout() {
   const { pathname } = useLocation();
   // A new page starts at its top, the way a link to another site would.
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   // The command line from anywhere: / or Ctrl/⌘ K, unless someone is typing.
   const [asking, setAsking] = useState(false);

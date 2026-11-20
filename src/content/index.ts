@@ -24,23 +24,30 @@ export interface Post {
   summary: string;
   minutes: number;
   body: string;
-  /** Set when the post lives elsewhere (Substack): the list links there, not to a page here. */
+  /** Set when the post lives elsewhere: the list links to the original publication. */
   url?: string;
 }
 
 export type ProjectStatus = 'published' | 'draft' | 'archived';
+export type ProjectRole = 'library' | 'platform' | 'documentation' | 'template';
 
 export interface Project {
   slug: string;
   title: string;
   /** Michael's own release shapes: an album is a large project, an episode a tool, a single a small one. */
   kind: 'album' | 'episode' | 'single';
+  role?: ProjectRole;
   version: string;
+  /** Unversioned projects show their source revision instead of an invented release number. */
+  versionLabel?: 'Build';
   status: ProjectStatus;
   description: string;
   released: string;
+  /** Use the first source date when there is no published release date. */
+  releaseLabel?: 'Started';
   updated: string;
   github?: string;
+  sourcePrivate?: boolean;
   readme?: string;
   live?: string;
   audio?: string;
@@ -48,6 +55,11 @@ export interface Project {
 }
 
 export interface Paper {
+  kind?: 'report' | 'document' | 'resume';
+  /** Supporting files and reports can also be reached from their project. */
+  project?: string;
+  /** Publication date (YYYY-MM-DD or year), when known. */
+  date?: string;
   title: string;
   file: string;
   pages: number;
@@ -136,7 +148,8 @@ export const projects: Project[] = Object.entries(projectFiles)
   }))
   .sort((a, b) => b.updated.localeCompare(a.updated) || a.title.localeCompare(b.title));
 
-export const papers: Paper[] = papersJson;
+export const papers: Paper[] = papersJson as Paper[];
+export const reports = papers.filter((paper) => paper.kind === 'report');
 export const activities: Activity[] = activitiesJson;
 
 export const postBySlug = (slug: string) => posts.find((post) => post.slug === slug && !post.url);
@@ -144,3 +157,22 @@ export const postBySlug = (slug: string) => posts.find((post) => post.slug === s
 /** Where a post is read: its page here, or the site it was published on. */
 export const postHref = (post: Post) => post.url ?? `/writing/${post.slug}`;
 export const projectBySlug = (slug: string) => projects.find((project) => project.slug === slug);
+
+/** The same release/revision wording everywhere a project appears. */
+export const projectVersion = (project: Project) =>
+  project.versionLabel === 'Build' ? `build ${project.version}` : `v${project.version}`;
+
+export const projectRoleLabel = (role?: ProjectRole) =>
+  role
+    ? {
+        library: 'Library',
+        platform: 'Platform',
+        documentation: 'Documentation',
+        template: 'Template',
+      }[role]
+    : undefined;
+
+export const projectCategory = (project: Project) => projectRoleLabel(project.role) ?? project.kind;
+
+export const isFoundation = ({ role }: { role?: ProjectRole }) =>
+  role === 'library' || role === 'documentation' || role === 'template';

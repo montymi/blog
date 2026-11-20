@@ -1,0 +1,15 @@
+{
+  "title": "Charon",
+  "kind": "album",
+  "version": "0.1.0",
+  "status": "published",
+  "description": "The foundation of an agent experience platform: access policy, audit, federation, and reusable Authkit and Langkit libraries that connect apps through shared identity and query contracts.",
+  "released": "2026-11-13",
+  "updated": "2026-11-15",
+  "live": "https://charon.montymi.com",
+  "github": "https://github.com/montymi/charon",
+  "sourcePrivate": true,
+  "readme": "/projects/charon/README.md",
+  "releaseLabel": "Started",
+  "role": "platform"
+}
