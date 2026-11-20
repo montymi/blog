@@ -1,18 +1,12 @@
 [
   {
     "from": "project:styx",
-    "to": "project:charon",
-    "label": "provides identity for",
-    "relation": "authenticates"
-  },
-  {
-    "from": "project:styx",
     "to": "project:mcp",
     "label": "authenticates people using",
     "relation": "authenticates"
   },
   {
-    "from": "project:charon",
+    "from": "project:styx",
     "to": "project:mcp",
     "label": "sets access policy for",
     "relation": "authorizes"
@@ -48,18 +42,6 @@
     "relation": "introduces"
   },
   {
-    "from": "project:charon",
-    "to": "project:chess",
-    "label": "governs access to",
-    "relation": "authorizes"
-  },
-  {
-    "from": "project:charon",
-    "to": "project:lazygrocer",
-    "label": "governs access to",
-    "relation": "authorizes"
-  },
-  {
     "from": "project:styx",
     "to": "project:chess",
     "label": "provides sign-in for",
@@ -78,13 +60,13 @@
     "relation": "hosts"
   },
   {
-    "from": "project:charon",
+    "from": "project:styx",
     "to": "project:authkit",
     "label": "maintains",
     "relation": "maintains"
   },
   {
-    "from": "project:charon",
+    "from": "project:styx",
     "to": "project:langkit",
     "label": "maintains",
     "relation": "maintains"

@@ -40,13 +40,13 @@ test('reports have PDF squares; supporting documents and the résumé have their
 });
 
 test('a released project turns green without becoming a second item', () => {
-  const charon = projects.find((p) => p.slug === 'charon')!;
+  const styx = projects.find((p) => p.slug === 'styx')!;
   for (const status of ['draft', 'published'] as const) {
-    const items = board([{ ...charon, status }], [], []).flatMap((s) => (s.item ? [s.item] : []));
+    const items = board([{ ...styx, status }], [], []).flatMap((s) => (s.item ? [s.item] : []));
     expect(items).toHaveLength(1);
     expect(items[0]).toMatchObject({
       kind: 'project',
-      href: '/projects/charon',
+      href: '/projects/styx',
       released: status === 'published',
     });
   }

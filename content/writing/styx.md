@@ -6,7 +6,7 @@ tags: ["styx", "montymi", "apps"]
 
 # Styx: one way into the montymi apps
 
-Chess, NCAA Manager and LazyGrocer used to each have their own sign-in. Now there's one, called Styx. You sign in once with your Google account, and every app you've been let into knows you.
+Chess and LazyGrocer used to each have their own sign-in. Now there's one, called Styx. You sign in once with your Google account, and every app you've been let into knows you.
 
 ## How to join
 
@@ -18,7 +18,7 @@ No email is sent along the way. Your page, and signing in, are how you find out.
 
 ## What you get
 
-- **The apps.** Chess, NCAA Manager and LazyGrocer.
+- **The apps.** Chess and LazyGrocer, and more as they're made.
 - **Your own apps, if you build them.** Members can publish an app of their own here. Their friends sign in to it with Styx, and they decide who gets in.
 - **Privacy by design.** An app learns who you are to it, not your email. The one exception: when you ask to use a member's app, you're told your name and email go to them.
 - **Your own network, if you'd rather.** Anyone can run their own version and, if we both agree, join mine as an equal. Neither of us is in charge of the other.

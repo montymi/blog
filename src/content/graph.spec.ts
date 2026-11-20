@@ -122,13 +122,13 @@ test('shared subjects connect across sections while rendering each pair only onc
   );
 });
 
-test('the reusable libraries connect Charon with their actual consumers', () => {
+test('the reusable libraries connect Styx with their actual consumers', () => {
   for (const kit of ['authkit', 'langkit']) {
     expect(graphNodes.find((node) => node.id === `project:${kit}`)).toMatchObject({
       kind: 'project',
       role: 'library',
     });
-    for (const id of ['project:charon', 'project:chess', 'project:lazygrocer']) {
+    for (const id of ['project:styx', 'project:chess', 'project:lazygrocer']) {
       expect(neighborhood(`project:${kit}`)).toContain(id);
     }
   }

@@ -3,7 +3,7 @@
     "name": "Agent interfaces",
     "items": [
       "project:mcp",
-      "project:charon",
+      "project:styx",
       "project:chess",
       "project:lazygrocer",
       "project:sesh-cli",
@@ -26,7 +26,6 @@
     "items": [
       "project:mcp",
       "project:styx",
-      "project:charon",
       "project:serialpy",
       "project:schema-api-testing",
       "project:authkit",
@@ -70,7 +69,6 @@
     "items": [
       "project:authkit",
       "project:styx",
-      "project:charon",
       "project:mcp",
       "project:chess",
       "project:lazygrocer"
@@ -78,11 +76,21 @@
   },
   {
     "name": "Reusable project foundations",
-    "items": ["project:authkit", "project:langkit", "project:cleardocs", "project:next-template"]
+    "items": [
+      "project:authkit",
+      "project:langkit",
+      "project:cleardocs",
+      "project:next-template"
+    ]
   },
   {
     "name": "Web app foundations",
-    "items": ["project:next-template", "project:blog", "project:chess", "project:lazygrocer"]
+    "items": [
+      "project:next-template",
+      "project:blog",
+      "project:chess",
+      "project:lazygrocer"
+    ]
   },
   {
     "name": "Language interfaces",

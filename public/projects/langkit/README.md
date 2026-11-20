@@ -1,6 +1,6 @@
 # Langkit
 
-A reusable contract for app query languages, maintained in [Charon](/projects/charon). Standard-library Python, with no runtime dependencies.
+A reusable contract for app query languages, maintained in [Styx](/projects/styx). Standard-library Python, with no runtime dependencies.
 
 ## One contract, app-owned languages
 

@@ -2,7 +2,7 @@
   "montymi": 1,
   "id": "styx",
   "name": "Styx",
-  "about": "Identity and sign-in for the platform. Establishes who you are and the roles you hold.",
+  "about": "One sign-in for the montymi apps. Ask to join at montymi.com/join.",
   "url": "https://styx.montymi.com",
   "health": "https://styx.montymi.com"
 }
