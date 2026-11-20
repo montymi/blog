@@ -1,0 +1,10 @@
+{
+  "title": "Styx",
+  "kind": "album",
+  "version": "1.0.0",
+  "status": "published",
+  "description": "One sign-in for the montymi apps. Ask to join with your Google account, and I decide each request myself. Members can publish their own apps here and choose who uses them, and anyone can run their own network and, if we both agree, join as a peer. No app sees your email unless you ask to use it.",
+  "released": "2026-11-13",
+  "updated": "2026-11-20",
+  "live": "https://montymi.com/join"
+}
