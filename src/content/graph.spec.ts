@@ -170,3 +170,13 @@ test('connected details separate actual use from context and include supporting 
       .items,
   ).toHaveLength(3);
 });
+
+test('the capstone is where Styx’s access pattern started', () => {
+  expect(graphEdges).toContainEqual({
+    from: 'project:capstone',
+    to: 'project:styx',
+    label: 'first tried the prove-then-choose access that grew into',
+    relation: 'introduces',
+  });
+  expect(neighborhood('project:styx')).toContain('project:capstone');
+});

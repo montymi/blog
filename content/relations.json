@@ -118,5 +118,11 @@
     "to": "project:linguist",
     "label": "explores the speech pipeline implemented in",
     "relation": "discusses"
+  },
+  {
+    "from": "project:capstone",
+    "to": "project:styx",
+    "label": "first tried the prove-then-choose access that grew into",
+    "relation": "introduces"
   }
 ]
