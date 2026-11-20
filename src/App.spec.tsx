@@ -31,11 +31,12 @@ test('the front page links to every app by its address', () => {
     'https://chef.montymi.com',
     'https://chess.montymi.com',
     'https://styx.montymi.com',
-    'https://charon.montymi.com',
     'https://connect.montymi.com',
   ]) {
     expect(hrefs).toContain(href);
   }
+  // The console is the owner's alone: no card leads strangers to its sign-in.
+  expect(hrefs).not.toContain('https://charon.montymi.com');
   expect(hrefs).not.toContain('https://manager.montymi.com');
   expect(hrefs).not.toContain('https://chef.montymi.com/connect');
 });
@@ -53,14 +54,14 @@ test('research papers open directly from their board squares', () => {
 
 test('a project has one square and opens its details inside the board', () => {
   at('/');
-  const squares = screen.getAllByRole('link', { name: /^[a-h][1-8]: Charon, released project$/ });
+  const squares = screen.getAllByRole('link', { name: /^[a-h][1-8]: Styx, released project$/ });
   expect(squares).toHaveLength(1);
   fireEvent.click(squares[0]);
-  const details = within(screen.getByRole('region', { name: 'Charon project details' }));
-  expect(details.getByRole('heading', { name: 'Charon' })).toBeInTheDocument();
-  expect(details.getByRole('link', { name: 'Open Charon' })).toHaveAttribute(
+  const details = within(screen.getByRole('region', { name: 'Styx project details' }));
+  expect(details.getByRole('heading', { name: 'Styx' })).toBeInTheDocument();
+  expect(details.getByRole('link', { name: 'Open Styx' })).toHaveAttribute(
     'href',
-    'https://charon.montymi.com',
+    'https://montymi.com/join',
   );
   expect(details.getByRole('link', { name: 'Code on GitHub (private)' })).toHaveAttribute(
     'href',
@@ -69,7 +70,7 @@ test('a project has one square and opens its details inside the board', () => {
   expect(details.getByText('Project README')).toBeInTheDocument();
   expect(screen.getByRole('region', { name: 'Built' })).toBeInTheDocument();
   fireEvent.click(details.getByRole('button', { name: 'Back to board index' }));
-  expect(screen.queryByRole('region', { name: 'Charon project details' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('region', { name: 'Styx project details' })).not.toBeInTheDocument();
 });
 
 test('Projects and Writing browse their lists within the board', () => {
@@ -200,7 +201,7 @@ test('a shared-foundation question shows evidence for both apps in search and on
   );
   fireEvent.keyDown(input, { key: 'Enter' });
   const matches = within(screen.getByRole('region', { name: 'Query matches' }));
-  expect(matches.getAllByRole('link')).toHaveLength(5);
+  expect(matches.getAllByRole('link')).toHaveLength(4);
   expect(matches.getByRole('link', { name: /Langkit/ })).toHaveTextContent(
     'Langkit standardizes grammar/check/run for LazyGrocer',
   );
@@ -209,8 +210,10 @@ test('a shared-foundation question shows evidence for both apps in search and on
 test('path answers name each recorded relationship on the map', () => {
   at('/projects?explore=what%20connects%20Authkit%20to%20Connect');
   expect(screen.getByText('Connection path')).toBeInTheDocument();
-  expect(screen.getByText(/1\. Charon maintains Authkit/)).toBeInTheDocument();
-  expect(screen.getByText(/2\. Charon sets access policy for Connect/)).toBeInTheDocument();
+  expect(
+    screen.getByText(/1\. Authkit provides sign-in and role checks for Chess/),
+  ).toBeInTheDocument();
+  expect(screen.getByText(/2\. Connect connects agents to Chess/)).toBeInTheDocument();
 });
 
 test('completion fills a checked filter before Enter opens its map', () => {
@@ -313,7 +316,7 @@ test('Build is the label for an unversioned Connect deployment', () => {
   expect(screen.queryByText('Revision', { exact: true })).not.toBeInTheDocument();
 });
 
-test.each(['chess', 'charon', 'styx', 'mcp'])(
+test.each(['chess', 'styx', 'mcp'])(
   'the %s project has source-backed metadata and a public README',
   (slug) => {
     at(`/projects/${slug}`);

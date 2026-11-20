@@ -18,14 +18,11 @@ const results = (query: string) => {
 test('dependency queries distinguish actual consumers from shared subjects', () => {
   expect(results('what uses Authkit').sort()).toEqual(['project:chess', 'project:lazygrocer']);
   expect(results('what does Authkit use')).toEqual(['project:styx']);
-  expect(results('show libraries maintained by Charon').sort()).toEqual([
+  expect(results('show libraries maintained by Styx').sort()).toEqual([
     'project:authkit',
     'project:langkit',
   ]);
-  expect(results('WHAT DOES CHARON MAINTAIN').sort()).toEqual([
-    'project:authkit',
-    'project:langkit',
-  ]);
+  expect(results('WHAT DOES STYX MAINTAIN').sort()).toEqual(['project:authkit', 'project:langkit']);
   expect(results('show apps using Langkit').sort()).toEqual([
     'project:chess',
     'project:lazygrocer',
@@ -90,7 +87,6 @@ test('shared-foundation comparisons require both documented consumers and explai
   const query = graphQuery('what do Chess and LazyGrocer share?')!;
   expect(graphResultIds(query).sort()).toEqual([
     'project:authkit',
-    'project:charon',
     'project:langkit',
     'project:mcp',
     'project:styx',

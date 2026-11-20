@@ -1,6 +1,6 @@
 # Authkit
 
-Reusable sign-in and authorization for apps, maintained in [Charon](/projects/charon).
+Reusable sign-in and authorization for apps, maintained in [Styx](/projects/styx).
 
 ## What it provides
 

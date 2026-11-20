@@ -1,15 +1,16 @@
 {
   "title": "Styx",
-  "kind": "episode",
+  "kind": "album",
   "version": "a126047",
   "status": "published",
-  "description": "The platform’s identity layer: sign-in, OAuth / OIDC, and roles, with an independent identity authority for each operator.",
+  "description": "One sign-in for the montymi apps. Ask to join with your Google account and follow your request on your own page. Members publish apps of their own, check their sign-in, and choose who gets in. Assistants use the apps through Connect, and other people can run their own network and join as equals.",
   "released": "2026-11-13",
-  "updated": "2026-11-14",
-  "live": "https://styx.montymi.com",
-  "github": "https://github.com/montymi/charon/tree/main/styx",
+  "updated": "2026-11-21",
+  "live": "https://montymi.com/join",
+  "github": "https://github.com/montymi/charon",
   "sourcePrivate": true,
   "readme": "/projects/styx/README.md",
   "releaseLabel": "Started",
-  "versionLabel": "Build"
+  "versionLabel": "Build",
+  "role": "platform"
 }

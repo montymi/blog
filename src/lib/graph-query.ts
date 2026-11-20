@@ -114,7 +114,7 @@ export const queryExamples = [
   'show foundations',
   'what uses authkit',
   'what does Chess use',
-  'show libraries maintained by Charon',
+  'show libraries maintained by Styx',
   'show projects where status = published',
   'show foundations where type = template',
   'show writing about AI',

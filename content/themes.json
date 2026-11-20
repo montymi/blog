@@ -14,7 +14,6 @@
     "about": "Identity, permissions, and a common way for agents to use apps.",
     "items": [
       "project:styx",
-      "project:charon",
       "project:mcp",
       "project:authkit",
       "project:langkit"

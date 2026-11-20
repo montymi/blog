@@ -104,11 +104,11 @@ export function Switchboard() {
           <div className="flex flex-col gap-0.5">
             <h3 className="text-sm font-semibold">Use them with Claude</h3>
             <p className="text-xs text-muted">
-              One Charon connector reaches every app, with your identity and permissions.
+              One connector reaches every app, with your identity and permissions.
             </p>
           </div>
           <a href="https://connect.montymi.com" className="btn-secondary min-h-9 px-3 py-1 text-xs">
-            Connect through Charon
+            Add Connect
           </a>
         </div>
       )}
