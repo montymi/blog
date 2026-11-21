@@ -7,13 +7,11 @@
 import chef from '../../content/apps/chef.json';
 import chess from '../../content/apps/chess.json';
 import connect from '../../content/apps/connect.json';
-import styx from '../../content/apps/styx.json';
 
 import { readManifest, type Manifest } from './contract';
 
 export const REGISTRY: { origin: string; snapshot: unknown }[] = [
   { origin: 'https://connect.montymi.com', snapshot: connect },
-  { origin: 'https://styx.montymi.com', snapshot: styx },
   { origin: 'https://chef.montymi.com', snapshot: chef },
   { origin: 'https://chess.montymi.com', snapshot: chess },
 ];
