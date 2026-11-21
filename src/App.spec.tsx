@@ -30,7 +30,6 @@ test('the front page links to every app by its address', () => {
   for (const href of [
     'https://chef.montymi.com',
     'https://chess.montymi.com',
-    'https://styx.montymi.com',
     'https://connect.montymi.com',
   ]) {
     expect(hrefs).toContain(href);
@@ -39,6 +38,8 @@ test('the front page links to every app by its address', () => {
   expect(hrefs).not.toContain('https://charon.montymi.com');
   expect(hrefs).not.toContain('https://manager.montymi.com');
   expect(hrefs).not.toContain('https://chef.montymi.com/connect');
+  // Styx is the network, not an app: its one card is the album, which leads to /join.
+  expect(hrefs).not.toContain('https://styx.montymi.com');
 });
 
 test('research papers open directly from their board squares', () => {
